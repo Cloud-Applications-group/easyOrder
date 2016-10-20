@@ -15,14 +15,18 @@ import os
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-FACEBOOK_APP_ID = '996345203828081'
-FACEBOOK_API_SECRET = '28766ef6f8ed18f2c5acab0bd6d912f0'
+
+SOCIAL_AUTH_FACEBOOK_KEY = '996345203828081'
+SOCIAL_AUTH_FACEBOOK_SECRET = '28766ef6f8ed18f2c5acab0bd6d912f0'
 
 AUTHENTICATION_BACKENDS = (
-    'social_auth.backends.facebook.FacebookBackend',
+    'social.backends.facebook.FacebookOAuth2',
+    'django.contrib.auth.backends.ModelBackend',
 )
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/1.10/howto/deployment/checklist/
+
+LOGIN_URL = '/'
+LOGOUT_REDIRECT_URL = '/'
+LOGIN_REDIRECT_URL = '/home/'
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'mwv1f6mok637o0q9n$b-^*ox4+#aa3%u!1%p(d-88atwyo_#ml'
@@ -42,6 +46,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'interface',
+    'social.apps.django_app.default'
 ]
 
 MIDDLEWARE = [
@@ -69,7 +75,11 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'social.apps.django_app.context_processors.backends',
+                'social.apps.django_app.context_processors.login_redirect',
             ],
+
+
         },
     },
 ]

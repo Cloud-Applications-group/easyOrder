@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+    {% if user.is_anonymous %}
+
+        <div><br /><a href="{% url 'social:begin' 'facebook' %}?next={{ request.path }}" id="connect"><img src="/static/img/login/fb_login_button.png" width="300px"/></a></div>
+
+    {% endif %}
+
+{% endblock %}
+
