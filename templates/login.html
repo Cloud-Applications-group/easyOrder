@@ -4,9 +4,29 @@
 
     {% if user.is_anonymous %}
 
-        <div><br /><a href="{% url 'social:begin' 'facebook' %}?next={{ request.path }}" id="connect"><img src="/static/img/login/fb_login_button.png" width="300px"/></a></div>
+		<h2 id="login_header">Login to continue</h2>
+		<center><div hidden id="loader" style="margin: 50px;" class="loader"></div></center>
+		<div id="fb_button">
+        <br /><a href="{% url 'social:begin' 'facebook' %}?next={{ request.path }}" id="connect"><img src="/static/img/login/fb_login_button.png" width="300px"/></a>
+		</div>
 
     {% endif %}
 
 {% endblock %}
 
+
+{% block footerscripts %}
+	<script>
+	var fb_connect = document.getElementById('connect');
+	fb_connect.onclick = connecting;
+	
+	function connecting(){		
+		var loader = document.getElementById('loader');
+		var body = document.getElementById('fb_button');
+		var login_header = document.getElementById('login_header');
+		login_header.innerHTML = 'Logging in';
+		loader.removeAttribute('hidden');
+		body.style.display = 'none';         
+	}
+	</script>
+{% endblock %}
