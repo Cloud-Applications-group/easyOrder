@@ -34,3 +34,14 @@ class Restaurant(models.Model):
     name = models.CharField("Restaurant Name", null=True, blank=True, default=None, max_length=4096)
     info = models.TextField(null=True, blank=True)
     rating = models.IntegerField(null=False, blank=False, default=RATING_UNRATED, choices=RATING_CHOICES)
+
+    def __unicode__(self):
+        return u'%s' % self.name
+
+
+class Order(models.Model):
+    user = models.ForeignKey(User, null=False, blank=False)
+    restaurant = models.ForeignKey(Restaurant, null=False, blank=False)
+    content = models.TextField(null=False, blank=False)
+    amount = models.IntegerField(null=False, blank=False)
+    status = models.IntegerField(null=False, blank=False, default=STATUS_NEW, choices=STATUS_CHOICES)
