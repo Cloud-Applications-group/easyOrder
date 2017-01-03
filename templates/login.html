@@ -5,21 +5,21 @@
 h2,h3{color: #777;}
 
 .form-control {
-    background-color: rgba(0,0,0,0.5);
-    height: 40px;
-    font-size: 18px;
-    color: white;
-    border: none;
+background-color: rgba(0,0,0,0.5);
+height: 40px;
+font-size: 18px;
+color: white;
+border: none;
 }
 
 .transparentClass {
-    background-color: rgba(0,0,0,0.5);
-    color: white;
-    border: none;
+background-color: rgba(0,0,0,0.5);
+color: white;
+border: none;
 }
 
 input::-webkit-input-placeholder {
-    color: white !important;
+color: white !important;
 }
 
 {% endblock %}
@@ -30,164 +30,212 @@ input::-webkit-input-placeholder {
 
 <header>
     <div class="header-content">
-        <div class="header-content-inner">  
-			<div class="col-md-12" style="padding-bottom: 20px">
-				<div class="input-group">
-					<span class="input-group-addon transparentClass"><i class="fa fa-cutlery fa-lg" aria-hidden="true"></i></span>
-					<input style="height: 60px; font-size: 25px" class="form-control" id="pac-input" type="text"
-						   placeholder="Tell us your destination."/>
-				</div>
-			</div>
-			<div style="padding-bottom: 5px;" class="col-md-4">
-				<div class="input-group">
-					<span class="input-group-addon transparentClass"><i class="fa fa-users fa-lg" aria-hidden="true"></i></span>
-					<select class="form-control" id="sel1">
-						<option> Number of People</option>
-						<option>1</option>
-						<option>2</option>
-						<option>3</option>
-						<option>4</option>
-						<option>5</option>
-						<option>6</option>
-						<option>7</option>
-						<option>8</option>
-						<option>9</option>
-						<option>10+</option>
-					</select>
-				</div>
-			</div>
-			<div style="padding-bottom: 5px;" class="col-md-4">
-				<div class="input-group">
+        <div class="header-content-inner">
+            <div class="col-md-12" style="padding-bottom: 20px">
+                <div class="input-group">
+                    <span class="input-group-addon transparentClass"><i class="fa fa-cutlery fa-lg"
+                                                                        aria-hidden="true"></i></span>
+                    <input style="height: 60px; font-size: 25px" class="form-control" id="location" type="text"
+                           placeholder="Tell us your destination."/>
+                </div>
+            </div>
+            <div style="padding-bottom: 5px;" class="col-md-4">
+                <div class="input-group">
+                    <span class="input-group-addon transparentClass"><i class="fa fa-users fa-lg"
+                                                                        aria-hidden="true"></i></span>
+                    <select class="form-control" id="numPeople">
+                        <option disabled selected hidden>Number of People</option>
+                        <option>1</option>
+                        <option>2</option>
+                        <option>3</option>
+                        <option>4</option>
+                        <option>5</option>
+                        <option>6</option>
+                        <option>7</option>
+                        <option>8</option>
+                        <option>9</option>
+                        <option>10+</option>
+                    </select>
+                </div>
+            </div>
+            <div style="padding-bottom: 5px;" class="col-md-4">
+                <div class="input-group">
 					<span class="input-group-addon transparentClass" id="basic-addon1"><i class="fa fa-calendar fa-lg"
-																						  aria-hidden="true"></i></span>
-					<input class="form-control" id="datePicker" value="2017-01-01" type="date"
-						   placeholder="Tell us where you heading"/>
-				</div>
-			</div>
-			<div style="padding-bottom: 5px;" class="col-md-4">
-				<div class="input-group">
-					<span class="input-group-addon transparentClass"><i class="fa fa-clock-o fa-lg" aria-hidden="true"></i></span>
-					<select class="form-control" name="Select_0" tabindex="3" aria-label="hour">
-						<option value="11:00">11:00 AM</option>
-						<option value="11:30">11:30 AM</option>
-						<option value="12:00">12:00 PM</option>
-						<option value="12:30">12:30 PM</option>
-						<option value="13:00">1:00 PM</option>
-						<option value="13:30">1:30 PM</option>
-						<option value="14:00">2:00 PM</option>
-						<option value="14:30">2:30 PM</option>
-						<option value="15:00">3:00 PM</option>
-						<option value="15:30">3:30 PM</option>
-						<option value="16:00">4:00 PM</option>
-						<option value="16:30">4:30 PM</option>
-						<option value="17:00">5:00 PM</option>
-						<option value="17:30">5:30 PM</option>
-						<option value="18:00">6:00 PM</option>
-						<option value="18:30">6:30 PM</option>
-						<option value="19:00">7:00 PM</option>
-						<option value="19:30">7:30 PM</option>
-						<option value="20:00">8:00 PM</option>
-						<option value="20:30">8:30 PM</option>
-						<option value="21:00">9:00 PM</option>
-						<option value="21:30">9:30 PM</option>
-						<option value="22:00">10:00 PM</option>
-						<option value="22:30">10:30 PM</option>
-						<option value="23:00">11:00 PM</option>
-						<option value="23:30">11:30 PM</option>
-					</select>
-				</div>
-			</div>
-		</div>
-	</div>
+                                                                                          aria-hidden="true"></i></span>
+                    <input class="form-control" id="date" value="2017-01-01" type="date"
+                           placeholder="Tell us where you heading"/>
+                </div>
+            </div>
+            <div style="padding-bottom: 5px;" class="col-md-4">
+                <div class="input-group">
+                    <span class="input-group-addon transparentClass"><i class="fa fa-clock-o fa-lg"
+                                                                        aria-hidden="true"></i></span>
+                    <select class="form-control" tabindex="3" id="time" aria-label="hour">
+                        <option value="11:00">11:00 AM</option>
+                        <option value="11:30">11:30 AM</option>
+                        <option value="12:00">12:00 PM</option>
+                        <option value="12:30">12:30 PM</option>
+                        <option value="13:00">1:00 PM</option>
+                        <option value="13:30">1:30 PM</option>
+                        <option value="14:00">2:00 PM</option>
+                        <option value="14:30">2:30 PM</option>
+                        <option value="15:00">3:00 PM</option>
+                        <option value="15:30">3:30 PM</option>
+                        <option value="16:00">4:00 PM</option>
+                        <option value="16:30">4:30 PM</option>
+                        <option value="17:00">5:00 PM</option>
+                        <option value="17:30">5:30 PM</option>
+                        <option value="18:00">6:00 PM</option>
+                        <option value="18:30">6:30 PM</option>
+                        <option value="19:00">7:00 PM</option>
+                        <option value="19:30">7:30 PM</option>
+                        <option value="20:00">8:00 PM</option>
+                        <option value="20:30">8:30 PM</option>
+                        <option value="21:00">9:00 PM</option>
+                        <option value="21:30">9:30 PM</option>
+                        <option value="22:00">10:00 PM</option>
+                        <option value="22:30">10:30 PM</option>
+                        <option value="23:00">11:00 PM</option>
+                        <option value="23:30">11:30 PM</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
 </header>
 <section style="background-color: white; padding: 30px;">
-	<div class="container">
-		<div class="row">
-			<div class="col-lg-3 col-md-6 text-center">
-				<div class="service-box">
-					<i class="fa fa-4x fa-map-marker text-primary sr-icons" data-sr-id="3" style="; visibility: visible;  -webkit-transform: scale(1); opacity: 1;transform: scale(1); opacity: 1;-webkit-transition: -webkit-transform 0.6s cubic-bezier(0.6, 0.2, 0.1, 1) 0s, opacity 0.6s cubic-bezier(0.6, 0.2, 0.1, 1) 0s; transition: transform 0.6s cubic-bezier(0.6, 0.2, 0.1, 1) 0s, opacity 0.6s cubic-bezier(0.6, 0.2, 0.1, 1) 0s; "></i>
-					<h3>Find Location</h3>
-					<p class="text-muted">Find a Restaurant, Cafe or Bar and chose a nice table.</p>
-				</div>
-			</div>
-			<div class="col-lg-3 col-md-6 text-center">
-				<div class="service-box">
-					<i class="fa fa-4x fa-cutlery text-primary sr-icons" data-sr-id="3" style="; visibility: visible;  -webkit-transform: scale(1); opacity: 1;transform: scale(1); opacity: 1;-webkit-transition: -webkit-transform 0.6s cubic-bezier(0.6, 0.2, 0.1, 1) 0s, opacity 0.6s cubic-bezier(0.6, 0.2, 0.1, 1) 0s; transition: transform 0.6s cubic-bezier(0.6, 0.2, 0.1, 1) 0s, opacity 0.6s cubic-bezier(0.6, 0.2, 0.1, 1) 0s; "></i>
-					<h3>Choose Food</h3>
-					<p class="text-muted">Take a look at the menu and create your order.</p>
-				</div>
-			</div>
-			<div class="col-lg-3 col-md-6 text-center">
-				<div class="service-box">
-					<i class="fa fa-4x fa-paper-plane text-primary sr-icons" data-sr-id="4" style="; visibility: visible;  -webkit-transform: scale(1); opacity: 1;transform: scale(1); opacity: 1;-webkit-transition: -webkit-transform 0.6s cubic-bezier(0.6, 0.2, 0.1, 1) 0s, opacity 0.6s cubic-bezier(0.6, 0.2, 0.1, 1) 0s; transition: transform 0.6s cubic-bezier(0.6, 0.2, 0.1, 1) 0s, opacity 0.6s cubic-bezier(0.6, 0.2, 0.1, 1) 0s; "></i>
-					<h3>Order</h3>
-					<p class="text-muted">Let us know your arrival time, so nothing gets cold.</p>
-				</div>
-			</div>
-			<div class="col-lg-3 col-md-6 text-center">
-				<div class="service-box">
-					<i class="fa fa-4x fa-heart text-primary sr-icons" data-sr-id="5" style="; visibility: visible;  -webkit-transform: scale(1); opacity: 1;transform: scale(1); opacity: 1;-webkit-transition: -webkit-transform 0.6s cubic-bezier(0.6, 0.2, 0.1, 1) 0s, opacity 0.6s cubic-bezier(0.6, 0.2, 0.1, 1) 0s; transition: transform 0.6s cubic-bezier(0.6, 0.2, 0.1, 1) 0s, opacity 0.6s cubic-bezier(0.6, 0.2, 0.1, 1) 0s; "></i>
-					<h3>Get Ready</h3>
-					<p class="text-muted">Never wait for food anymore!</p>
-				</div>
-			</div>
-		</div>
-	</div>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-3 col-md-6 text-center">
+                <div class="service-box">
+                    <i class="fa fa-4x fa-map-marker text-primary sr-icons" data-sr-id="3"
+                       style="; visibility: visible;  -webkit-transform: scale(1); opacity: 1;transform: scale(1); opacity: 1;-webkit-transition: -webkit-transform 0.6s cubic-bezier(0.6, 0.2, 0.1, 1) 0s, opacity 0.6s cubic-bezier(0.6, 0.2, 0.1, 1) 0s; transition: transform 0.6s cubic-bezier(0.6, 0.2, 0.1, 1) 0s, opacity 0.6s cubic-bezier(0.6, 0.2, 0.1, 1) 0s; "></i>
+                    <h3>Find Location</h3>
+                    <p class="text-muted">Find a Restaurant, Cafe or Bar and chose a nice table.</p>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6 text-center">
+                <div class="service-box">
+                    <i class="fa fa-4x fa-cutlery text-primary sr-icons" data-sr-id="3"
+                       style="; visibility: visible;  -webkit-transform: scale(1); opacity: 1;transform: scale(1); opacity: 1;-webkit-transition: -webkit-transform 0.6s cubic-bezier(0.6, 0.2, 0.1, 1) 0s, opacity 0.6s cubic-bezier(0.6, 0.2, 0.1, 1) 0s; transition: transform 0.6s cubic-bezier(0.6, 0.2, 0.1, 1) 0s, opacity 0.6s cubic-bezier(0.6, 0.2, 0.1, 1) 0s; "></i>
+                    <h3>Choose Food</h3>
+                    <p class="text-muted">Take a look at the menu and create your order.</p>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6 text-center">
+                <div class="service-box">
+                    <i class="fa fa-4x fa-paper-plane text-primary sr-icons" data-sr-id="4"
+                       style="; visibility: visible;  -webkit-transform: scale(1); opacity: 1;transform: scale(1); opacity: 1;-webkit-transition: -webkit-transform 0.6s cubic-bezier(0.6, 0.2, 0.1, 1) 0s, opacity 0.6s cubic-bezier(0.6, 0.2, 0.1, 1) 0s; transition: transform 0.6s cubic-bezier(0.6, 0.2, 0.1, 1) 0s, opacity 0.6s cubic-bezier(0.6, 0.2, 0.1, 1) 0s; "></i>
+                    <h3>Order</h3>
+                    <p class="text-muted">Let us know your arrival time, so nothing gets cold.</p>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6 text-center">
+                <div class="service-box">
+                    <i class="fa fa-4x fa-heart text-primary sr-icons" data-sr-id="5"
+                       style="; visibility: visible;  -webkit-transform: scale(1); opacity: 1;transform: scale(1); opacity: 1;-webkit-transition: -webkit-transform 0.6s cubic-bezier(0.6, 0.2, 0.1, 1) 0s, opacity 0.6s cubic-bezier(0.6, 0.2, 0.1, 1) 0s; transition: transform 0.6s cubic-bezier(0.6, 0.2, 0.1, 1) 0s, opacity 0.6s cubic-bezier(0.6, 0.2, 0.1, 1) 0s; "></i>
+                    <h3>Get Ready</h3>
+                    <p class="text-muted">Never wait for food anymore!</p>
+                </div>
+            </div>
+        </div>
+    </div>
 </section>
 <section class="no-padding" id="portfolio">
-	<div class="container-fluid">
-		<div class="row no-gutter popup-gallery">
-			<div class="col-lg-4 col-sm-6">				
-				<img src="static/img/login/thumbs/1.jpg" class="img-responsive" alt="">		
-			</div>
-			<div class="col-lg-8 col-sm-6">		
-				<h1 style="padding: 5%"> Own a Restaurant, Café or Bar ? </h1>
-				<p> EasyOrder is completely free and always will be! Just follow <a href="#">this link</a> and add your place to our directory! </p>
-			</div>
-		</div>
-	</div>
+    <div class="container-fluid">
+        <div class="row no-gutter popup-gallery">
+            <div class="col-lg-4 col-sm-6">
+                <img src="static/img/login/thumbs/1.jpg" class="img-responsive" alt="">
+            </div>
+            <div class="col-lg-8 col-sm-6">
+                <h1 style="padding: 5%"> Own a Restaurant, Café or Bar ? </h1>
+                <p> EasyOrder is completely free and always will be! Just follow <a data-toggle="modal" data-target="#myModal" href="#">this link</a> and add your
+                    place to our directory! </p>
+            </div>
+        </div>
+    </div>
 </section>
 
-    {% endif %}
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog modal-custom" role="document">
+        <div style="background-color:rgba(239, 239, 239, 0.6);" class="modal-content">
+            <div class="modal-body">
+                <center>
+                    <div hidden id="loader" class="loader"></div>
+                    <div id="modal-body">
+                        <h2 id="login_header"></h2>
+                        <br/>
+                        <div id="fb_button">
+                            <a href="{% url 'social:begin' 'facebook' %}?next={{ request.path }}" id="connect"><img
+                                    src="/static/img/login/fb_login_button.png" width="300px"/></a>
+                        </div>
+                        <hr/>
+                        <a href="#"><h5>Restaurant owner?</h5></a>
+                        <br/><br/>
+                    </div>
+                </center>
+            </div>
+        </div>
+    </div>
+</div>
 
-    {% endblock %}
+{% endif %}
+{% endblock %}
 
+{% block footerscripts %}
+<script>
 
-    {% block footerscripts %}
-    <script>
-
-        document.getElementById('datePicker').value = new Date().toJSON().slice(0, 10);
-
-        function initSearch() {
-
-            var input = (document.getElementById('pac-input'));
-            var options = {
-                types: ['establishment']
-            };
-
-            var autocomplete = new google.maps.places.Autocomplete(input, options);
-
-            autocomplete.addListener('place_changed', function () {
-
-                var place = autocomplete.getPlace();
-                var address = '';
-				
-				alert(place.place_id)
-
-                if (place.address_components) {
-                    address = [
-                        (place.address_components[0] && place.address_components[0].short_name || ''),
-                        (place.address_components[1] && place.address_components[1].short_name || ''),
-                        (place.address_components[2] && place.address_components[2].short_name || '')
-                    ].join(' ');
-                }
-
-
+    $.getJSON("/api/v1/restaurant" + "/?format=json&" + "shop_id=" + place_id,
+            function (data) {
+                alert(data);
             });
 
-        }
-    </script>
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBCinQHLTxOHgFXAFHjsftWjucn2cI3yWg&libraries=places&callback=initSearch"
-            async defer>
-    </script>
-    {% endblock %}
+    //For doing AJAX post
+    $("#submitB").click(function (e) {
+
+        e.preventDefault();
+        var placeS = $('#location').val();
+        var nPeople = $('#numPeople').val();
+        var bDate = $('#date').val();
+        var bTime = $('#time').val();
+
+        $.ajax({
+            url: window.location.href,
+            type: "POST",
+            data: {
+                place: placeS,
+                people: nPeople,
+                date: bDate,
+                time: bTime
+            },
+
+            // handle a successful response
+            success: function (json) {
+                console.log(json); // another sanity check
+                //On success show the data posted to server as a message
+                alert('Visiting place   ' + json['placeS'] + '!.' + '  Date selected:' + json['bDate']);
+            },
+        });
+    });
+
+    document.getElementById('date').value = new Date().toJSON().slice(0, 10);
+
+    function initSearch() {
+        var input = (document.getElementById('location'));
+        var options = {
+            types: ['establishment']
+        };
+
+        var autocomplete = new google.maps.places.Autocomplete(input, options);
+        autocomplete.addListener('place_changed', function () {
+            var place = autocomplete.getPlace();
+            alert(place.place_id)
+        });
+
+    }
+</script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBCinQHLTxOHgFXAFHjsftWjucn2cI3yWg&libraries=places&callback=initSearch"
+        async defer>
+</script>
+{% endblock %}
