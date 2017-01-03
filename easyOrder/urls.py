@@ -21,6 +21,7 @@ from interface.api import *
 
 v1_api = Api(api_name='v1')
 v1_api.register(OrderResource())
+v1_api.register(RestaurantResource())
 
 
 
