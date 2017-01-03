@@ -55,6 +55,7 @@
         a {
             text-decoration: none;
             color: white;
+			text-shadow: 0px 0px 27px rgba(155, 150, 150, 0.69);
         }
 
         .loader {
@@ -75,8 +76,9 @@
                 transform: rotate(360deg);
             }
         }
-
-
+				
+		@media (min-width: 768px) { .modal-custom { width: 350px; } }
+		
     </style>
 </head>
 <body ng-app="mainApp" id="page-top">
@@ -97,28 +99,26 @@
             <ul class="nav navbar-nav navbar-right">
                 {% if user and not user.is_anonymous %}
 				<li><a href="{% url 'auth:logout' %}?next={{ request.path }}"><span
-                        style="font-size: 22px; padding: 15px;"> Logout</span></a></li>						
+                        style="font-size: 22px; padding: 15px; color: white;"> Logout</span></a></li>						
 				{% else %}					
 				<li><a href="#" data-toggle="modal" data-target="#myModal"><span
-                        style="font-size: 22px; padding: 15px;"> Login</span></a></li>
+                        style="font-size: 22px; padding: 15px; color: white;"><i class="fa fa-key" aria-hidden="true"></i> Login</span></a></li>
 				{% endif %}				
             </ul>
         </div><!--/.nav-collapse -->
     </div>
 </nav>
 
-<header>
-    <div class="header-content">
-        <div class="header-content-inner">
-            {% block content %}{% endblock %}
-        </div>
-    </div>
-</header>
+
+{% block content %}{% endblock %}
+
+
+
 
 {% if user.is_anonymous %}
 <!-- Modal -->
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-    <div class="modal-dialog" role="document">
+    <div class="modal-dialog modal-custom" role="document">
         <div style="background-color:rgba(239, 239, 239, 0.6);" class="modal-content">
             <div class="modal-body">
                 <center>
