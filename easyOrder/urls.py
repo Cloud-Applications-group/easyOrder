@@ -19,9 +19,14 @@ from tastypie.api import Api
 from interface.api import *
 
 
+
+order_resource = OrderResource()
+restaurant_resource = RestaurantResource()
+
 v1_api = Api(api_name='v1')
-v1_api.register(OrderResource())
-v1_api.register(RestaurantResource())
+v1_api.register(order_resource)
+v1_api.register(MenuResource())
+v1_api.register(restaurant_resource)
 
 
 
