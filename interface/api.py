@@ -40,4 +40,4 @@ class MenuResource(ModelResource):
     class Meta:
         queryset = Menu.objects.all()
         resource_name = 'menu'
-        filtering = {'title': ALL}
+        filtering = {'restaurant': ALL}
