@@ -47,7 +47,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'interface',
-    'social.apps.django_app.default'
+    'social.apps.django_app.default',
+    'tastypie',
 ]
 
 MIDDLEWARE = [

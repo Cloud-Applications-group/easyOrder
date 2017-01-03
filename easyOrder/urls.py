@@ -15,13 +15,25 @@ Including another URLconf
 """
 from django.conf.urls import url, include
 from django.contrib import admin
+from tastypie.api import Api
+from interface.api import *
+
+
+v1_api = Api(api_name='v1')
+v1_api.register(OrderResource())
+
 
 
 urlpatterns = [
+# APIs
+    url(r'^api/', include(v1_api.urls)),
     url(r'^admin/', admin.site.urls),
+
 
     url(r'', include('interface.urls', namespace="interface", app_name="interface")),
 
     url('', include('social.apps.django_app.urls', namespace='social')),
     url('', include('django.contrib.auth.urls', namespace='auth')),
+
+
 ]
