@@ -3,12 +3,16 @@
 {% block content %}
 
     {% if user and not user.is_anonymous %}
-        <li>
-            <a>Hello {{ user.get_full_name|default:user.username }}!</a>
-        </li>
-        <li>
-            <a href="{% url 'auth:logout' %}?next={{ request.path }}">Logout</a>
-        </li>
+		
+		<header style="background-color: white; padding: 30px;">
+			<div class="container">
+				<div class="row">
+					<div class="col-md-12 text-center">
+					</div>
+				</div>
+			</div>
+		</header>
+		
     {% endif %}
 	
 

@@ -35,7 +35,7 @@ input::-webkit-input-placeholder {
 				<div class="input-group">
 					<span class="input-group-addon transparentClass"><i class="fa fa-cutlery fa-lg" aria-hidden="true"></i></span>
 					<input style="height: 60px; font-size: 25px" class="form-control" id="pac-input" type="text"
-						   placeholder="Tell us where are you heading to."/>
+						   placeholder="Tell us your destination."/>
 				</div>
 			</div>
 			<div style="padding-bottom: 5px;" class="col-md-4">
@@ -106,14 +106,14 @@ input::-webkit-input-placeholder {
 			<div class="col-lg-3 col-md-6 text-center">
 				<div class="service-box">
 					<i class="fa fa-4x fa-map-marker text-primary sr-icons" data-sr-id="3" style="; visibility: visible;  -webkit-transform: scale(1); opacity: 1;transform: scale(1); opacity: 1;-webkit-transition: -webkit-transform 0.6s cubic-bezier(0.6, 0.2, 0.1, 1) 0s, opacity 0.6s cubic-bezier(0.6, 0.2, 0.1, 1) 0s; transition: transform 0.6s cubic-bezier(0.6, 0.2, 0.1, 1) 0s, opacity 0.6s cubic-bezier(0.6, 0.2, 0.1, 1) 0s; "></i>
-					<h3>Location</h3>
+					<h3>Find Location</h3>
 					<p class="text-muted">Find a Restaurant, Cafe or Bar and chose a nice table.</p>
 				</div>
 			</div>
 			<div class="col-lg-3 col-md-6 text-center">
 				<div class="service-box">
 					<i class="fa fa-4x fa-cutlery text-primary sr-icons" data-sr-id="3" style="; visibility: visible;  -webkit-transform: scale(1); opacity: 1;transform: scale(1); opacity: 1;-webkit-transition: -webkit-transform 0.6s cubic-bezier(0.6, 0.2, 0.1, 1) 0s, opacity 0.6s cubic-bezier(0.6, 0.2, 0.1, 1) 0s; transition: transform 0.6s cubic-bezier(0.6, 0.2, 0.1, 1) 0s, opacity 0.6s cubic-bezier(0.6, 0.2, 0.1, 1) 0s; "></i>
-					<h3>Food</h3>
+					<h3>Choose Food</h3>
 					<p class="text-muted">Take a look at the menu and create your order.</p>
 				</div>
 			</div>
@@ -140,10 +140,8 @@ input::-webkit-input-placeholder {
 			<div class="col-lg-4 col-sm-6">				
 				<img src="static/img/login/thumbs/1.jpg" class="img-responsive" alt="">		
 			</div>
-			<div class="col-lg-8 col-sm-6">				
-				<br /><br />
-				<h1> Own a Restaurant, Café or Bar ? </h1>
-				<br />
+			<div class="col-lg-8 col-sm-6">		
+				<h1 style="padding: 5%"> Own a Restaurant, Café or Bar ? </h1>
 				<p> EasyOrder is completely free and always will be! Just follow <a href="#">this link</a> and add your place to our directory! </p>
 			</div>
 		</div>
@@ -173,6 +171,8 @@ input::-webkit-input-placeholder {
 
                 var place = autocomplete.getPlace();
                 var address = '';
+				
+				alert(place.place_id)
 
                 if (place.address_components) {
                     address = [
