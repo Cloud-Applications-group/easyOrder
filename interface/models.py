@@ -45,3 +45,7 @@ class Order(models.Model):
     content = models.TextField(null=False, blank=False)
     amount = models.IntegerField(null=False, blank=False)
     status = models.IntegerField(null=False, blank=False, default=STATUS_NEW, choices=STATUS_CHOICES)
+
+class Menu(models.Model):
+    restaurant = models.ForeignKey(Restaurant, null=False, blank=False)
+    content = models.TextField(null=False, blank=False)
