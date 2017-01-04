@@ -1,9 +1,8 @@
 # myapp/api.py
 
-from django.shortcuts import get_object_or_404
-from tastypie.resources import ModelResource, Resource
 from interface.models import *
-from tastypie.constants import ALL
+
+from tastypie.resources import ModelResource, ALL_WITH_RELATIONS, ALL, Resource
 
 
 class OrderResource(ModelResource):
@@ -25,11 +24,17 @@ class OrderResource(ModelResource):
 
 class RestaurantResource(ModelResource):
     def apply_filters(self, request, applicable_filters):
-        return Restaurant.objects.all()
+        id = request.GET.get('shop_id', None)
+        if id:
+            return Restaurant.objects.all().filter(shop_id=id)
+        return Restaurant.objects.none()
 
     class Meta:
         queryset = Restaurant.objects.all()
         resource_name = 'restaurant'
+        filtering = {
+            'shop_id': ALL
+        }
 
 
 
