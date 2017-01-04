@@ -42,5 +42,3 @@ def register(request):
         'register.html',
         variables,
     )
-
-

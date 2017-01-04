@@ -4,6 +4,8 @@ from django.shortcuts import get_object_or_404
 from tastypie.resources import ModelResource, Resource
 from interface.models import *
 from tastypie.constants import ALL
+from tastypie.constants import ALL_WITH_RELATIONS
+from tastypie import fields
 
 
 class OrderResource(ModelResource):
@@ -24,20 +26,21 @@ class OrderResource(ModelResource):
 
 
 class RestaurantResource(ModelResource):
-    def apply_filters(self, request, applicable_filters):
-        return Restaurant.objects.all()
 
     class Meta:
         queryset = Restaurant.objects.all()
         resource_name = 'restaurant'
+        filtering = {
+            'name': ALL
+        }
 
 
 
 class MenuResource(ModelResource):
-    def apply_filters(self, request, applicable_filters):
-        return Menu.objects.all()
-
+    restaurant = fields.ToOneField(RestaurantResource, 'restaurant', full=True)
     class Meta:
         queryset = Menu.objects.all()
         resource_name = 'menu'
-        filtering = {'restaurant': ALL}
+        filtering = {
+           'restaurant': ALL_WITH_RELATIONS
+        }
