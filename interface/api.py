@@ -26,6 +26,9 @@ class OrderResource(ModelResource):
 
 
 class RestaurantResource(ModelResource):
+    # eg http://localhost:8000/api/v1/restaurant/?format=json
+    # or
+    # http://localhost:8000/api/v1/restaurant/?format=json&name__contains=test
 
     class Meta:
         queryset = Restaurant.objects.all()
@@ -37,6 +40,7 @@ class RestaurantResource(ModelResource):
 
 
 class MenuResource(ModelResource):
+    # eg http://localhost:8000/api/v1/menu/?format=json&restaurant__name__contains=test
     restaurant = fields.ToOneField(RestaurantResource, 'restaurant', full=True)
     class Meta:
         queryset = Menu.objects.all()
