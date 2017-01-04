@@ -31,7 +31,7 @@ RATING_CHOICES = (
 
 class Restaurant(models.Model):
     user = models.ForeignKey(User, null=True, blank=True, default=None)
-    shop_id = models.CharField("Unique Id", null=True, blank=True, default=None, max_length=4096)
+    location_id = models.CharField("Unique Id", null=True, blank=True, default=None, max_length=4096)
     name = models.CharField("Restaurant Name", null=True, blank=True, default=None, max_length=4096)
     info = models.TextField(null=True, blank=True)
     rating = models.IntegerField(null=False, blank=False, default=RATING_UNRATED, choices=RATING_CHOICES)
