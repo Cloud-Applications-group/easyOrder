@@ -95,7 +95,7 @@
 </head>
 <body ng-app="mainApp" id="page-top">
 
-<nav id="mainNav" class="navbar navbar-default navbar-fixed-top">
+<nav style="z-index: 20;" id="mainNav" class="navbar navbar-default navbar-fixed-top">
     <div class="container-fluid">
         <div class="navbar-header">
             <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
@@ -105,9 +105,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-
-            <h1><a href="/"> <img style="opacity: 0.6" height="40px" src="/static/img/logo.png"/> EasyOrder </a></h1>
-
+            <a href="#"><h1 style="margin-top: 10px;"><!--<img style="opacity: 0.6" height="40px" src="/static/img/logo.png"/>-->EasyOrder</h1></a>
         </div>
         <div id="navbar" class="navbar-collapse collapse" aria-expanded="false" style="height: 0.666667px;">
             <ul class="nav navbar-nav navbar-right">
@@ -164,6 +162,7 @@
 
 {% block footerscripts %}{% endblock %}
 
+{% if user.is_anonymous %}
 <script>
     var fb_connect = document.getElementById('connect');
     fb_connect.onclick = connecting;
@@ -179,6 +178,7 @@
         modal.style.display = 'none';
     }
 </script>
+{% endif %}
 <!-- Required JavaScripts -->
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>

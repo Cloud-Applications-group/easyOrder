@@ -13,8 +13,8 @@ body {
 }
 hr {
   border-color: rgb(122, 119, 120);
-  border-width: 3px;
-  max-width: 200px;
+  border-width: 2px;
+  opacity:0.3;
 }
 hr.light {
   border-color: white;
