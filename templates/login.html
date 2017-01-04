@@ -6,7 +6,7 @@ h2,h3{color: #777;}
 
 .form-control {
 background-color: rgba(0,0,0,0.5);
-height: 40px;
+height: 35px;
 font-size: 18px;
 color: white;
 border: none;
@@ -18,9 +18,32 @@ color: white;
 border: none;
 }
 
+.transparentClassRegister {
+background-color: rgba(0,0,0,0.5);
+color: white;
+border: none;
+height: 25px;
+font-size: 16px;
+}
+
 input::-webkit-input-placeholder {
 color: white !important;
+opacity: 0.8 !important;
 }
+
+.pac-container {
+background-color: #FFF;
+z-index: 20;
+position: fixed;
+display: inline-block;
+float: left;
+}
+.modal{
+z-index: 20;
+}
+.modal-backdrop{
+z-index: 10;
+}​
 
 {% endblock %}
 
@@ -39,26 +62,26 @@ color: white !important;
                            placeholder="Tell us your destination."/>
                 </div>
             </div>
-            <div style="padding-bottom: 5px;" class="col-md-4">
+            <div style="opacity: 0.8 !important; padding-bottom: 5px;" class="col-md-4">
                 <div class="input-group">
                     <span class="input-group-addon transparentClass"><i class="fa fa-users fa-lg"
                                                                         aria-hidden="true"></i></span>
                     <select class="form-control" id="numPeople">
                         <option disabled selected hidden>Number of People</option>
-                        <option>1</option>
-                        <option>2</option>
-                        <option>3</option>
-                        <option>4</option>
-                        <option>5</option>
-                        <option>6</option>
-                        <option>7</option>
-                        <option>8</option>
-                        <option>9</option>
-                        <option>10+</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                        <option value="6">6</option>
+                        <option value="7">7</option>
+                        <option value="8">8</option>
+                        <option value="9">9</option>
+                        <option value="10">10+</option>
                     </select>
                 </div>
             </div>
-            <div style="padding-bottom: 5px;" class="col-md-4">
+            <div style="opacity: 0.8 !important; padding-bottom: 5px;" class="col-md-4">
                 <div class="input-group">
 					<span class="input-group-addon transparentClass" id="basic-addon1"><i class="fa fa-calendar fa-lg"
                                                                                           aria-hidden="true"></i></span>
@@ -66,11 +89,12 @@ color: white !important;
                            placeholder="Tell us where you heading"/>
                 </div>
             </div>
-            <div style="padding-bottom: 5px;" class="col-md-4">
+            <div style="opacity: 0.8 !important; padding-bottom: 5px;" class="col-md-4">
                 <div class="input-group">
                     <span class="input-group-addon transparentClass"><i class="fa fa-clock-o fa-lg"
                                                                         aria-hidden="true"></i></span>
                     <select class="form-control" tabindex="3" id="time" aria-label="hour">
+                        <option disabled selected hidden>Select Arrival Time</option>
                         <option value="11:00">11:00 AM</option>
                         <option value="11:30">11:30 AM</option>
                         <option value="12:00">12:00 PM</option>
@@ -149,32 +173,65 @@ color: white !important;
             </div>
             <div class="col-lg-8 col-sm-6">
                 <h1 style="padding: 5%"> Own a Restaurant, Café or Bar ? </h1>
-                <p> EasyOrder is completely free and always will be! Just follow <a data-toggle="modal" data-target="#myModal" href="#">this link</a> and add your
-                    place to our directory! </p>
+                <p> EasyOrder is completely free and always will be! Click the button below to start creating your
+                    shop's first online waiter.
+                    <br/> <br/>
+                    <button style="font-size: 18px; font-weight: 200;" type="button" data-toggle="modal"
+                            data-target="#myModal-restaurant-reg" id="shop_reg_modal_button"
+                            class="btn btn-primary" autocomplete="off">
+                        Register your Shop
+                    </button>
+                </p>
             </div>
         </div>
     </div>
 </section>
 
+
 <!-- Modal -->
-<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+<div class="modal fade" id="myModal-restaurant-reg" tabindex="-1" role="dialog" aria-labelledby="myModalLabel1">
     <div class="modal-dialog modal-custom" role="document">
-        <div style="background-color:rgba(239, 239, 239, 0.6);" class="modal-content">
+        <div style="background-color:rgba(239, 239, 239, 0.9);" class="modal-content">
             <div class="modal-body">
-                <center>
-                    <div hidden id="loader" class="loader"></div>
-                    <div id="modal-body">
-                        <h2 id="login_header"></h2>
-                        <br/>
-                        <div id="fb_button">
-                            <a href="{% url 'social:begin' 'facebook' %}?next={{ request.path }}" id="connect"><img
-                                    src="/static/img/login/fb_login_button.png" width="300px"/></a>
+                <h2>Please fill in the details.</h2>
+                <p style="color: #777;">Make sure that the information provided below is correct. </p>
+                <div class="row">
+                    <div class="col-md-10 col-md-offset-1">
+                        <div style="padding-bottom: 5px;" class="input-group">
+                            <input class="form-control" id="reg_place_name" type="text"
+                                   placeholder="Business name."/>
+                            <span class="input-group-addon transparentClassRegister"></span>
                         </div>
-                        <hr/>
-                        <a href="#"><h5>Restaurant owner?</h5></a>
-                        <br/><br/>
+                        <div style="padding-bottom: 5px;" class="input-group">
+                            <input class="form-control" id="reg_location" type="text"
+                                   placeholder="Business address."/>
+                            <span class="input-group-addon transparentClassRegister"></span>
+                        </div>
+                        <div style="padding-bottom: 5px;" class="input-group">
+                            <input class="form-control" id="reg_name" type="text"
+                                   placeholder="Your full name."/>
+                            <span class="input-group-addon transparentClassRegister"></span>
+                        </div>
+                        <div style="padding-bottom: 5px;" class="input-group">
+                            <input class="form-control" id="reg_email" type="email" placeholder="E-mail address."/>
+                            <span class="input-group-addon transparentClassRegister"></span>
+                        </div>
+                        <div style="padding-bottom: 5px;" class="input-group">
+                            <input class="form-control" id="reg_pass1" type="password" placeholder="A password."/>
+                            <span class="input-group-addon transparentClassRegister"></span>
+                        </div>
+                        <div style="padding-bottom: 5px;" class="input-group">
+                            <input class="form-control" id="reg_pass2" type="password"
+                                   placeholder="Same password again."/>
+                            <span class="input-group-addon transparentClassRegister"></span>
+                        </div>
+                        <br/>
+                        <button type="button" id="reg_place_button" data-loading-text="Submitting..."
+                                class="btn btn-primary" autocomplete="off">
+                            Confirm
+                        </button>
                     </div>
-                </center>
+                </div>
             </div>
         </div>
     </div>
@@ -186,12 +243,35 @@ color: white !important;
 {% block footerscripts %}
 <script>
 
-    $.getJSON("/api/v1/restaurant" + "/?format=json&" + "shop_id=" + place_id,
-            function (data) {
-                alert(data);
-            });
 
-    //For doing AJAX post
+    // Set current date
+    document.getElementById('date').value = new Date().toJSON().slice(0, 10);
+    // Show current time only
+    var date = new Date();
+    var cTime = ( date.getHours() + '' + date.getMinutes());
+    $("#time option").each(function () {
+        var sTime = $(this).val().replace(":", "");
+        if ((sTime < cTime)) {
+            $(this).hide();
+            $('#date').change(function () {
+                $("#time option").each(function () {
+                    var sTime = $(this).val().replace(":", "");
+                    if ((sTime < cTime)) {
+                        $(this).show();
+                    }
+                });
+            });
+        }
+    });
+
+    // Restaurant registeration
+    $('#reg_place_button').on('click', function () {
+        var $btn = $(this).button('loading')
+        //  logic...
+        //$btn.button('reset')
+    })
+
+    // Ajax search
     $("#submitB").click(function (e) {
 
         e.preventDefault();
@@ -219,8 +299,7 @@ color: white !important;
         });
     });
 
-    document.getElementById('date').value = new Date().toJSON().slice(0, 10);
-
+    // Restaurant search
     function initSearch() {
         var input = (document.getElementById('location'));
         var options = {
@@ -232,8 +311,27 @@ color: white !important;
             var place = autocomplete.getPlace();
             alert(place.place_id)
         });
-
     }
+
+    // Reg_place search
+    function initSearchRestaurantRegister() {
+        var input = (document.getElementById('reg_location'));
+        var options = {
+            types: ['establishment']
+        };
+
+        var autocomplete = new google.maps.places.Autocomplete(input, options);
+        autocomplete.addListener('place_changed', function () {
+            var place = autocomplete.getPlace();
+            alert(place.place_id)
+        });
+    }
+
+    $("#shop_reg_modal_button").click(function () {
+        initSearchRestaurantRegister();
+    });
+
+
 </script>
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBCinQHLTxOHgFXAFHjsftWjucn2cI3yWg&libraries=places&callback=initSearch"
         async defer>
