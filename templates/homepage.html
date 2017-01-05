@@ -4,6 +4,8 @@
 
 h2,h3{color: #777;}
 
+p { margin-left: 5px; }
+
 .form-control {
 background-color: rgba(0,0,0,0.5);
 height: 35px;
@@ -162,7 +164,61 @@ z-index: 10;
                 </div>
                 <hr/>
                 <h1>The Menu </h1>
-                <p> some menu </p>
+                <p> 
+						{% if menu %}
+							<div class="menu">
+								{% for m,cats in menu.items %}
+									{% for cat in cats %}
+										{% for k,sections in cat.items %}
+											{% for section in sections %}
+												<div class="menu-section-container">
+													<div class="menu-section-title">{{ section.title }}</div>
+													<div class="menu-section">
+														{% for item in section.items %}
+															<div class="menu-item-container">
+																<div class="menu-item">
+																	<div class="menu-item-info">
+																		<div class="menu-item-title">{{ item.item_title }}</div>
+																		{% if item.item_description %}
+																			<div class="menu-item-desc">{{ item.item_description }}</div>
+																		{% endif %}	
+																	</div>
+																	{% if item.item_options|length == 1 %}
+																		{% for option in item.item_options %}
+																			<div class="menu-item-price">£ {{ option.price }}</div>
+																		{% endfor %}
+																	{% endif %}	
+																</div>
+																{% if not item.item_options|length == 1 %}
+																	<div class="menu-item-options">
+																		<div class="menu-item-options-container">
+																			{% for option in item.item_options %}
+																				<div class="menu-item-option">
+																					<div class="menu-item-option-name">
+																						{{ option.option_name }}
+																					</div>
+																					<div class="menu-item-option-price">
+																						£ {{ option.price }}
+																					</div>
+																				</div>
+																			{% endfor %}
+																		</div>
+																	</div>
+																{% endif %}	
+															</div>
+														{% endfor %}
+													</div>
+												</div>
+												<hr style="border-width:4px;border-color:rgba(255,255,255,1);">
+											{% endfor %}	
+										{% endfor %}
+									{% endfor %}
+								{% endfor %}
+							</div>
+						{% else %}
+							<p>No menu exists for this restaurant.</p>
+						{% endif %}
+					</p>
                 <button type="button" class="btn btn-primary btn-success" data-toggle="modal"
                         data-target="#checkoutModal" style="margin-bottom:15px"> <i class="fa fa-check" aria-hidden="true"></i> Complete Your Order
                 </button>
