@@ -43,6 +43,7 @@ p {
   line-height: 1.5;
   margin-bottom: 20px;
 }
+
 .bg-primary {
   background-color: #ffffff;
 }
@@ -64,7 +65,6 @@ aside {
 }
 .navbar-default {
   background-color: #191F26;
-  border-color: rgba(34, 34, 34, 0.05);
   font-family: 'Open Sans', 'Helvetica Neue', Arial, sans-serif;
   -webkit-transition: all 0.35s;
   -moz-transition: all 0.35s;
@@ -98,7 +98,7 @@ aside {
 .navbar-default .nav > li.active > a,
 .navbar-default .nav > li.active > a:focus {
   color: white !important;
-  background-color: transparent;
+  background-color: transparent !important;
 }
 .navbar-default .nav > li.active > a:hover,
 .navbar-default .nav > li.active > a:focus:hover {
