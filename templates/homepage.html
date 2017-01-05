@@ -179,8 +179,30 @@ z-index: 10;
                 <div class="row">
                     <div style="text-align: left; color: black;" class="col-md-6">
                         <h3> Customer Details</h3>
-                        <p><i class="fa fa-phone-square" aria-hidden="true"></i> +44-7xxxxxxxxx </p>
+						<table class="table" style="color: black; margin-left: auto;margin-right: auto;">
+							<tr>
+								<th>Name</th>
+								<td>{{ user.get_full_name|default:user.username }}</td>
+							</tr>
+							<tr>
+								<th>Phone</th>
+								<td>+44-7xxxxxxxxx</td>
+							</tr>
+						</table>
+						<div style="text-align: left; color: black;" class="col-md-">
+                        <h3> Table Details</h3>
+						<table class="table" style="color: black; margin-left: auto;margin-right: auto;">
+							<tr>
+								<th>People</th>
+								<td>5</td>
+							</tr>
+							<tr>
+								<th>Time</th>
+								<td>£ 5.00</td>
+							</tr>
+						</table>
                     </div>
+                    </div>					
                     <div style="text-align: right;" class="col-md-6">
                         <h3> Order Details </h3>
                         <table class="table" style="color: black; margin-left: auto;margin-right: auto;">
@@ -205,17 +227,17 @@ z-index: 10;
                             </tbody>
                             <tfoot>
                             <tr>
-                                <td></td>
+								<td></td>
                                 <th>Total</th>
                                 <td>£ 15.00</td>
                             </tr>
                             </tfoot>
                         </table>
                     </div>
-                    <div class="text-right" style="margin-right:20px">
+                    <div class="text-right" style="margin-right:20px;">
                         <button type="button" class="btn btn-warning" style="margin-bottom:15px"><i class="fa fa-pencil" aria-hidden="true"></i> Modify Order</button>
                         <button type="button" class="btn btn-danger" style="margin-bottom:15px"><i class="fa fa-ban" aria-hidden="true"></i> Cancel Order</button>
-                    </div>
+                    </div>					
                 </div>
                 <hr/>
                 <!-- Nav tabs -->
