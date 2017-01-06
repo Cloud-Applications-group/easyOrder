@@ -105,31 +105,32 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a href="#"><h1 style="margin-top: 10px;"><!--<img style="opacity: 0.6" height="40px" src="/static/img/logo.png"/>-->EasyOrder</h1></a>
+            <a href="#"><h1 style="margin-top: 10px;">
+                <!--<img style="opacity: 0.6" height="40px" src="/static/img/logo.png"/>-->EasyOrder</h1></a>
         </div>
         <div id="navbar" class="navbar-collapse collapse" aria-expanded="false" style="height: 0.666667px;">
             <ul class="nav navbar-nav navbar-right">
                 {% if user and not user.is_anonymous %}
-                <li class="dropdown" data-hover="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown">
+                    <li class="dropdown" data-hover="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown">
 					<span style="font-size: 20px; padding: 15px;">
 					{{ user.get_full_name|default:user.username }} <i class="fa fa-chevron-down" aria-hidden="true"></i></span></a>
-                    <ul class="dropdown-menu">
-                        <li><a href="#"><span
-                                style="font-size: 20px; "><i class="fa fa-user-circle-o" aria-hidden="true"
-                                                                           style="font-size: 20px; margin-right:15px;"></i> Profile</span></a>
-                        </li>
-						<li><a href="{% url 'auth:logout' %}?next={{ request.path }}"><span
-                                style="font-size: 20px;"><i class="fa fa-power-off" aria-hidden="true"
-                                                                           style="font-size: 20px; margin-right:15px;"></i> Logout</span></a>
-                        </li>						
-                    </ul>
-                </li>
+                        <ul class="dropdown-menu">
+                            <li><a href="#"><span
+                                    style="font-size: 20px; "><i class="fa fa-user-circle-o" aria-hidden="true"
+                                                                 style="font-size: 20px; margin-right:15px;"></i> Profile</span></a>
+                            </li>
+                            <li><a href="{% url 'auth:logout' %}?next={{ request.path }}"><span
+                                    style="font-size: 20px;"><i class="fa fa-power-off" aria-hidden="true"
+                                                                style="font-size: 20px; margin-right:15px;"></i> Logout</span></a>
+                            </li>
+                        </ul>
+                    </li>
                 {% else %}
-                <li><a href="#" data-toggle="modal" data-target="#myModal"><span
-                        style="font-size: 22px; padding: 15px; color: white;"><i class="fa fa-key"
-                                                                                 aria-hidden="true"></i> Login</span></a>
-                </li>
+                    <li><a href="#" data-toggle="modal" data-target="#myModal"><span
+                            style="font-size: 22px; padding: 15px; color: white;"><i class="fa fa-key"
+                                                                                     aria-hidden="true"></i> Login</span></a>
+                    </li>
                 {% endif %}
             </ul>
         </div><!--/.nav-collapse -->
@@ -139,49 +140,71 @@
 {% block content %}{% endblock %}
 
 {% if user.is_anonymous %}
-<!-- Modal -->
-<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-    <div class="modal-dialog modal-custom" role="document">
-        <div style="background-color:rgba(239, 239, 239, 0.9);" class="modal-content">
-            <div class="modal-body">
-                <center>
+    <!-- Modal -->
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog modal-custom" role="document">
+            <div style="background-color:rgba(239, 239, 239, 0.9);" class="modal-content">
+                <div class="modal-body">
                     <div hidden id="loader" class="loader"></div>
-                    <div id="modal-body">
-                        <h2 id="login_header"></h2>
-                        <br/>
-                        <div id="fb_button">
-                            <a href="{% url 'social:begin' 'facebook' %}?next={{ request.path }}" id="connect"><img
-                                    src="/static/img/login/fb_login_button.png" width="300px"/></a>
+                    <ul style="font-size: 16px;" class="nav nav-tabs" role="tablist">
+                        <li style="background-color: rgba(255, 255, 255, 0.25); border-top-right-radius: 5px;  border-top-left-radius: 5px;"
+                            role="presentation" class="active">
+                            <a href="#home" aria-controls="home" role="tab"
+                               data-toggle="tab"><i class="fa fa-key" style="margin-right: 3px;" aria-hidden="true"></i>
+                                User</a>
+                        </li>
+                        <li style="background-color: rgba(255, 255, 255, 0.25); border-top-right-radius: 5px;  border-top-left-radius: 5px;"
+                            role="presentation">
+                            <a href="#profile" aria-controls="profile" role="tab" data-toggle="tab" style="margin: 0"><i
+                                    style="margin-right: 3px;" class="fa fa-key" aria-hidden="true"></i>
+                                Restaurant</a>
+                        </li>
+                    </ul>
+                    <!-- Tab panes -->
+                    <div style="background-color: rgba(255, 255, 255, 0); padding: 10px; border-radius: 5px;"
+                         class="tab-content">
+                        <div style="background-color:rgba(239, 239, 239, 0);" role="tabpanel" class="tab-pane active"
+                             id="home">
+                            <br/>
+                            <div id="fb_button">
+                                <a href="{% url 'social:begin' 'facebook' %}?next={{ request.path }}" id="connect"><img
+                                        src="/static/img/login/fb_login_button.png" width="300px"/></a>
+                            </div>
                         </div>
-                        <hr/>
-                        <a href="#"><h5>Restaurant owner?</h5></a>
-                        <br/><br/>
+                        <div role="tabpanel" class="tab-pane" id="profile">
+                            <br/>
+                            <form action="" method="post">
+                                {% csrf_token %}
+                                {{ form_rest_login }}
+                                <input type="submit" class="btn-primary">
+                            </form>
+                        </div>
                     </div>
-                </center>
+                </div>
             </div>
         </div>
     </div>
-</div>
+    </div>
 {% endif %}
 
 {% block footerscripts %}{% endblock %}
 
 {% if user.is_anonymous %}
-<script>
-    var fb_connect = document.getElementById('connect');
-    fb_connect.onclick = connecting;
+    <script>
+        var fb_connect = document.getElementById('connect');
+        fb_connect.onclick = connecting;
 
-    function connecting() {
-        var loader = document.getElementById('loader');
-        var modal = document.getElementById('modal-body');
-        var body = document.getElementById('fb_button');
-        var login_header = document.getElementById('login_header');
-        login_header.innerHTML = 'Logging in';
-        loader.removeAttribute('hidden');
-        body.style.display = 'none';
-        modal.style.display = 'none';
-    }
-</script>
+        function connecting() {
+            var loader = document.getElementById('loader');
+            var modal = document.getElementById('modal-body');
+            var body = document.getElementById('fb_button');
+            var login_header = document.getElementById('login_header');
+            login_header.innerHTML = 'Logging in';
+            loader.removeAttribute('hidden');
+            body.style.display = 'none';
+            modal.style.display = 'none';
+        }
+    </script>
 {% endif %}
 <!-- Required JavaScripts -->
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>

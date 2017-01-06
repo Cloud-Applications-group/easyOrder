@@ -31,34 +31,26 @@ class ShopRegisterForm(forms.Form):
 
 
 class RestaurantRegisterForm(forms.Form):
-    shop_name = forms.CharField(widget=forms.TextInput(attrs= {'class': 'form-control', 'type':'text',
-                                   'placeholder':"name"}),label=_(""))
+    shop_name = forms.CharField(widget=forms.TextInput(attrs= {'class': 'form-control pushDown', 'type':'text',
+                                   'placeholder':"Restaurant Name."}),label=_(""))
 
 
-    business_address = forms.CharField(widget=forms.TextInput(attrs= {'class': 'form-control', 'type':'text',
-                                   'placeholder':"Business address", 'id': 'reg_location'}), label=_(""))
+    business_address = forms.CharField(widget=forms.TextInput(attrs= {'class': 'form-control pushDown', 'type':'text',
+                                   'placeholder':"Business address.", 'id': 'reg_location'}), label=_(""))
 
     location_id = forms.RegexField(regex=r'^\w+$', widget=forms.TextInput(attrs= {'class': 'form-control', 'type':'hidden',
                                     'id': 'location_id_reg'}), label=_(""))
 
-    full_name = forms.CharField(widget=forms.TextInput({'class': 'form-control', 'type':'text',
-                                   'placeholder':"full name"}), label=_(""),
+    username = forms.CharField(widget=forms.TextInput({'class': 'form-control pushDown', 'type':'text',
+                                   'placeholder':"Username."}), label=_(""),
                                  )
 
     password1 = forms.CharField(
-        widget=forms.PasswordInput(attrs={'class': 'form-control', 'type':'password',
-                                   'placeholder':"password"}), label=_(""))
+        widget=forms.PasswordInput(attrs={'class': 'form-control ', 'type':'password',
+                                   'placeholder':"Password."}), label=_(""))
     password2 = forms.CharField(
         widget=forms.PasswordInput(attrs={'class': 'form-control', 'type':'password',
-                                   'placeholder':"password again"}), label=_(""))
-
-
-    def clean_shop_name(self):
-        try:
-            restaurant = Restaurant.objects.get(name__iexact=self.cleaned_data['shop_name'])
-        except Restaurant.DoesNotExist:
-            return self.cleaned_data['shop_name']
-        raise forms.ValidationError(_("The name already exists. Please try another one."))
+                                   'placeholder':"Password again."}), label=_(""))
 
     def clean_location_id(self):
         try:
@@ -75,5 +67,14 @@ class RestaurantRegisterForm(forms.Form):
 
 
 
+class RestaurantLoginForm(forms.Form):
+  
+    username = forms.CharField(widget=forms.TextInput({'class': 'form-control pushDown', 'type':'text',
+                                   'placeholder':"Username."}), label=_(""),
+                                 )
+
+    password = forms.CharField(
+        widget=forms.PasswordInput(attrs={'class': 'form-control ', 'type':'password',
+                                   'placeholder':"Password."}), label=_(""))
 
 

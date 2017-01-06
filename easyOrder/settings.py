@@ -26,7 +26,7 @@ AUTHENTICATION_BACKENDS = (
 
 LOGIN_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
-LOGIN_REDIRECT_URL = '/home/'
+LOGIN_REDIRECT_URL = '/home'
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'mwv1f6mok637o0q9n$b-^*ox4+#aa3%u!1%p(d-88atwyo_#ml'
@@ -121,7 +121,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/1.10/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'en-uk'
 
 TIME_ZONE = 'UTC'
 

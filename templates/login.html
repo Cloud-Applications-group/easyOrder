@@ -12,6 +12,10 @@ color: white;
 border: none;
 }
 
+.pushDown {
+margin-bottom: 10px;
+}
+
 .transparentClass {
 background-color: rgba(0,0,0,0.5);
 color: white;
@@ -196,12 +200,11 @@ z-index: 10;
         <div style="background-color:rgba(239, 239, 239, 0.9);" class="modal-content">
             <div class="modal-body">
                 <h2>Please fill in the details.</h2>
+                <br />
                 <form method="post" action=".">
                     {% csrf_token %}
-
-                    {{ form }}
-
-                    <input type="submit" value="Register Shop" />
+                    {{ form_reg }}
+                    <input type="submit" class="btn btn-primary" value="Register Shop" />
                 </form>
             </div>
         </div>

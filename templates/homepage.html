@@ -2,7 +2,7 @@
 
 {% block customCSS %}
 
-h2,h3{color: #777;}
+h2,h3{color: dimgray;}
 
 p { margin-left: 5px; }
 
@@ -61,7 +61,6 @@ z-index: 10;
 <header style="background-color: white;">
     <div class="container">
         <div class="row">
-
             <form action="/api/v1/restaurant" method="GET">
                 <div class="col-md-12" style="padding-bottom: 20px; padding-top: 80px;">
                     <div class="input-group">
@@ -140,6 +139,13 @@ z-index: 10;
 
         <div style="background-color: rgba(0,0,0,0.5); border-radius: 10px; margin-top: 15px; padding: 0px"
              class="col-md-12">
+
+            <div style="margin: 20px;" class="alert alert-success alert-dismissible fade in" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span
+                        aria-hidden="true">×</span></button>
+                <h4 ng-app="mainApp" style="margin: 0px;">You table has been reserved until // 5+5 //</h4>
+            </div>
+
             <div class="col-md-3" style="padding: 0">
                 <img style="padding-top: 10px; border-radius: 20px;" width="250"
                      src="http://www.papannis.com/img/restaurant.jpg"/>
@@ -147,7 +153,7 @@ z-index: 10;
             <div style="text-align: left; margin-left: 0" class="col-md-9">
                 <h1 style="margin: 0 5px 0 0; padding-top: 18px;"> Uni Kebab </h1>
                 <h3 style="margin: 0 5px 0 0;"> Turkish Restaurant </h3>
-                    <p> Rating </p>
+                <p> Rating </p>
             </div>
 
             <div style="text-align: left;" class="col-md-12">
@@ -164,63 +170,65 @@ z-index: 10;
                 </div>
                 <hr/>
                 <h1>The Menu </h1>
-                <p> 
-						{% if menu %}
-							<div class="menu">
-								{% for m,cats in menu.items %}
-									{% for cat in cats %}
-										{% for k,sections in cat.items %}
-											{% for section in sections %}
-												<div class="menu-section-container">
-													<div class="menu-section-title">{{ section.title }}</div>
-													<div class="menu-section">
-														{% for item in section.items %}
-															<div class="menu-item-container">
-																<div class="menu-item">
-																	<div class="menu-item-info">
-																		<div class="menu-item-title">{{ item.item_title }}</div>
-																		{% if item.item_description %}
-																			<div class="menu-item-desc">{{ item.item_description }}</div>
-																		{% endif %}	
-																	</div>
-																	{% if item.item_options|length == 1 %}
-																		{% for option in item.item_options %}
-																			<div class="menu-item-price">£ {{ option.price }}</div>
-																		{% endfor %}
-																	{% endif %}	
-																</div>
-																{% if not item.item_options|length == 1 %}
-																	<div class="menu-item-options">
-																		<div class="menu-item-options-container">
-																			{% for option in item.item_options %}
-																				<div class="menu-item-option">
-																					<div class="menu-item-option-name">
-																						{{ option.option_name }}
-																					</div>
-																					<div class="menu-item-option-price">
-																						£ {{ option.price }}
-																					</div>
-																				</div>
-																			{% endfor %}
-																		</div>
-																	</div>
-																{% endif %}	
-															</div>
-														{% endfor %}
-													</div>
-												</div>
-												<hr style="border-width:4px;border-color:rgba(255,255,255,1);">
-											{% endfor %}	
-										{% endfor %}
-									{% endfor %}
-								{% endfor %}
-							</div>
-						{% else %}
-							<p>No menu exists for this restaurant.</p>
-						{% endif %}
-					</p>
+                <p>
+                    {% if menu %}
+                <div class="menu">
+                    {% for m,cats in menu.items %}
+                    {% for cat in cats %}
+                    {% for k,sections in cat.items %}
+                    {% for section in sections %}
+                    <div class="menu-section-container">
+                        <div class="menu-section-title">{{ section.title }}</div>
+                        <div class="menu-section">
+                            {% for item in section.items %}
+                            <div class="menu-item-container">
+                                <div class="menu-item">
+                                    <div class="menu-item-info">
+                                        <div class="menu-item-title">{{ item.item_title }}</div>
+                                        {% if item.item_description %}
+                                        <div class="menu-item-desc">{{ item.item_description }}</div>
+                                        {% endif %}
+                                    </div>
+                                    {% if item.item_options|length == 1 %}
+                                    {% for option in item.item_options %}
+                                    <div class="menu-item-price">£ {{ option.price }}</div>
+                                    {% endfor %}
+                                    {% endif %}
+                                </div>
+                                {% if not item.item_options|length == 1 %}
+                                <div class="menu-item-options">
+                                    <div class="menu-item-options-container">
+                                        {% for option in item.item_options %}
+                                        <div class="menu-item-option">
+                                            <div class="menu-item-option-name">
+                                                {{ option.option_name }}
+                                            </div>
+                                            <div class="menu-item-option-price">
+                                                £ {{ option.price }}
+                                            </div>
+                                        </div>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                                {% endif %}
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <hr style="border-width:4px;border-color:rgba(255,255,255,1);">
+                    {% endfor %}
+                    {% endfor %}
+                    {% endfor %}
+                    {% endfor %}
+                </div>
+                {% else %}
+                <p>No menu exists for this restaurant.</p>
+                {% endif %}
+                </p>
                 <button type="button" class="btn btn-primary btn-success" data-toggle="modal"
-                        data-target="#checkoutModal" style="margin-bottom:15px"> <i class="fa fa-check" aria-hidden="true"></i> Complete Your Order
+                        data-target="#checkoutModal" style="margin-bottom:15px"><i class="fa fa-check"
+                                                                                   aria-hidden="true"></i> Complete Your
+                    Order
                 </button>
             </div>
         </div>
@@ -235,30 +243,30 @@ z-index: 10;
                 <div class="row">
                     <div style="text-align: left; color: black;" class="col-md-6">
                         <h3> Customer Details</h3>
-						<table class="table" style="color: black; margin-left: auto;margin-right: auto;">
-							<tr>
-								<th>Name</th>
-								<td>{{ user.get_full_name|default:user.username }}</td>
-							</tr>
-							<tr>
-								<th>Phone</th>
-								<td>+44-7xxxxxxxxx</td>
-							</tr>
-						</table>
-						<div style="text-align: left; color: black;" class="col-md-">
-                        <h3> Table Details</h3>
-						<table class="table" style="color: black; margin-left: auto;margin-right: auto;">
-							<tr>
-								<th>People</th>
-								<td>5</td>
-							</tr>
-							<tr>
-								<th>Time</th>
-								<td>£ 5.00</td>
-							</tr>
-						</table>
+                        <table class="table" style="color: black; margin-left: auto;margin-right: auto;">
+                            <tr>
+                                <th>Name</th>
+                                <td>{{ user.get_full_name|default:user.username }}</td>
+                            </tr>
+                            <tr>
+                                <th>Phone</th>
+                                <td>+44-7xxxxxxxxx</td>
+                            </tr>
+                        </table>
+                        <div style="text-align: left; color: black;" class="col-md-">
+                            <h3> Table Details</h3>
+                            <table class="table" style="color: black; margin-left: auto;margin-right: auto;">
+                                <tr>
+                                    <th>People</th>
+                                    <td>5</td>
+                                </tr>
+                                <tr>
+                                    <th>Time</th>
+                                    <td>£ 5.00</td>
+                                </tr>
+                            </table>
+                        </div>
                     </div>
-                    </div>					
                     <div style="text-align: right;" class="col-md-6">
                         <h3> Order Details </h3>
                         <table class="table" style="color: black; margin-left: auto;margin-right: auto;">
@@ -283,7 +291,7 @@ z-index: 10;
                             </tbody>
                             <tfoot>
                             <tr>
-								<td></td>
+                                <td></td>
                                 <th>Total</th>
                                 <td>£ 15.00</td>
                             </tr>
@@ -291,30 +299,42 @@ z-index: 10;
                         </table>
                     </div>
                     <div class="text-right" style="margin-right:20px;">
-                        <button type="button" class="btn btn-warning" style="margin-bottom:15px"><i class="fa fa-pencil" aria-hidden="true"></i> Modify Order</button>
-                        <button type="button" class="btn btn-danger" style="margin-bottom:15px"><i class="fa fa-ban" aria-hidden="true"></i> Cancel Order</button>
-                    </div>					
+                        <button type="button" class="btn btn-warning" style="margin-bottom:15px"><i class="fa fa-pencil"
+                                                                                                    aria-hidden="true"></i>
+                            Modify Order
+                        </button>
+                        <button type="button" class="btn btn-danger" style="margin-bottom:15px"><i class="fa fa-ban"
+                                                                                                   aria-hidden="true"></i>
+                            Cancel Order
+                        </button>
+                    </div>
                 </div>
                 <hr/>
                 <!-- Nav tabs -->
                 <ul style="font-size: 16px;" class="nav nav-tabs" role="tablist">
-                    <li style="background-color: rgba(255, 255, 255, 0.25); border-top-right-radius: 5px;  border-top-left-radius: 5px;" role="presentation" class="active">
+                    <li style="background-color: rgba(255, 255, 255, 0.25); border-top-right-radius: 5px;  border-top-left-radius: 5px;"
+                        role="presentation" class="active">
                         <a href="#home" aria-controls="home" role="tab"
-                                                              data-toggle="tab"><i class="fa fa-cutlery" style="margin-right: 3px;" aria-hidden="true"></i> Pay in Store</a></li>
-                    <li style="background-color: rgba(255, 255, 255, 0.25); border-top-right-radius: 5px;  border-top-left-radius: 5px;" role="presentation">
-                        <a href="#profile" aria-controls="profile" role="tab" data-toggle="tab" style="margin: 0"><i style="margin-right: 3px;" class="fa fa-credit-card-alt" aria-hidden="true"></i> Pay
-                        Online</a></li>
+                           data-toggle="tab"><i class="fa fa-cutlery" style="margin-right: 3px;" aria-hidden="true"></i>
+                            Pay in Store</a></li>
+                    <li style="background-color: rgba(255, 255, 255, 0.25); border-top-right-radius: 5px;  border-top-left-radius: 5px;"
+                        role="presentation">
+                        <a href="#profile" aria-controls="profile" role="tab" data-toggle="tab" style="margin: 0"><i
+                                style="margin-right: 3px;" class="fa fa-credit-card-alt" aria-hidden="true"></i> Pay
+                            Online</a></li>
                 </ul>
 
                 <!-- Tab panes -->
-                <div style="background-color: rgba(255, 255, 255, 0.25); padding: 10px; border-radius: 5px;" class="tab-content">
+                <div style="background-color: rgba(255, 255, 255, 0.25); padding: 10px; border-radius: 5px;"
+                     class="tab-content">
                     <div role="tabpanel" class="tab-pane active" id="home">
                         <br/>
                         <p style="text-align: left; color: dimgrey;">If you wish to pay in store, your booking details
                             will be sent to restaurant for confirmation.
                             We will you notify you by e-mail once your booking gets accepted.</p>
                         <div class="text-right">
-                            <button type="button" class="btn btn-success"><i class="fa fa-check-circle" aria-hidden="true"></i> Confirm Booking
+                            <button type="button" class="btn btn-success"><i class="fa fa-check-circle"
+                                                                             aria-hidden="true"></i> Confirm Booking
                             </button>
                         </div>
                     </div>

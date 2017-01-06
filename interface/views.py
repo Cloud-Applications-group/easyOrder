@@ -1,44 +1,55 @@
+from django.contrib.auth import authenticate
 from django.shortcuts import render_to_response
 from django.template.context import RequestContext
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect
 from forms import *
+from django.contrib.auth import login as auth_login
 from django.shortcuts import render
 from django.template import RequestContext
 from django.views.decorators.csrf import csrf_protect
 from .models import Restaurant
 
+
 @csrf_protect
 def login(request):
-
     if request.method == 'POST':
-        form = RestaurantRegisterForm(request.POST)
-        if form.is_valid():
+        form_reg = RestaurantRegisterForm(request.POST)
+        form_log = RestaurantLoginForm(request.POST)
+        if form_reg.is_valid():
             user = User.objects.create_user(
-                username=form.cleaned_data['shop_name'],
-                password=form.cleaned_data['password1'],
+                username=form_reg.cleaned_data['username'],
+                password=form_reg.cleaned_data['password1'],
             )
             Restaurant.objects.create(
                 user=user,
-                location_id=form.cleaned_data['location_id'],
+                location_id=form_reg.cleaned_data['location_id'],
                 info='{}',
-                name= form.cleaned_data['shop_name']
+                name=form_reg.cleaned_data['shop_name']
             )
             return HttpResponseRedirect('/')
+        elif form_log.is_valid():
+            username = request.POST['username']
+            password = request.POST['password']
 
-    else:
+            user = authenticate(username = username, password = password)
+            if user is not None:
+                auth_login(request, user)
+                return HttpResponseRedirect('/home')
+            else:
+                return HttpResponseRedirect('/')
 
-        form = RestaurantRegisterForm()
+
 
     variables = {
-    'form': form
+        'form_reg': RestaurantRegisterForm(),
+        'form_rest_login': RestaurantLoginForm()
     }
 
     return render(request,
-        'login.html',
-        variables,
-    )
-
+                  'login.html',
+                  variables,
+                  )
 
 
 @login_required
@@ -63,10 +74,10 @@ def register(request):
         form = ShopRegisterForm()
 
     variables = {
-    'form': form
+        'form': form
     }
 
     return render(request,
-        'register.html',
-        variables,
-    )
+                  'register.html',
+                  variables,
+                  )
