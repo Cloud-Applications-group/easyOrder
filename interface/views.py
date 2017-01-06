@@ -9,6 +9,7 @@ from django.shortcuts import render
 from django.template import RequestContext
 from django.views.decorators.csrf import csrf_protect
 from .models import Restaurant
+from utils import google_place_details
 
 
 @csrf_protect
@@ -137,8 +138,13 @@ def homepage(request):
             }]
         }]
     }
-    context = {'user': request.user, 'menu': menu}
-    return render_to_response('homepage.html', context)
+
+    location_id = request.GET.get('location_id')
+
+    google_place_data = google_place_details(location_id)
+
+    context = {'menu': menu, 'google_place_data' : google_place_data }
+    return render(request, 'homepage.html', context)
 
 
 @csrf_protect
