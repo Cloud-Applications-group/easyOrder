@@ -134,7 +134,7 @@
         <header style="background-color: white;">
             <div class="container">
                 <div class="row">
-                    <form action="/api/v1/restaurant" method="GET">
+                    <form action="/home" method="GET">
                         <div class="col-md-12" style="padding-bottom: 20px; padding-top: 80px;">
                             <div class="input-group">
                     <span class="input-group-addon transparentClass"><i class="fa fa-cutlery fa-lg"
@@ -142,7 +142,7 @@
                                 <input style="height: 60px; font-size: 25px" class="form-control" id="location"
                                        type="text"
                                        placeholder="Tell us your destination." required/>
-                                <input type="hidden" id="location_id" name="location" value="">
+                                <input type="hidden" id="location_id" name="place_id" value="">
                             </div>
                         </div>
                         <div style="opacity: 0.8 !important; padding-bottom: 5px;" class="col-md-4">
@@ -215,21 +215,23 @@
                 <div style="background-color: rgba(0,0,0,0.5); border-radius: 10px; margin-top: 15px; padding: 0px"
                      class="col-md-12">
 
-                    <div id="alert" style="margin: 20px;" class="alert alert-success alert-dismissible fade in" role="alert">
+                    <div id="alert" style="margin: 20px;" class="alert alert-success alert-dismissible fade in"
+                         role="alert">
                         <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span
                                 aria-hidden="true">×</span></button>
-                        <h4 id="countdown-text" style="margin: 0px;">You table has been reserved until <span id="countdown">5:00</span>.
+                        <h4 id="countdown-text" style="margin: 0px;">You table has been reserved until <span
+                                id="countdown">5:00</span>.
                         </h4>
                     </div>
 
                     <div class="col-md-3" style="padding: 0">
-                        <img style="padding-top: 10px; border-radius: 20px;" width="250"
-                             src="http://www.papannis.com/img/restaurant.jpg"/>
+                        <img id="place_photo" style="padding-top: 10px; border-radius: 15px;" width="250"
+                             src=""/>
                     </div>
                     <div style="text-align: left; margin-left: 0" class="col-md-6">
-                        <h1 style="margin: 0 5px 0 0; padding-top: 18px;"> Uni Kebab </h1>
-                        <h3 style="margin: 0 5px 0 0;"> Turkish Restaurant </h3>
-                        <p> Rating </p>
+                        <h1 id="place_name" style="margin: 0 5px 0 0; padding-top: 18px;"> Restaurant Name </h1>
+                        <h3 id="place_type" style="margin: 0 5px 0 0;"> Restaurant </h3>
+                        <p style="margin: 0" id="place_rating"> Rating </p>
                     </div>
                     <div class="col-md-3 text-right">
                         <button class="btn btn-default" style="margin-right: 5px;"><i class="fa fa-heart"
@@ -244,11 +246,11 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <h1> About </h1>
-                                <p> Some bullshit </p>
+                                <p></p>
                             </div>
                             <div class="col-md-6">
                                 <h1> Working Hours </h1>
-                                <p> Some bullshit </p>
+                                <p id="working_hours"> Not known. </p>
                             </div>
                         </div>
                         <hr style="border-width:4px;border-color:rgba(255,255,255,1);">
@@ -503,6 +505,31 @@
 {% block footerscripts %}
     <script>
 
+        // About the place
+        var place_data = {{ google_place_data | safe }}['result'];
+        var placeName = place_data['name'];
+        var photoSrc = place_data['photos'][0]['photo_reference']
+        var placeType = place_data['types'][0].charAt(0).toUpperCase() + place_data['types'][0].slice(1);
+        var workingHours = place_data['opening_hours']['weekday_text'];
+
+        document.getElementById('place_name').innerHTML = placeName;
+        document.getElementById('place_photo').src = photoSrc;
+        document.getElementById('place_type').innerHTML = placeType;
+        document.getElementById('working_hours').innerHTML = workingHours;
+
+        var placeRating = '<b style="color:red">Bad</b>';
+        if (place_data['rating'] >= 4.5) {
+            placeRating = '<b style="color:green">Excellent</b>';
+        } else if (place_data['rating'] >= 4) {
+            placeRating = '<b style="color:darkgreen">Good</b>';
+        } else if (place_data['rating'] >= 3) {
+            placeRating = '<b style="color:orange">Fair</b>';
+        }
+        var placeRatingText = 'This place has been rated as ' + placeRating + '.';
+        document.getElementById('place_rating').innerHTML = placeRatingText;
+
+
+        // Countdown
         var upgradeTime = 300;
         var seconds = upgradeTime;
         function timer() {

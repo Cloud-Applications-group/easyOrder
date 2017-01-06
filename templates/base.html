@@ -145,39 +145,49 @@
         <div class="modal-dialog modal-custom" role="document">
             <div style="background-color:rgba(239, 239, 239, 0.9);" class="modal-content">
                 <div class="modal-body">
-                    <div hidden id="loader" class="loader"></div>
-                    <ul style="font-size: 16px;" class="nav nav-tabs" role="tablist">
-                        <li style="background-color: rgba(255, 255, 255, 0.25); border-top-right-radius: 5px;  border-top-left-radius: 5px;"
-                            role="presentation" class="active">
-                            <a href="#home" aria-controls="home" role="tab"
-                               data-toggle="tab"><i class="fa fa-key" style="margin-right: 3px;" aria-hidden="true"></i>
-                                User</a>
-                        </li>
-                        <li style="background-color: rgba(255, 255, 255, 0.25); border-top-right-radius: 5px;  border-top-left-radius: 5px;"
-                            role="presentation">
-                            <a href="#profile" aria-controls="profile" role="tab" data-toggle="tab" style="margin: 0"><i
-                                    style="margin-right: 3px;" class="fa fa-key" aria-hidden="true"></i>
-                                Restaurant</a>
-                        </li>
-                    </ul>
-                    <!-- Tab panes -->
-                    <div style="background-color: rgba(255, 255, 255, 0); padding: 10px; border-radius: 5px;"
-                         class="tab-content">
-                        <div style="background-color:rgba(239, 239, 239, 0);" role="tabpanel" class="tab-pane active"
-                             id="home">
-                            <br/>
-                            <div id="fb_button">
-                                <a href="{% url 'social:begin' 'facebook' %}?next={{ request.path }}" id="connect"><img
-                                        src="/static/img/login/fb_login_button.png" width="300px"/></a>
+                    <center>
+                        <div hidden id="loader" class="loader"></div>
+                    </center>
+                    <div id="login-body">
+                        <ul style="font-size: 16px;" class="nav nav-tabs" role="tablist">
+                            <li style="background-color: rgba(255, 255, 255, 0.25); border-top-right-radius: 5px;  border-top-left-radius: 5px;"
+                                role="presentation" class="active">
+                                <a href="#home" aria-controls="home" role="tab"
+                                   data-toggle="tab"><i class="fa fa-key" style="margin-right: 3px;"
+                                                        aria-hidden="true"></i>
+                                    User</a>
+                            </li>
+                            <li style="background-color: rgba(255, 255, 255, 0.25); border-top-right-radius: 5px;  border-top-left-radius: 5px;"
+                                role="presentation">
+                                <a href="#profile" aria-controls="profile" role="tab" data-toggle="tab"
+                                   style="margin: 0"><i
+                                        style="margin-right: 3px;" class="fa fa-key" aria-hidden="true"></i>
+                                    Restaurant</a>
+                            </li>
+                        </ul>
+                        <!-- Tab panes -->
+                        <div style="background-color: rgba(255, 255, 255, 0); padding: 10px; border-radius: 5px;"
+                             class="tab-content">
+                            <div style="background-color:rgba(239, 239, 239, 0);" role="tabpanel"
+                                 class="tab-pane active"
+                                 id="home">
+                                <br/>
+                                <div id="fb_button">
+                                    <a href="{% url 'social:begin' 'facebook' %}?next={{ request.path }}"
+                                       id="connect"><img
+                                            src="/static/img/login/fb_login_button.png" width="300px"/></a>
+                                </div>
                             </div>
-                        </div>
-                        <div role="tabpanel" class="tab-pane" id="profile">
-                            <br/>
-                            <form action="" method="post">
-                                {% csrf_token %}
-                                {{ form_rest_login }}
-                                <input type="submit" class="btn-primary">
-                            </form>
+                            <div role="tabpanel" class="tab-pane" id="profile">
+                                <br/>
+                                <form action="" method="post">
+                                    {% csrf_token %}
+                                    {{ form_rest_login }}
+                                    <br />
+                                    <input style="float: right; margin-left: 8px;" value="Login" type="submit" class="btn btn-primary">
+                                    <button style="float: right" class="btn btn-warning">Help</button>
+                                </form>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -196,13 +206,10 @@
 
         function connecting() {
             var loader = document.getElementById('loader');
-            var modal = document.getElementById('modal-body');
-            var body = document.getElementById('fb_button');
+            var body = document.getElementById('login-body');
             var login_header = document.getElementById('login_header');
-            login_header.innerHTML = 'Logging in';
             loader.removeAttribute('hidden');
             body.style.display = 'none';
-            modal.style.display = 'none';
         }
     </script>
 {% endif %}

@@ -139,7 +139,11 @@ def homepage(request):
         }]
     }
 
-    location_id = request.GET.get('location_id')
+    location_id = request.GET.get('place_id')
+
+    if not location_id:
+        return HttpResponseRedirect('/')
+
 
     google_place_data = google_place_details(location_id)
 
