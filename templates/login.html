@@ -196,44 +196,13 @@ z-index: 10;
         <div style="background-color:rgba(239, 239, 239, 0.9);" class="modal-content">
             <div class="modal-body">
                 <h2>Please fill in the details.</h2>
-                <p style="color: #777;">Make sure that the information provided below is correct. </p>
-                <div class="row">
-                    <div class="col-md-10 col-md-offset-1">
-                        <div style="padding-bottom: 5px;" class="input-group">
-                            <input class="form-control" id="reg_place_name" type="text"
-                                   placeholder="Business name."/>
-                            <span class="input-group-addon transparentClassRegister"></span>
-                        </div>
-                        <div style="padding-bottom: 5px;" class="input-group">
-                            <input class="form-control" id="reg_location" type="text"
-                                   placeholder="Business address."/>
-                            <span class="input-group-addon transparentClassRegister"></span>
-                        </div>
-                        <div style="padding-bottom: 5px;" class="input-group">
-                            <input class="form-control" id="reg_name" type="text"
-                                   placeholder="Your full name."/>
-                            <span class="input-group-addon transparentClassRegister"></span>
-                        </div>
-                        <div style="padding-bottom: 5px;" class="input-group">
-                            <input class="form-control" id="reg_email" type="email" placeholder="E-mail address."/>
-                            <span class="input-group-addon transparentClassRegister"></span>
-                        </div>
-                        <div style="padding-bottom: 5px;" class="input-group">
-                            <input class="form-control" id="reg_pass1" type="password" placeholder="A password."/>
-                            <span class="input-group-addon transparentClassRegister"></span>
-                        </div>
-                        <div style="padding-bottom: 5px;" class="input-group">
-                            <input class="form-control" id="reg_pass2" type="password"
-                                   placeholder="Same password again."/>
-                            <span class="input-group-addon transparentClassRegister"></span>
-                        </div>
-                        <br/>
-                        <button type="button" id="reg_place_button" data-loading-text="Submitting..."
-                                class="btn btn-primary" autocomplete="off">
-                            Confirm
-                        </button>
-                    </div>
-                </div>
+                <form method="post" action=".">
+                    {% csrf_token %}
+
+                    {{ form }}
+
+                    <input type="submit" value="Register Shop" />
+                </form>
             </div>
         </div>
     </div>
@@ -313,6 +282,7 @@ z-index: 10;
         autocomplete.addListener('place_changed', function () {
             var place = autocomplete.getPlace();
             alert(place.place_id)
+            $("#location_id_reg").val(place.place_id);
         });
     }
 

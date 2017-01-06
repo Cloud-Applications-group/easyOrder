@@ -6,11 +6,39 @@ from forms import *
 from django.shortcuts import render
 from django.template import RequestContext
 from django.views.decorators.csrf import csrf_protect
+from .models import Restaurant
 
-
+@csrf_protect
 def login(request):
-    context = RequestContext(request, {'user': request.user})
-    return render_to_response('login.html', context)
+
+    if request.method == 'POST':
+        form = RestaurantRegisterForm(request.POST)
+        if form.is_valid():
+            user = User.objects.create_user(
+                username=form.cleaned_data['shop_name'],
+                password=form.cleaned_data['password1'],
+            )
+            Restaurant.objects.create(
+                user=user,
+                location_id=form.cleaned_data['location_id'],
+                info='{}',
+                name= form.cleaned_data['shop_name']
+            )
+            return HttpResponseRedirect('/')
+
+    else:
+
+        form = RestaurantRegisterForm()
+
+    variables = {
+    'form': form
+    }
+
+    return render(request,
+        'login.html',
+        variables,
+    )
+
 
 
 @login_required
