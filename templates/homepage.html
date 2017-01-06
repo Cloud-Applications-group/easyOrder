@@ -245,11 +245,17 @@
                         <hr style="border-width:4px;border-color:rgba(255,255,255,1);">
                         <div class="row">
                             <div class="col-md-6">
-                                <h1> About </h1>
-                                <p></p>
+                                <h1> Location </h1>
+                                <p id="place_addr"></p>
+                                <h1> Reservation Details </h1>
+                                <p>Number of People:
+                                    <br/>Date:
+                                    <br/>Time:
+                                </p>
                             </div>
                             <div class="col-md-6">
-                                <h1> Working Hours </h1>
+                                <h1> Working Hours - Currently <span id="openNow"></span></h1>
+                                <br/>
                                 <p id="working_hours"> Not known. </p>
                             </div>
                         </div>
@@ -510,12 +516,27 @@
         var placeName = place_data['name'];
         var photoSrc = place_data['photos'][0]['photo_reference']
         var placeType = place_data['types'][0].charAt(0).toUpperCase() + place_data['types'][0].slice(1);
+        var placeAddr = place_data['adr_address'];
         var workingHours = place_data['opening_hours']['weekday_text'];
+        var openNow = place_data['opening_hours']['open_now'];
+
+        var workingHoursText = "";
+        jQuery.each(workingHours, function () {
+            workingHoursText += this + '<br />';
+        });
 
         document.getElementById('place_name').innerHTML = placeName;
         document.getElementById('place_photo').src = photoSrc;
         document.getElementById('place_type').innerHTML = placeType;
-        document.getElementById('working_hours').innerHTML = workingHours;
+        document.getElementById('place_addr').innerHTML = placeAddr;
+        document.getElementById('working_hours').innerHTML = workingHoursText;
+
+        if (openNow == 'true') {
+            openNow = '<b style="color:red">Closed</b>';
+        } else {
+            openNow = '<b style="color:green">Open</b>';
+        }
+        document.getElementById('openNow').innerHTML = openNow;
 
         var placeRating = '<b style="color:red">Bad</b>';
         if (place_data['rating'] >= 4.5) {
