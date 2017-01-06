@@ -46,10 +46,10 @@ class RestaurantRegisterForm(forms.Form):
                                  )
 
     password1 = forms.CharField(
-        widget=forms.PasswordInput(attrs={'class': 'form-control ', 'type':'password',
+        widget=forms.PasswordInput(attrs={'class': 'form-control pushDown ', 'type':'password',
                                    'placeholder':"Password."}), label=_(""))
     password2 = forms.CharField(
-        widget=forms.PasswordInput(attrs={'class': 'form-control', 'type':'password',
+        widget=forms.PasswordInput(attrs={'class': 'form-control pushDown', 'type':'password',
                                    'placeholder':"Password again."}), label=_(""))
 
     def clean_location_id(self):
