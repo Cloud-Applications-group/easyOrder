@@ -12,10 +12,11 @@ class OrderResource(ModelResource):
 
     def apply_filters(self, request, applicable_filters):
 
-        print request.user
+        user = request.user
+        restaurent = Restaurant.objects.all().filter(user=user)
         if request.user.is_anonymous():
             return Order.objects.none()
-        order = Order.objects.all().filter(user=request.user)
+        order = Order.objects.all().filter(restaurant=restaurent)
         return order
 
 

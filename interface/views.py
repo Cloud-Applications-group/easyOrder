@@ -178,3 +178,13 @@ def register(request):
                   'register.html',
                   variables,
                   )
+
+@login_required
+def shop_orders(request):
+    context = {}
+    user = request.user
+    restaurant = Restaurant.objects.all().filter(user=user)
+    if not restaurant:
+        context['error'] = True
+
+    return render(request, 'shop_orders.html', context)

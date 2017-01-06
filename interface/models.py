@@ -35,9 +35,6 @@ class Order(models.Model):
     amount = models.IntegerField(null=False, blank=False)
     status = models.IntegerField(null=False, blank=False, default=STATUS_NEW, choices=STATUS_CHOICES)
 
-    def __unicode__(self):
-        return u'%s' % self.name
-
 class Menu(models.Model):
     restaurant = models.ForeignKey(Restaurant, null=False, blank=False)
     content = models.TextField(null=False, blank=False)
