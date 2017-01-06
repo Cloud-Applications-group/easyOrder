@@ -141,8 +141,12 @@ def homepage(request):
 
     location_id = request.GET.get('place_id')
 
-    if not location_id:
-        return HttpResponseRedirect('/')
+    if not (location_id and Restaurant.objects.all().filter(location_id=location_id)):
+        variables = {
+            'form_reg': RestaurantRegisterForm(),
+            'form_rest_login': RestaurantLoginForm(),
+            'error': 'We are not currently supporting this location'}
+        return render(request, 'login.html', variables)
 
 
     google_place_data = google_place_details(location_id)
