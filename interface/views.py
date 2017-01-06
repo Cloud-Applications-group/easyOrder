@@ -6,6 +6,12 @@ from forms import *
 from django.shortcuts import render
 from django.template import RequestContext
 from django.views.decorators.csrf import csrf_protect
+from django.contrib import messages
+from django.contrib.auth.decorators import login_required
+from django.core.urlresolvers import reverse
+from django.db import IntegrityError, transaction
+from django.shortcuts import redirect, render
+import json
 
 
 def login(request):
@@ -42,3 +48,9 @@ def register(request):
         'register.html',
         variables,
     )
+
+@csrf_protect
+def test(request):
+    if request.method == "POST":
+        print json.loads(request.body)
+    return render_to_response('test.html')
