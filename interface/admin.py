@@ -7,7 +7,7 @@ from django.contrib.auth.models import User
 
 
 class RestaurantAdmin(admin.ModelAdmin):
-    list_display = ['pk', 'user_link', 'name', 'rating', 'info']
+    list_display = ['pk', 'user_link', 'name', 'location_id', 'info']
     list_display_links = ['pk']
 
     # Foreign key link

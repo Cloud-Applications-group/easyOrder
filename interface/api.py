@@ -1,11 +1,11 @@
 # myapp/api.py
-
-from django.shortcuts import get_object_or_404
 from tastypie.resources import ModelResource, Resource
 from interface.models import *
 from tastypie.constants import ALL
 from tastypie.constants import ALL_WITH_RELATIONS
 from tastypie import fields
+
+
 
 
 class OrderResource(ModelResource):
@@ -30,11 +30,14 @@ class RestaurantResource(ModelResource):
     # or
     # http://localhost:8000/api/v1/restaurant/?format=json&name__contains=test
 
+
     class Meta:
         queryset = Restaurant.objects.all()
         resource_name = 'restaurant'
         filtering = {
-            'name': ALL
+
+            'location_id': ALL_WITH_RELATIONS,
+            'name': ALL_WITH_RELATIONS
         }
 
 
