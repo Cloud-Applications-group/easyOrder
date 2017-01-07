@@ -184,11 +184,23 @@ def register(request):
 
 @login_required
 def shop_orders(request):
+    context = {}
     user = request.user
     restaurant = Restaurant.objects.all().filter(user=user)
-    context = {'restaurant_is_available': restaurant[0], 'restaurant_name': restaurant[0]}
 
-    if not restaurant:
+    if restaurant:
+        active_orders = Order.objects.all().filter(restaurant=restaurant).filter(status=1)
+        completed_orders = Order.objects.all().filter(restaurant=restaurant).filter(status=4)
+        total_orders = Order.objects.all().filter(restaurant=restaurant)
+
+        context = {'restaurant_is_available': restaurant[0].is_available,
+                   'restaurant_name': restaurant[0].name,
+                   'restaurant_pop': restaurant[0].popularity,
+                   'active_orders': active_orders,
+                   'completed_orders':completed_orders,
+                   'total_orders': total_orders
+                   }
+    else:
         context['error'] = True
 
     return render(request, 'shop_orders.html', context)

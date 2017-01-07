@@ -48,9 +48,6 @@ class Restaurant(models.Model):
     is_available = models.BooleanField(null=False, blank=False, default=False)
     popularity = models.IntegerField(null=False, blank=False, default=STATUS_NOT_BUSY, choices=STATUS_POP_CHOICES)
 
-    def __unicode__(self):
-        return u'%s' % self.name
-
 
 class Order(models.Model):
     user = models.ForeignKey(User, null=False, blank=False)
