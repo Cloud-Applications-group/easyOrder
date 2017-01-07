@@ -142,7 +142,7 @@ def place(request):
     }
 
     user = request.user
-
+    context = {}
 
     location_id = request.GET.get('place_id')
 
@@ -154,6 +154,10 @@ def place(request):
     time = request.GET.get('time')
 
     restaurant = Restaurant.objects.all().filter(location_id=location_id)
+    if not restaurant:
+        context['error'] = 'We are currently not supporting this location.'
+        return render(request, 'login.html', context)
+
     if restaurant[0].is_available:
         is_available = 'true'
     else:
@@ -169,23 +173,18 @@ def place(request):
 
     google_place_data = google_place_details(location_id)
 
-    context = {
-        'form_reg': RestaurantRegisterForm(),
-        'form_rest_login': RestaurantLoginForm(),
-        'google_place_data': google_place_data,
-        'menu': menu,
-        'date': date,
-        'num_people': num_people,
-        'time': time,
-        'is_available': is_available,
-        'popularity': popularity
-    }
+    context['form_reg']= RestaurantRegisterForm()
+    context['form_rest_login']= RestaurantLoginForm()
+    context['google_place_data'] = google_place_data
+    context['menu']= menu
+    context['date']= date
+    context['num_people'] =num_people
+    context['time']= time
+    context['is_available']= is_available
+    context['popularity']= popularity
+
     if not user.is_anonymous:
         context['restaurant'] = Restaurant.objects.all().filter(user=request.user)
-
-    if not (location_id and Restaurant.objects.all().filter(location_id=location_id)):
-        context['error'] = 'We are currently not supporting this location.'
-        return render(request, 'login.html', context)
 
     return render(request, 'place.html', context)
 
