@@ -167,6 +167,7 @@ function delete_preceeding_char(str, chr){
 function convert_to_JSON(){
 	temp_sections = [];
 	temp_items = [];
+	item_count = 0;
 	for (k = 0; k < sections.length; k++){
 		if (sections[k] != ''){
 			temp_sections.push(sections[k]);
@@ -175,22 +176,25 @@ function convert_to_JSON(){
 			for (l = 0; l < items[k].length; l++){
 				if (items[k][l].length > 0){
 					sec_items.push(items[k][l]);
+					item_count++;
 				}
 			}
 			temp_items.push(sec_items);
 		}
 	}
 	
-	var JSON = '{ "menu": [{ "category": [';
+	var JSON = '{ "menu": [{ "item_count":' + item_count + ', "category": [';
+	item_count = 1;
 	for (i = 0; i < temp_sections.length; i++){
 		JSON += '{ "title": "' + temp_sections[i] + '",' +
 			'"category_id": ' + (i+1) + ',' +
 			'"items": [';
 		for (j = 0; j < temp_items[i].length; j++){
 			JSON += '{"item_title": "' + temp_items[i][j][0] + '",' +
-				'"item_id": "' + (j+1) + '",' +
+				'"item_id": "' + item_count + '",' +
 				'"item_description": "' + temp_items[i][j][1] + '",' +
 				'"item_price": ' + temp_items[i][j][2] + '}';
+			item_count++;
 			if (j < temp_items[i].length-1) JSON += ',';
 		}
 		JSON += ']}';
@@ -198,6 +202,7 @@ function convert_to_JSON(){
 	}
 	JSON += ']}]}';
 	console.log(JSON);
+	return JSON;
 }
 function proper_case(str) {
 	str = str.toLowerCase().split(' ').map(function(word) {
