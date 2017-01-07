@@ -191,9 +191,20 @@
                             </select>
                         </div>
                     </div>
+                    <div class="col-md-12">
+                        {% if error %}
+                            <div hidden id="error_alert"
+                                 style="background-color: rgba(184,53,22,0.7); color: white; border: 2px white; margin-top: 10px;"
+                                 class="alert alert-danger alert-dismissable">
+                                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                                <strong>Oops!</strong> {{ error }}
+                            </div>
+                        {% endif %}
+                    </div>
                 </form>
             </div>
         </div>
+
     </header>
     <section style="background-color: white; padding: 30px;">
         <div class="container">
@@ -277,6 +288,12 @@
 
 {% block footerscripts %}
     <script>
+
+        {% if error %}
+            $(document).ready(function () {
+                $("#error_alert").slideDown();
+            });
+        {% endif %}
 
         $(window).bind('mousewheel', function (event) {
             if (!event.originalEvent.wheelDelta >= 0) {

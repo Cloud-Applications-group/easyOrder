@@ -120,7 +120,7 @@
                                     style="font-size: 20px; "><i class="fa fa-user-circle-o" aria-hidden="true"
                                                                  style="font-size: 20px; margin-right:15px;"></i> My Account</span></a>
                             </li>
-                            {% if restaurant %}
+                            {% if not user.is_anonymous and restaurant %}
                             <li><a href="/shoporders"><span
                                     style="font-size: 20px; "><i class="fa fa-cutlery" aria-hidden="true"
                                                                  style="font-size: 20px; margin-right:15px;"></i> My Restaurant</span></a>

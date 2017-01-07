@@ -560,18 +560,22 @@
 
 {% block footerscripts %}
     <script>
+
         // Search hit
         $('#location').keydown(function (e) {
             if (e.which == 13 && $('.pac-container:visible').length) return false;
         });
+
         //Menu Button
         var item = 0;
+
         $("#addItem").click(function () {
             item = item + 1;
             if (item > 0) {
                 $("#count").text(item);
             }
         });
+
         $("#removeItem").click(function () {
             item = item - 1;
             if (item > 0) {
@@ -581,12 +585,15 @@
                 $("#count").text("");
             }
         });
+
         $("#addOption").click(function () {
             $("#countOption").text("✔");
         });
+
         $("#removeOption").click(function () {
             $("#countOption").text("");
         });
+
         // About the place
         var place_data = {{ google_place_data | safe }}['result'];
         var placeName = place_data['name'];
@@ -595,21 +602,25 @@
         var placeAddr = place_data['adr_address'];
         var workingHours = place_data['opening_hours']['weekday_text'];
         var openNow = place_data['opening_hours']['open_now'];
+
         var workingHoursText = "";
         jQuery.each(workingHours, function () {
             workingHoursText += this + '<br />';
         });
+
         document.getElementById('place_name').innerHTML = placeName;
         document.getElementById('place_photo').src = photoSrc;
         document.getElementById('place_type').innerHTML = placeType;
         document.getElementById('place_addr').innerHTML = placeAddr;
         document.getElementById('working_hours').innerHTML = workingHoursText;
+
         if (openNow == 'true') {
             openNow = '<b style="color:red">Closed</b>';
         } else {
             openNow = '<b style="color:green">Open</b>';
         }
         document.getElementById('openNow').innerHTML = openNow;
+
         var placeRating = '<b style="color:red">Bad</b>';
         if (place_data['rating'] >= 4.5) {
             placeRating = '<b style="color:green">Excellent</b>';
@@ -620,6 +631,8 @@
         }
         var placeRatingText = 'This place has been rated as ' + placeRating + '.';
         document.getElementById('place_rating').innerHTML = placeRatingText;
+
+
         {% if not user.is_anonymous %}
             // Countdown
             var upgradeTime = 300;
@@ -645,6 +658,7 @@
             }
             var countdownTimer = setInterval('timer()', 1000);
         {% endif %}
+
         // Set current date
         document.getElementById('date').value = new Date().toJSON().slice(0, 10);
         // Show current time only
@@ -664,18 +678,22 @@
                 });
             }
         });
+
         // Restaurant search
         function initSearch() {
             var input = (document.getElementById('location'));
             var options = {
                 types: ['establishment']
             };
+
             var autocomplete = new google.maps.places.Autocomplete(input, options);
             autocomplete.addListener('place_changed', function () {
+
                 var place = autocomplete.getPlace();
                 $("#location_id").val(place.place_id);
             });
         }
+
     </script>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBCinQHLTxOHgFXAFHjsftWjucn2cI3yWg&libraries=places&callback=initSearch"
             async defer>
