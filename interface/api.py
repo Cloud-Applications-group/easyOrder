@@ -52,6 +52,7 @@ class RestaurantResource(ModelResource):
 
 class RestaurantOrderResource(ModelResource):
     restaurant = fields.ForeignKey(RestaurantResource, 'restaurant', full=True)
+    user = fields.ForeignKey(UserResource, 'user', full=True)
 
     def apply_filters(self, request, applicable_filters):
 
@@ -66,7 +67,6 @@ class RestaurantOrderResource(ModelResource):
     class Meta:
         queryset = Order.objects.all()
         resource_name = 'rest_order'
-        excludes = ['user']
         limit = 0
 
 
@@ -85,7 +85,6 @@ class UserOrderResource(ModelResource):
     class Meta:
         queryset = Order.objects.all()
         resource_name = 'user_order'
-        excludes = ['user']
         limit = 0
 
 
