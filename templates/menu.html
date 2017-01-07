@@ -1,0 +1,259 @@
+{% extends "base.html" %}
+{% block customCSS %}
+
+    .button {
+    background-color: #4CAF50; /* Green */
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    }
+
+
+    label{
+    display: none;
+    }
+
+    #example_info, #example_previous, #example_next{
+    font-size: 20px;
+    font-weight: 200;
+    color: white;
+    }
+
+    td{
+    background-color: rgba(0, 2, 18, 0.25) !important;
+    }
+
+    .odd {
+    background-color: rgba(0, 0, 0, 0.1) !important;
+    }
+
+    .even {
+    background-color: rgba(0, 0, 0, 0.5) !important;
+    }
+
+    .textbox {
+      font-size: 12px;
+      font-weight: 200;
+      color: black;
+      border-radius: 4px;
+      background-color: white;
+      border: 2px black;
+    }
+
+    input class="textbox"[type='search']{
+    font-size: 20px;
+    font-weight: 200;
+    color: white;
+    border-radius: 10px;
+    background-color: rgba(0, 2, 18, 0.25);
+    border: 2px black;
+    }
+
+    select {
+    font-size: 20px;
+    font-weight: 200;
+    color: white;
+    border-radius: 10px;
+    background-color: rgba(0, 2, 18, 0.25);
+    border: 2px black;
+    }
+
+    .current {
+    display: none !important;
+    }
+
+    .block{
+    background-color: rgba(0, 2, 18, 0.25);
+    color: white; border-radius: 20px;
+    padding: 15px;
+    margin: 10px;
+    }
+
+    h1 {
+    font-size: 38px; font-weight: 200;
+    }
+
+
+{% endblock %}
+
+{% block content %}
+
+<header>
+    <div class="header-content">
+        <div class="container">
+            <div class="container block"
+                 style="background-color: rgba(0, 2, 18, 0.25); color: black; border-radius: 20px; padding: 15px;">
+                  <h2>Menu</h2>
+                  <div id='menuForm'>
+                      <table class='menuEditor'>
+                          <tr>
+                              <th>categories</th>
+                              <th>Items</th>
+                          </tr>
+                          <tbody data-bind="foreach: categories">
+                              <tr>
+                                  <td>
+                                      <input class="textbox" data-bind='value: title' />
+                                      <input class="textbox" data-bind='value: description' />
+                                      <div><button class="btn btn-primary" data-bind='click: $root.removecategory'>Delete</button></div>
+                                  </td>
+                                  <td>
+                                      <table>
+                                          <tbody data-bind="foreach: items">
+                                              <tr>
+                                                  <td><input class="textbox" data-bind='value: item_title' /></td>
+                                                  <td><input class="textbox" data-bind='value: item_description' /></td>
+                                                  <td><button class="btn btn-primary" data-bind='click: $root.removeItem'>Delete</button></td>
+                                                  <td>
+                                                    <table>
+                                                      <tbody data-bind="foreach: item_options">
+                                                        <tr>
+                                                          <td><input class="textbox" data-bind='value: option_name' /></td>
+                                                          <td><input class="textbox" data-bind='value: price' /></td>
+                                                          <td><button class="btn btn-primary" data-bind='click: $root.removeOptions'>Delete Option</button></td>
+                                                        </tr>
+                                                      </tbody>
+                                                    </table>
+                                                    <button class="btn btn-primary" data-bind='click: $root.addOptions'>Add Option</button>
+                                                  </td>
+                                              </tr>
+                                          </tbody>
+                                      </table>
+                                      <button class="btn btn-primary" data-bind='click: $root.addItems'>Add Item</button>
+                                  </td>
+                              </tr>
+                          </tbody>
+                      </table>
+                  </div>
+
+                  <p>
+                      <button class="btn btn-primary" data-bind='click: addcategory'>Add a category</button>
+                      <button class="btn btn-primary" data-bind='click: save, enable: categories().length > 0'>Save to JSON</button>
+                      <button class="btn btn-primary" data-bind='click: submit, enable: categories().length > 0'>Submit Menu</button>
+                  </p>
+
+                  <textarea data-bind='value: lastSavedJson' rows='5' cols='60' disabled='disabled'> </textarea>
+                </div>
+              </div>
+            </div>
+          </header>
+<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+<script src="http://knockoutjs.com/downloads/knockout-3.2.0.js"></script>
+<script>
+
+{% endblock %}
+
+{% block footerscripts %}
+var CategoryModel = function(categories) {
+    var self = this;
+    self.categories = ko.observableArray(ko.utils.arrayMap(categories, function(category) {
+        return { title: category.title, description: category.description, items: ko.observableArray(category.items1)};
+    }));
+
+    self.addcategory = function() {
+        self.categories.push({
+            title: "Category Title",
+            description: "Category Description",
+            items: ko.observableArray()
+        });
+    };
+
+    self.removecategory = function(category) {
+        self.categories.remove(category);
+    };
+
+    self.addItems = function(category) {
+        category.items.push({
+            item_title: "Item Title",
+            item_description: "Item Description",
+            item_options: ko.observableArray()
+        });
+    };
+
+    self.removeItem = function(item) {
+        $.each(self.categories(), function() {
+          this.items.remove(item)
+        })
+    };
+
+    self.addOptions = function(item) {
+        item.item_options.push({
+            option_name: "Option Title",
+            price: "Option Price"
+        });
+    };
+
+    self.removeOptions = function(optionremove) {
+        $.each(self.categories(), function() {
+          $.each(this.items(), function() {
+            this.item_options.remove(optionremove)
+          })
+        })
+    };
+
+    self.save = function() {
+        self.lastSavedJson(JSON.stringify(ko.toJS(self.categories), null, 2));
+    };
+
+    self.lastSavedJson = ko.observable("")
+
+    self.submit = function() {
+      var jason = {"menu": [{"category": self.categories}]}
+      var menu = JSON.stringify(ko.toJS(jason), null, 2);
+
+      $.ajaxSetup({
+           beforeSend: function(xhr, settings) {
+               function getCookie(name) {
+                   var cookieValue = null;
+                   if (document.cookie && document.cookie != '') {
+                       var cookies = document.cookie.split(';');
+                       for (var i = 0; i < cookies.length; i++) {
+                           var cookie = jQuery.trim(cookies[i]);
+                           // Does this cookie string begin with the name we want?
+                           if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                               cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                               break;
+                           }
+                       }
+                   }
+                   return cookieValue;
+               }
+               if (!(/^http:.*/.test(settings.url) || /^https:.*/.test(settings.url))) {
+                   // Only send the token to relative URLs i.e. locally.
+                   xhr.setRequestHeader("X-CSRFToken", getCookie('csrftoken'));
+               }
+           }
+      });
+
+      $('#target').html('sending..');
+        $.ajax({
+          url:'/menu',
+          type: "POST",
+          dataType: 'json',
+          data: menu,
+          success:function(data){
+            $('#target').html(data.msg);
+          },
+          complete:function(){},
+          error:function (xhr, textStatus, thrownError){}
+      });
+
+    }
+};
+
+var initialData = [
+  {
+    "title": "Category Title",
+    "description": "Category Description",
+    "items": []
+  }
+]
+
+ko.applyBindings(new CategoryModel(initialData));
+</script>
+
+{% endblock %}
