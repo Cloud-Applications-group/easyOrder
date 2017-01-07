@@ -4,21 +4,49 @@ from interface.models import *
 from tastypie.constants import ALL
 from tastypie.constants import ALL_WITH_RELATIONS
 from tastypie import fields
+from tastypie.authorization import Authorization
+
+
+
+
+class UserResource(ModelResource):
+    class Meta:
+        queryset = User.objects.all()
+        resource_name = 'user'
+        excludes = ['email', 'password', 'is_active', 'is_staff', 'is_superuser']
+        filtering = {
+            'username': ALL,
+        }
 
 class RestaurantResource(ModelResource):
-    # eg http://localhost:8000/api/v1/restaurant/?format=json
-    # or
-    # http://localhost:8000/api/v1/restaurant/?format=json&name__contains=test
+    user = fields.ForeignKey(UserResource, 'user')
+
+    def hydrate(self, bundle):
+        request_method = bundle.request.META['REQUEST_METHOD']
+
+        if request_method == 'POST':
+            user = bundle.request.user
+            is_available = bool(bundle.data.get('is_available'))
+            restaurant = Restaurant.objects.all().filter(user=user)
+            if restaurant:
+                restaurant.update(is_available=is_available)
+
+
+
+        return bundle
 
 
     class Meta:
         queryset = Restaurant.objects.all()
         resource_name = 'restaurant'
+        authorization = Authorization()
         filtering = {
 
             'location_id': ALL_WITH_RELATIONS,
             'name': ALL_WITH_RELATIONS
         }
+
+
 
 
 
@@ -77,11 +105,6 @@ class UserRestaurantResource(ModelResource):
         resource_name = 'user_restaurant'
         excludes = ['user']
         limit = 0
-
-
-
-
-
 
 
 class MenuResource(ModelResource):
