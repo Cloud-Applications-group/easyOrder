@@ -56,6 +56,54 @@
     z-index: 10;
     }​
 
+    @-webkit-keyframes bounce {
+    0%, 20%, 50%, 80%, 100% {
+    -webkit-transform: translateY(0);
+    transform: translateY(0);
+    }
+    40% {
+    -webkit-transform: translateY(-30px);
+    transform: translateY(-30px);
+    }
+    60% {
+    -webkit-transform: translateY(-15px);
+    transform: translateY(-15px);
+    }
+    }
+
+    @keyframes bounce {
+    0%, 20%, 50%, 80%, 100% {
+    -ms-transform: translateY(0);
+    transform: translateY(0);
+    }
+    40% {
+    -ms-transform: translateY(-30px);
+    transform: translateY(-30px);
+    }
+    60% {
+    -ms-transform: translateY(-15px);
+    transform: translateY(-15px);
+    }
+    }
+
+    .arrow {
+    position: fixed;
+    left: 50%;
+    bottom: 0;
+    margin-left:-20px;
+    width: 40px;
+    height: 40px;
+    background-image:
+    url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4NCjwhLS0gR2VuZXJhdG9yOiBBZG9iZSBJbGx1c3RyYXRvciAxNi4wLjAsIFNWRyBFeHBvcnQgUGx1Zy1JbiAuIFNWRyBWZXJzaW9uOiA2LjAwIEJ1aWxkIDApICAtLT4NCjwhRE9DVFlQRSBzdmcgUFVCTElDICItLy9XM0MvL0RURCBTVkcgMS4xLy9FTiIgImh0dHA6Ly93d3cudzMub3JnL0dyYXBoaWNzL1NWRy8xLjEvRFREL3N2ZzExLmR0ZCI+DQo8c3ZnIHZlcnNpb249IjEuMSIgaWQ9IkxheWVyXzEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4IiB3aWR0aD0iNTEycHgiIGhlaWdodD0iNTEycHgiIHZpZXdCb3g9IjAgMCA1MTIgNTEyIiBlbmFibGUtYmFja2dyb3VuZD0ibmV3IDAgMCA1MTIgNTEyIiB4bWw6c3BhY2U9InByZXNlcnZlIj4NCjxwYXRoIGZpbGw9IiNGRkZGRkYiIGQ9Ik0yOTMuNzUxLDQ1NS44NjhjLTIwLjE4MSwyMC4xNzktNTMuMTY1LDE5LjkxMy03My42NzMtMC41OTVsMCwwYy0yMC41MDgtMjAuNTA4LTIwLjc3My01My40OTMtMC41OTQtNzMuNjcyICBsMTg5Ljk5OS0xOTBjMjAuMTc4LTIwLjE3OCw1My4xNjQtMTkuOTEzLDczLjY3MiwwLjU5NWwwLDBjMjAuNTA4LDIwLjUwOSwyMC43NzIsNTMuNDkyLDAuNTk1LDczLjY3MUwyOTMuNzUxLDQ1NS44Njh6Ii8+DQo8cGF0aCBmaWxsPSIjRkZGRkZGIiBkPSJNMjIwLjI0OSw0NTUuODY4YzIwLjE4LDIwLjE3OSw1My4xNjQsMTkuOTEzLDczLjY3Mi0wLjU5NWwwLDBjMjAuNTA5LTIwLjUwOCwyMC43NzQtNTMuNDkzLDAuNTk2LTczLjY3MiAgbC0xOTAtMTkwYy0yMC4xNzgtMjAuMTc4LTUzLjE2NC0xOS45MTMtNzMuNjcxLDAuNTk1bDAsMGMtMjAuNTA4LDIwLjUwOS0yMC43NzIsNTMuNDkyLTAuNTk1LDczLjY3MUwyMjAuMjQ5LDQ1NS44Njh6Ii8+DQo8L3N2Zz4=);
+    background-size: contain;
+    }
+
+    .bounce {
+    -webkit-animation: bounce 2s infinite;
+    animation: bounce 2s infinite;
+    }
+
+
 {% endblock %}
 
 {% block content %}
@@ -63,18 +111,20 @@
 
 
     <header>
-        <div class="header-content">
+        <div id="scroll_helper" class="arrow bounce"></div>
+        <div id="header" class="header-content">
             <div class="header-content-inner">
-                <form id="searchForm" action="/home" method="GET">
+                <form id="searchForm" action="/place" method="GET">
                     <div class="col-md-12" style="padding-bottom: 20px">
                         <div class="input-group">
-                    <span class="input-group-addon transparentClass"><i class="fa fa-cutlery fa-lg"
-                                                                        aria-hidden="true"></i></span>
+                         <span class="input-group-addon transparentClass"><i class="fa fa-cutlery fa-lg"
+                                                                             aria-hidden="true"></i></span>
                             <input style="height: 60px; font-size: 25px" class="form-control" id="location" type="text"
                                    placeholder="Tell us your destination." required/>
-                         <span id="submit"
-                                  style="padding-right: 50px; border: 2px white; background-color: rgba(94, 184,92,0.93);padding-left: 50px; cursor: pointer;"
-                                  class="input-group-addon" id="basic-addon2"><h2 style="margin: 0;color: white">Search</h2></span>
+                            <span style="border: 2px white; background-color: rgba(94, 184,92,0.93);cursor: pointer;"
+                                  class="input-group-addon">
+                                <input style="width: 100%; height: 100%; padding-right: 50px; border: 2px white; background-color: rgba(94, 184,92,0.0);padding-left: 50px; color: white; font-size: 28px;"
+                                       type="submit" id="submit" value="Search"/></span>
                         </div>
                         <input type="hidden" id="location_id" name="place_id" value="">
                     </div>
@@ -83,7 +133,7 @@
                     <span class="input-group-addon transparentClass"><i class="fa fa-users fa-lg"
                                                                         aria-hidden="true"></i></span>
                             <select class="form-control search" id="numPeople" name="numPeople" required>
-                                <option disabled selected hidden>Number of People</option>
+                                <option value="" disabled selected hidden>Number of People</option>
                                 <option value="1">1</option>
                                 <option value="2">2</option>
                                 <option value="3">3</option>
@@ -101,7 +151,8 @@
                         <div class="input-group">
 					<span class="input-group-addon transparentClass" id="basic-addon1"><i class="fa fa-calendar fa-lg"
                                                                                           aria-hidden="true"></i></span>
-                            <input class="form-control search" id="date" value="2017-01-01" type="date" name="date"/>
+                            <input class="form-control search" id="date" value="2017-01-01" type="date" name="date"
+                                   required/>
                         </div>
                     </div>
                     <div style="opacity: 0.8 !important; padding-bottom: 5px;" class="col-md-4">
@@ -110,7 +161,7 @@
                                                                         aria-hidden="true"></i></span>
                             <select class="form-control search" tabindex="3" id="time" aria-label="hour" name="time"
                                     required>
-                                <option disabled selected hidden>Select Arrival Time</option>
+                                <option value="" disabled selected hidden>Select Arrival Time</option>
                                 <option value="1100">11:00 AM</option>
                                 <option value="1130">11:30 AM</option>
                                 <option value="1200">12:00 PM</option>
@@ -190,8 +241,8 @@
                 </div>
                 <div class="col-lg-8 col-sm-6">
                     <h1 style="padding: 5%"> Own a Restaurant, Café or Bar ? </h1>
-                    <p> EasyOrder is completely free and always will be! Click the button below to start creating your
-                        shop's first online waiter.
+                    <p> EasyOrder is completely free and always will be! Register your shop below to start creating your
+                        first online waiter.
                         <br/> <br/>
                         <button style="font-size: 18px; font-weight: 200;" type="button" data-toggle="modal"
                                 data-target="#myModal-restaurant-reg" id="shop_reg_modal_button"
@@ -227,8 +278,10 @@
 {% block footerscripts %}
     <script>
 
-        $('#location').keydown(function (e) {
-            if (e.which == 13 && $('.pac-container:visible').length) return false;
+        $(window).bind('mousewheel', function (event) {
+            if (!event.originalEvent.wheelDelta >= 0) {
+                $("#scroll_helper").hide();
+            }
         });
 
         // Set current date
@@ -251,17 +304,10 @@
             }
         });
 
-        // Search hit
-        $('#submit').on('click', function () {
-            $("#searchForm").submit()
-        })
 
-        // Restaurant registeration
-        $('#reg_place_button').on('click', function () {
-            var $btn = $(this).button('loading')
-            //  logic...
-            //$btn.button('reset')
-        })
+        $('#location').keydown(function (e) {
+            if (e.which == 13 && $('.pac-container:visible').length) return false;
+        });
 
         // Restaurant search
         function initSearch() {
@@ -288,7 +334,6 @@
             var autocomplete = new google.maps.places.Autocomplete(input, options);
             autocomplete.addListener('place_changed', function () {
                 var place = autocomplete.getPlace();
-                alert(place.place_id)
                 $("#location_id_reg").val(place.place_id);
             });
         }

@@ -4,11 +4,54 @@ from interface.models import *
 from tastypie.constants import ALL
 from tastypie.constants import ALL_WITH_RELATIONS
 from tastypie import fields
+from tastypie.authorization import ReadOnlyAuthorization, Authorization
 
 
 
 
-class OrderResource(ModelResource):
+class UserResource(ModelResource):
+    class Meta:
+        queryset = User.objects.all()
+        resource_name = 'user'
+        excludes = ['email', 'password', 'is_active', 'is_staff', 'is_superuser']
+        filtering = {
+            'username': ALL,
+        }
+
+class RestaurantResource(ModelResource):
+    user = fields.ForeignKey(UserResource, 'user')
+
+    def hydrate(self, bundle):
+        request_method = bundle.request.META['REQUEST_METHOD']
+
+        if request_method == 'POST':
+            user = bundle.request.user
+            is_available = bool(bundle.data.get('is_available'))
+            keys = list(bundle.data.keys())
+            restaurant = Restaurant.objects.all().filter(user=user)
+            if restaurant:
+                for i in keys:
+                    restaurant.update(**{i : bundle.data.get(i)})
+
+        return Exception("Updated")
+
+
+    class Meta:
+        queryset = Restaurant.objects.all()
+        resource_name = 'restaurant'
+        authorization = Authorization()
+        filtering = {
+
+            'location_id': ALL_WITH_RELATIONS,
+            'name': ALL_WITH_RELATIONS
+        }
+
+
+
+
+
+class RestaurantOrderResource(ModelResource):
+    restaurant = fields.ForeignKey(RestaurantResource, 'restaurant', full=True)
 
     def apply_filters(self, request, applicable_filters):
 
@@ -22,25 +65,46 @@ class OrderResource(ModelResource):
 
     class Meta:
         queryset = Order.objects.all()
-        resource_name = 'order'
+        resource_name = 'rest_order'
+        excludes = ['user']
+        limit = 0
 
 
+class UserOrderResource(ModelResource):
+    restaurant = fields.ForeignKey(RestaurantResource, 'restaurant', full=True)
 
-class RestaurantResource(ModelResource):
-    # eg http://localhost:8000/api/v1/restaurant/?format=json
-    # or
-    # http://localhost:8000/api/v1/restaurant/?format=json&name__contains=test
+    def apply_filters(self, request, applicable_filters):
+
+        user = request.user
+        if request.user.is_anonymous():
+            return Order.objects.none()
+        order = Order.objects.all().filter(user=user)
+        return order
+
+
+    class Meta:
+        queryset = Order.objects.all()
+        resource_name = 'user_order'
+        excludes = ['user']
+        limit = 0
+
+
+class UserRestaurantResource(ModelResource):
+
+    def apply_filters(self, request, applicable_filters):
+
+        user = request.user
+        if request.user.is_anonymous():
+            return Order.objects.none()
+        rest = Restaurant.objects.all().filter(user=user)
+        return rest
 
 
     class Meta:
         queryset = Restaurant.objects.all()
-        resource_name = 'restaurant'
-        filtering = {
-
-            'location_id': ALL_WITH_RELATIONS,
-            'name': ALL_WITH_RELATIONS
-        }
-
+        resource_name = 'user_restaurant'
+        excludes = ['user']
+        limit = 0
 
 
 class MenuResource(ModelResource):

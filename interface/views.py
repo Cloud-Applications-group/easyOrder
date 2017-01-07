@@ -15,6 +15,7 @@ from django.db import IntegrityError, transaction
 from django.shortcuts import redirect, render
 import json
 from .models import Restaurant, Menu
+from .models import Restaurant, Order
 from utils import google_place_details
 import jsonschema
 from jsonschema import validate
@@ -43,19 +44,20 @@ def login(request):
             username = request.POST['username']
             password = request.POST['password']
 
-            user = authenticate(username = username, password = password)
+            user = authenticate(username=username, password=password)
             if user is not None:
                 auth_login(request, user)
-                return HttpResponseRedirect('/home')
+                return HttpResponseRedirect('/profile')
             else:
                 return HttpResponseRedirect('/')
-
-
 
     variables = {
         'form_reg': RestaurantRegisterForm(),
         'form_rest_login': RestaurantLoginForm()
     }
+
+    if not request.user.is_anonymous:
+        variables['restaurant'] = Restaurant.objects.all().filter(user=request.user)
 
     return render(request,
                   'login.html',
@@ -64,15 +66,103 @@ def login(request):
 
 
 @login_required
-def homepage(request):
+def place(request):
+    menu = {
+        "menu": [{
+            "category": [{
+                "title": "Sides",
+                "description": "a little something to accompany your meal",
+                "items": [
+                    {
+                        "item_title": "Chips",
+                        "item_description": "Our signature triple-fried chips",
+                        "item_options": [
+                            {"option_name": "Regular", "price": 1.50}
+                        ]
+                    }, {
+
+                        "item_title": "Chicken Wings",
+                        "item_description": "Piri-piri seasoned wings",
+                        "item_options": [
+                            {"option_name": "Medium", "price": 2.50},
+                            {"option_name": "Hot", "price": 2.50},
+                            {"option_name": "Super Hot", "price": 2.50}
+                        ]
+                    }, {
+
+                        "item_title": "Onion rings",
+                        "item_description": "Beer-battered onion rings",
+                        "item_options": [
+                            {"option_name": "Regular", "price": 1.50}
+                        ]
+                    }
+                ]}, {
+                "title": "Mains",
+                "description": "Big flavour, diner style food",
+                "items": [
+                    {
+                        "item_title": "Burger",
+                        "item_description": "A quarter pounder burger served in a brioche bun with a side of chips or wedges",
+                        "item_options": [
+                            {"option_name": "Beef", "price": 6.50},
+                            {"option_name": "Vegetarian", "price": 5.50}
+                        ]
+                    }, {
+                        "item_title": "Hotdog",
+                        "item_description": "A 9 inch American-style hotdog served with a side of chips or wedges",
+                        "item_options": [
+                            {"option_name": "Hotdog", "price": 5.50}
+                        ]
+                    }, {
+                        "item_title": "Pizza",
+                        "item_description": "Fully loaded deep-pan pizza",
+                        "item_options": [
+                            {"option_name": "Pepperoni", "price": 6.00},
+                            {"option_name": "BBQ Chicken", "price": 6.00},
+                            {"option_name": "Margherita", "price": 4.50}
+                        ]
+                    }
+                ]}, {
+                "title": "Drinks",
+                "description": "",
+                "items": [
+                    {
+                        "item_title": "Coke",
+                        "item_description": "Coca-cola on draught",
+                        "item_options": [
+                            {"option_name": "Regular", "price": 1.00},
+                            {"option_name": "Diet", "price": 1.00}
+                        ]
+                    }, {
+                        "item_title": "Lemonade",
+                        "item_description": "",
+                        "item_options": [
+                            {"option_name": "Regular", "price": 5.50}
+                        ]
+                    }, {
+                        "item_title": "Beer",
+                        "item_description": "400cl glass of Peroni Nastro Azzurro",
+                        "item_options": [
+                            {"option_name": "Peroni", "price": 6.00}
+                        ]
+                    }
+                ]
+            }]
+        }]
+    }
+
 
     location_id = request.GET.get('place_id')
+    date = request.GET.get('date')
+    num_people = request.GET.get('numPeople')
+    time = request.GET.get('time')
 
     if not (location_id and Restaurant.objects.all().filter(location_id=location_id)):
         variables = {
             'form_reg': RestaurantRegisterForm(),
             'form_rest_login': RestaurantLoginForm(),
-            'error': 'We are not currently supporting this location'}
+            'error': 'We are not currently supporting this location',
+            'restaurant': Restaurant.objects.all().filter(user=request.user)}
         return render(request, 'login.html', variables)
 
     restaurant = Restaurant.objects.all().filter(location_id=location_id)[0]
@@ -130,8 +220,14 @@ def homepage(request):
 
     google_place_data = google_place_details(location_id)
 
-    context = {'menu': menu2, 'google_place_data' : google_place_data }
-    return render(request, 'homepage.html', context)
+    context = {'menu': menu2,
+                'google_place_data': google_place_data,
+               'restaurant': Restaurant.objects.all().filter(user=request.user),
+               'date': date,
+               'num_people': num_people,
+               'time': time
+               }
+    return render(request, 'place.html', context)
 
 
 @csrf_protect
@@ -176,16 +272,43 @@ def menu(request):
             )
             menu.save()
             print "created"
-        return render_to_response('homepage.html')
+        return render_to_response('place.html')
     else:
         return render_to_response('menu.html')
+
 
 @login_required
 def shop_orders(request):
     context = {}
     user = request.user
     restaurant = Restaurant.objects.all().filter(user=user)
-    if not restaurant:
+
+    if restaurant:
+        accepted_orders = Order.objects.all().filter(restaurant=restaurant).filter(status=1)
+        completed_orders = Order.objects.all().filter(restaurant=restaurant).filter(status=3)
+        total_orders = Order.objects.all().filter(restaurant=restaurant)
+        pending_orders = Order.objects.all().filter(restaurant=restaurant).filter(status=0)
+
+
+        context = {'restaurant_is_available': restaurant[0].is_available,
+                   'restaurant_name': restaurant[0].name,
+                   'restaurant_pop': restaurant[0].popularity,
+                   'accepted_orders': len(accepted_orders),
+                   'completed_orders': len(completed_orders),
+                   'pending_orders': len(pending_orders),
+                   'total_orders': len(total_orders)
+                   }
+    else:
         context['error'] = True
 
     return render(request, 'shop_orders.html', context)
+
+
+@login_required
+def profile(request):
+    context = {'restaurant': Restaurant.objects.all().filter(user=request.user)}
+    user = request.user
+    orders = Order.objects.all().filter(user=user)
+    context['orders'] = orders
+
+    return render(request, 'profile.html', context)

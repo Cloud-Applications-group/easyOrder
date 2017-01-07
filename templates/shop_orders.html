@@ -1,19 +1,289 @@
 {% extends "base.html" %}
 
+{% block customCSS %}
 
-{% block content %}
+    label{
+    font-size: 20px;
+    font-weight: 200;
+    color: white;
+    }
 
-    {% if error %}
-        {{ error }}
-    {% else %}
-        
+    #example_info, #example_previous, #example_next{
+    font-size: 20px;
+    font-weight: 200;
+    color: white;
+    }
 
-    {% endif %}
+    td{
+    background-color: rgba(0, 2, 18, 0.25) !important;
+    }
+
+    .odd {
+    background-color: rgba(0, 0, 0, 0.1) !important;
+    }
+
+    .even {
+    background-color: rgba(0, 0, 0, 0.5) !important;
+    }
+
+    input[type='search']{
+    font-size: 20px;
+    font-weight: 200;
+    color: white;
+    border-radius: 10px;
+    background-color: rgba(0, 2, 18, 0.25);
+    border: 2px black;
+    }
+
+    select {
+    font-size: 20px;
+    font-weight: 200;
+    color: white;
+    border-radius: 10px;
+    background-color: rgba(0, 2, 18, 0.25);
+    border: 2px black;
+    }
+
+    .current {
+    display: none !important;
+    }
+
+    h1 {
+    font-size: 38px; font-weight: 200;
+    }
+
+    .block{
+
+    background-color: rgba(0, 2, 18, 0.25);
+    color: white; border-radius: 20px;
+    padding: 15px;
+    margin: 10px;
+
+    }
 
 {% endblock %}
 
-{% block footerscripts  %}
+{% block content %}
+
+    <script src="https://cdn.datatables.net/1.10.13/js/jquery.dataTables.min.js"></script>
+    <link href="https://cdn.datatables.net/1.10.13/css/jquery.dataTables.min.css" rel="stylesheet"
+          type="text/css">
+
+
+    <header>
+        <div class="header-content">
+            <div class="container">
+
+                <div class="container block" id="title">
+                    <h1>{{ restaurant_name }}</h1>
+                    <p style="margin-top: 8px;">You should keep your shop profile <b>up-to-date</b> for the best customer experience.</p>
+                </div>
+
+                <div class="container block" id="settings">
+                    <h1>Restaurant Stats & Settings</h1>
+
+                    <div class="row">
+                        <div class="col-md-6 text-left">
+                            <p>Pending Orders: {{ pending_orders }}
+                                <br />Accepted Orders: {{ accepted_orders }}
+                                <br/>Completed Orders: {{ completed_orders }}
+                                <br/>Total Orders: {{ total_orders }}
+                        </div>
+                        <div class="col-md-1"></div>
+                        <div class="col-md-5">
+                            <table style="padding: 5px; float: right">
+                                <tbody>
+                                <tr>
+                                    <td style="background-color: transparent !important;"><span style="float: left;">Accept Orders</span>
+                                    </td>
+                                    <td style="background-color: transparent !important;">
+                                        <div class="btn-group" style="float: right; margin: 10px;"
+                                             data-toggle="buttons">
+                                            <label id="accept_label" class="btn btn-success active"
+                                                   style="opacity: 0.5; !important;">
+                                                <span type="radio" name="options" id="accept_orders" autocomplete="off"
+                                                > Yes </span>
+                                            </label>
+                                            <label id="not_accept_label" class="btn btn-danger"
+                                                   style="opacity: 0.5; !important;">
+                                                <span type="radio" name="options" id="not_accept_orders"
+                                                      autocomplete="off"> No </span>
+                                            </label>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="background-color: transparent !important;"><span
+                                            style="text-align: left;">Popularity</span></td>
+                                    <td style="background-color: transparent !important;">
+                                        <div class="btn-group" style=" margin: 10px;" data-toggle="buttons">
+                                            <label id="not_busy_label" class="btn btn-success active"
+                                                   style="opacity: 0.5; !important;">
+                                                <span id="set_not_busy" type="radio" name="options" id="set_not_busy"
+                                                      autocomplete="off"
+                                                      checked> Not </span>
+                                            </label>
+                                            <label id="busy_label" class="btn btn-warning"
+                                                   style="opacity: 0.5; !important;">
+                                                <span type="radio" name="options" id="set_busy" autocomplete="off">
+                                                Busy </span>
+                                            </label>
+                                            <label id="very_busy_label" class="btn btn-danger"
+                                                   style="opacity: 0.5; !important;">
+                                                <span type="radio" name="options" id="set_very_busy"
+                                                      autocomplete="off"> Very Busy </span>
+                                            </label>
+                                        </div>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="container block" id="orders">
+                    <h1>Live Orders</h1>
+                    <br/>
+                    <table id="example" class="display" width="100%" style="color: white">
+                        <thead>
+                        <tr style="color: white;">
+                            <th>ID</th>
+                            <th>Date</th>
+                            <th>Restaurant</th>
+                            <th>Amount</th>
+                            <th>Status</th>
+                        </tr>
+                        </thead>
+                    </table>
+                </div>
+
+                <div class="container block" id="orders">
+                    <h1>Menu Editor</h1>
+                    <br/>
+                </div>
+            </div>
+        </div>
+    </header>
+
+
+{% endblock %}
+
+{% block footerscripts %}
     <script>
+
+        function updateReq(data) {
+            $.ajax({
+                url: '/api/v1/restaurant/',
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify(data),
+                dataType: 'json',
+                processData: false
+            });
+        }
+
+        $(document).ready(function () {
+
+            if ("{{ restaurant_is_available | safe }}" == "True") {
+                document.getElementById("accept_label").style.opacity = 1;
+            } else {
+                document.getElementById("not_accept_label").style.opacity = 1;
+            }
+
+            if ("{{ restaurant_pop | safe }}" == "0") {
+                document.getElementById("not_busy_label").style.opacity = 1;
+            } else if ("{{ restaurant_pop | safe }}" == "1") {
+                document.getElementById("busy_label").style.opacity = 1;
+            } else {
+                document.getElementById("very_busy_label").style.opacity = 1;
+            }
+
+
+            $('#accept_orders').on('click', function () {
+                document.getElementById("accept_label").style.opacity = 1;
+                document.getElementById("not_accept_label").style.opacity = 0.5;
+                updateReq({'is_available': true});
+            })
+            $('#not_accept_orders').on('click', function () {
+                document.getElementById("accept_label").style.opacity = 0.5;
+                document.getElementById("not_accept_label").style.opacity = 1;
+                updateReq({'is_available': false});
+            })
+
+            $('#set_not_busy').on('click', function () {
+                document.getElementById("not_busy_label").style.opacity = 1;
+                document.getElementById("busy_label").style.opacity = 0.5;
+                document.getElementById("very_busy_label").style.opacity = 0.5;
+                updateReq({'popularity': 0});
+            })
+            $('#set_busy').on('click', function () {
+                document.getElementById("not_busy_label").style.opacity = 0.5;
+                document.getElementById("busy_label").style.opacity = 1;
+                document.getElementById("very_busy_label").style.opacity = 0.5;
+                updateReq({'popularity': 1});
+            })
+            $('#set_very_busy').on('click', function () {
+                document.getElementById("not_busy_label").style.opacity = 0.5;
+                document.getElementById("busy_label").style.opacity = 0.5;
+                document.getElementById("very_busy_label").style.opacity = 1;
+                updateReq({'popularity': 2});
+            })
+
+            var orders_table = $('#example').DataTable({
+                "aaSorting": [[0, "desc"]],
+                "columnDefs": [{
+                    "targets": 4,
+                    "render": function (data, type, full, meta) {
+                        return '<span class="label label-' + data[1] + '">' + data[0] + '</span>';
+                    }
+                }]
+            });
+
+            var order_timer = setInterval(displayOrders, 20000);
+            displayOrders();
+
+            function displayOrders() {
+                $.getJSON('/api/v1/rest_order/?format=json', function (response) {
+                    var objects = response.objects;
+                    orders_table.clear().draw();
+                    for (var i in objects) {
+                        var id = objects[i]['id'];
+                        var date = objects[i]['date_time'];
+                        var restaurant_name = objects[i]['restaurant']['name'];
+                        var status = objects[i].status;
+                        var label = {};
+
+                        switch (status) {
+                            case 0:
+                                label.class = 'info';
+                                label.text = 'Pending';
+                                break;
+
+                            case 1:
+                                label.class = 'warning';
+                                label.text = 'Active';
+                                break;
+
+                            case 2:
+                                label.class = 'danger';
+                                label.text = 'Cancelled';
+                                break;
+
+                            case 3:
+                                label.class = 'success';
+                                label.text = 'Completed';
+                                break;
+
+
+                        }
+
+                        orders_table.row.add([id, date, restaurant_name, objects[i]['amount'], [label.text, label.class]]).draw();
+
+                    }
+                });
+            }
+        });
 
 
     </script>

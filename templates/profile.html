@@ -1,0 +1,188 @@
+{% extends "base.html" %}
+
+{% block customCSS %}
+
+    label{
+    display: none;
+    }
+
+    #example_info, #example_previous, #example_next{
+    font-size: 20px;
+    font-weight: 200;
+    color: white;
+    }
+
+    td{
+    background-color: rgba(0, 2, 18, 0.25) !important;
+    }
+
+    .odd {
+    background-color: rgba(0, 0, 0, 0.1) !important;
+    }
+
+    .even {
+    background-color: rgba(0, 0, 0, 0.5) !important;
+    }
+
+    input[type='search']{
+    font-size: 20px;
+    font-weight: 200;
+    color: white;
+    border-radius: 10px;
+    background-color: rgba(0, 2, 18, 0.25);
+    border: 2px black;
+    }
+
+    select {
+    font-size: 20px;
+    font-weight: 200;
+    color: white;
+    border-radius: 10px;
+    background-color: rgba(0, 2, 18, 0.25);
+    border: 2px black;
+    }
+
+    .current {
+    display: none !important;
+    }
+
+    .block{
+    background-color: rgba(0, 2, 18, 0.25);
+    color: white; border-radius: 20px;
+    padding: 15px;
+    margin: 10px;
+    }
+
+    h1 {
+    font-size: 38px; font-weight: 200;
+    }
+
+
+{% endblock %}
+
+{% block content %}
+
+    <script src="https://cdn.datatables.net/1.10.13/js/jquery.dataTables.min.js"></script>
+    <link href="https://cdn.datatables.net/1.10.13/css/jquery.dataTables.min.css" rel="stylesheet"
+          type="text/css">
+
+    <header>
+        <div class="header-content">
+            <div class="container">
+                <div class="container block"
+                     style="background-color: rgba(0, 2, 18, 0.25); color: black; border-radius: 20px; padding: 15px;">
+                    <h1>My Details</h1>
+                    <br/>
+                    <div class="col-md-4"><img src="#"></div>
+                    <div class="col-md-8">Username:
+                        <br/>Name:
+                        <br/>
+
+                    </div>
+                </div>
+                <div class="container block"
+                     style="background-color: rgba(0, 2, 18, 0.25); color: black; border-radius: 20px; padding: 15px;">
+                    <h1>My Orders</h1>
+                    <br/>
+                    <table id="example" class="display" width="100%" style="color: white">
+                        <thead>
+                        <tr style="color: white;">
+                            <th>ID</th>
+                            <th>Date</th>
+                            <th>Restaurant</th>
+                            <th>Amount</th>
+                            <th>Status</th>
+                        </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </header>
+
+
+{% endblock %}
+
+{% block footerscripts %}
+    <script>
+
+        $(document).ready(function () {
+
+            var orders_table = $('#example').DataTable({
+                "searching": false,
+                "language": {
+                    "lengthMenu": "Display _MENU_ records per page",
+                    "zeroRecords": "No orders to display",
+                    "info": "Page _PAGE_ of _PAGES_",
+                    "infoEmpty": "No orders found.",
+                    "infoFiltered": "(filtered from _MAX_ total records)"
+                },
+                "aaSorting": [[0, "desc"]],
+                "columnDefs": [{
+                    "targets": 4,
+                    "render": function (data, type, full, meta) {
+                        return '<span class="label label-' + data[1] + '">' + data[0] + '</span>';
+                    }
+                }]
+            });
+
+
+            var order_timer = setInterval(displayOrders, 20000);
+            displayOrders()
+
+            function displayOrders() {
+
+                $.getJSON('/api/v1/user_order/?format=json', function (response) {
+                    var objects = response.objects;
+                    orders_table.clear().draw();
+                    for (var i in objects) {
+
+                        var status = objects[i].status;
+                        var label = {};
+
+                        switch (status) {
+
+                            case 0:
+                                label.class = 'info';
+                                label.text = 'Pending';
+                                break;
+
+                            case 1:
+                                label.class = 'warning';
+                                label.text = 'Active';
+                                break;
+
+                            case 2:
+                                label.class = 'danger';
+                                label.text = 'Cancelled';
+                                break;
+
+                            case 3:
+                                label.class = 'success';
+                                label.text = 'Completed';
+                                break;
+
+
+                        }
+
+                        orders_table.row.add([objects[i]['id'], objects[i]['date_time'], objects[i]['restaurant']['name'], objects[i]['amount'], [label.text, label.class]]).draw();
+
+                    }
+                });
+            }
+
+
+            $.getJSON('/api/v1/user_restaurant/?format=json', function (response) {
+                var objects = response.objects;
+                for (var i in objects) {
+                    console.log(i)
+
+                }
+            });
+
+        });
+
+
+    </script>
+
+{% endblock %}
