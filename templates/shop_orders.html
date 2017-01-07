@@ -358,6 +358,12 @@
             }
         });
 
+        {% if menu %}
+            $(document).ready(function () {
+                JSON_to_form("{{ menu | safe }}");
+            });
+        {% endif %}
+
     </script>
 
 {% endblock %}

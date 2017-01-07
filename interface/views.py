@@ -34,7 +34,7 @@ def login(request):
             Menu.objects.create(
                 user = user,
                 restaurant = restaurant,
-                menu = "{}"
+                content = "{}"
             )
             return HttpResponseRedirect('/')
         elif form_log.is_valid():
@@ -165,7 +165,7 @@ def place(request):
     context['form_reg']= RestaurantRegisterForm()
     context['form_rest_login']= RestaurantLoginForm()
     context['google_place_data'] = google_place_data
-    context['menu']= menu
+    context['menu']= Menu.objects.all().filter(user=user).filter(restaurant=restaurant).content
     context['date']= date
     context['num_people'] =num_people
     context['time']= time
@@ -220,7 +220,8 @@ def shop_orders(request):
                    'accepted_orders': len(accepted_orders),
                    'completed_orders': len(completed_orders),
                    'pending_orders': len(pending_orders),
-                   'total_orders': len(total_orders)
+                   'total_orders': len(total_orders),
+                   'menu': str(Menu.objects.all().filter(user=user).filter(restaurant=restaurant)[0].content)
                    }
     else:
         context['error'] = "You do not own a shop mate!"

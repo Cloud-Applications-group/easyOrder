@@ -9,6 +9,8 @@ from tastypie.authorization import ReadOnlyAuthorization, Authorization
 
 
 
+
+
 class UserResource(ModelResource):
     class Meta:
         queryset = User.objects.all()
@@ -105,10 +107,7 @@ class UserRestaurantResource(ModelResource):
         excludes = ['user']
         limit = 0
 
-
 class MenuResource(ModelResource):
-    user = fields.ForeignKey(UserResource, 'user')
-    restaurant = fields.ForeignKey(RestaurantResource, 'restaurant')
 
     def hydrate(self, bundle):
         request_method = bundle.request.META['REQUEST_METHOD']
@@ -118,8 +117,8 @@ class MenuResource(ModelResource):
             restaurant=Restaurant.objects.all().filter(user=user)
             menu = Menu.objects.all().filter(user=user).filter(restaurant=restaurant)
             if menu:
-                menu = bool(bundle.data.get('menu'))
-                restaurant.update(content=menu)
+                menu_data = bundle.data.get('menu')
+                menu.update(content=str(menu_data))
 
         return Exception("Updated")
 

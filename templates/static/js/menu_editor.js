@@ -219,7 +219,7 @@ function convert_to_JSON() {
     }
     JSON += ']}]}';
     console.log("Sending menu...");
-    updateReqMenu(JSON);
+    updateReqMenu({'menu':JSON});
 }
 function proper_case(str) {
     str = str.toLowerCase().split(' ').map(function (word) {
