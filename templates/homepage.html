@@ -245,17 +245,11 @@
                         <hr style="border-width:4px;border-color:rgba(255,255,255,1);">
                         <div class="row">
                             <div class="col-md-6">
-                                <h1> Location </h1>
-                                <p id="place_addr"></p>
-                                <h1> Reservation Details </h1>
-                                <p>Number of People:
-                                    <br/>Date:
-                                    <br/>Time:
-                                </p>
+                                <h1> About </h1>
+                                <p></p>
                             </div>
                             <div class="col-md-6">
-                                <h1> Working Hours - Currently <span id="openNow"></span></h1>
-                                <br/>
+                                <h1> Working Hours </h1>
                                 <p id="working_hours"> Not known. </p>
                             </div>
                         </div>
@@ -263,8 +257,10 @@
                         <h1>The Menu </h1>
                         <p>
                             {% if menu %}
+                                <script>console.log("here at least");</script>
                                 <div class="menu">
                                     {% for m,cats in menu.items %}
+                                    <script>console.log("cmon bro");</script>
                                         {% for cat in cats %}
                                             {% for k,sections in cat.items %}
                                                 {% for section in sections %}
@@ -275,7 +271,7 @@
                                                                 <div class="menu-item-container">
                                                                     <div class="menu-item">
                                                                         <div class="menu-item-info">
-                                                                            <div class="menu-item-title">{{ item.item_title }} <span id="count"><span/></div>
+                                                                            <div class="menu-item-title">{{ item.item_title }}</div>
                                                                             {% if item.item_description %}
                                                                                 <div class="menu-item-desc">{{ item.item_description }}</div>
                                                                             {% endif %}
@@ -284,10 +280,6 @@
                                                                             {% for option in item.item_options %}
                                                                                 <div class="menu-item-price">
                                                                                     £ {{ option.price }}</div>
-																					<span>
-																					<button id="addItem" style="margin-left: 5px; height:auto; width:auto; background: transparent; border:none"><i class="fa fa-plus-circle" aria-hidden="true" style="color:#5cb85c;"></i></button></span>
-																					<span>
-																					<button id="removeItem" style="height:auto; width:auto; background: transparent; border:none"><i class="fa fa-minus-circle" aria-hidden="true" style="color:#d9534f;"></i></button></span>
                                                                             {% endfor %}
                                                                         {% endif %}
                                                                     </div>
@@ -297,14 +289,11 @@
                                                                                 {% for option in item.item_options %}
                                                                                     <div class="menu-item-option">
                                                                                         <div class="menu-item-option-name">
-                                                                                            {{ option.option_name }} <span id="countOption"></span>
+                                                                                            {{ option.option_name }}
                                                                                         </div>
                                                                                         <div class="menu-item-option-price">
                                                                                             £ {{ option.price }}
                                                                                         </div>
-																						<button id="addOption" style="margin-left: 5px; height:auto; width:auto; background: transparent; border:none"><i class="fa fa-plus-circle" aria-hidden="true" style="color:#5cb85c;"></i></button></span>
-																						<span>
-																						<button id="removeOption" style="height:auto; width:auto; background: transparent; border:none"><i class="fa fa-minus-circle" aria-hidden="true" style="color:#d9534f;"></i></button></span>
                                                                                     </div>
                                                                                 {% endfor %}
                                                                             </div>
@@ -517,64 +506,18 @@
 
 {% block footerscripts %}
     <script>
-	
-		//Menu Button
-		var item = 0;
-		
-		$("#addItem").click(function () {
-		item = item + 1;
-		if(item > 0)
-		{
-			$("#count").text(item);
-		}
-		});
-		
-		$("#removeItem").click(function () {
-		item = item - 1;
-		if(item > 0)
-		{
-			$("#count").text(item);			
-		}
-		else
-		{
-			$("#count").text("");	
-		}
-		});
-		
-		$("#addOption").click(function () {
-		$("#countOption").text("✔");
-		});
-		
-		$("#removeOption").click(function () {
-		$("#countOption").text("");
-		});
 
         // About the place
         var place_data = {{ google_place_data | safe }}['result'];
         var placeName = place_data['name'];
         var photoSrc = place_data['photos'][0]['photo_reference']
         var placeType = place_data['types'][0].charAt(0).toUpperCase() + place_data['types'][0].slice(1);
-        var placeAddr = place_data['adr_address'];
         var workingHours = place_data['opening_hours']['weekday_text'];
-        var openNow = place_data['opening_hours']['open_now'];
-
-        var workingHoursText = "";
-        jQuery.each(workingHours, function () {
-            workingHoursText += this + '<br />';
-        });
 
         document.getElementById('place_name').innerHTML = placeName;
         document.getElementById('place_photo').src = photoSrc;
         document.getElementById('place_type').innerHTML = placeType;
-        document.getElementById('place_addr').innerHTML = placeAddr;
-        document.getElementById('working_hours').innerHTML = workingHoursText;
-
-        if (openNow == 'true') {
-            openNow = '<b style="color:red">Closed</b>';
-        } else {
-            openNow = '<b style="color:green">Open</b>';
-        }
-        document.getElementById('openNow').innerHTML = openNow;
+        document.getElementById('working_hours').innerHTML = workingHours;
 
         var placeRating = '<b style="color:red">Bad</b>';
         if (place_data['rating'] >= 4.5) {
