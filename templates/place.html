@@ -129,163 +129,183 @@
 
 {% block content %}
 
-    {% if user and not user.is_anonymous %}
 
-        <header style="background-color: white;">
-            <div class="container">
-                <div class="row">
-                    <form id="searchForm" action="/place" method="GET">
-                        <div class="col-md-12" style="padding-bottom: 20px; padding-top: 80px;">
-                            <div class="input-group">
+
+    <header style="background-color: white;">
+        <div class="container">
+            <div class="row">
+                <form id="searchForm" action="/place" method="GET">
+                    <div class="col-md-12" style="padding-bottom: 20px; padding-top: 80px;">
+                        <div class="input-group">
                          <span class="input-group-addon transparentClass"><i class="fa fa-cutlery fa-lg"
                                                                              aria-hidden="true"></i></span>
-                                <input style="height: 60px; font-size: 25px" class="form-control" id="location"
-                                       type="text"
-                                       placeholder="Tell us your destination." required/>
-                                <span style="border: 2px white; background-color: rgba(94, 184,92,0.93);cursor: pointer;"
-                                      class="input-group-addon">
+                            <input style="height: 60px; font-size: 25px" class="form-control" id="location"
+                                   type="text"
+                                   placeholder="Tell us your destination." required/>
+                            <span style="border: 2px white; background-color: rgba(94, 184,92,0.93);cursor: pointer;"
+                                  class="input-group-addon">
                                 <input style="width: 100%; height: 100%; padding-right: 50px; border: 2px white; background-color: rgba(94, 184,92,0.0);padding-left: 50px; color: white; font-size: 28px;"
                                        type="submit" id="submit" value="Search" required/></span>
-                            </div>
-                            <input type="hidden" id="location_id" name="place_id" value="">
                         </div>
-                        <div style="opacity: 0.8 !important; padding-bottom: 5px;" class="col-md-4">
-                            <div class="input-group">
+                        <input type="hidden" id="location_id" name="place_id" value="">
+                    </div>
+                    <div style="opacity: 0.8 !important; padding-bottom: 5px;" class="col-md-4">
+                        <div class="input-group">
                     <span class="input-group-addon transparentClass"><i class="fa fa-users fa-lg"
                                                                         aria-hidden="true"></i></span>
-                                <select class="form-control search" id="numPeople" name="numPeople" required>
-                                    <option value="" disabled selected hidden>Number of People</option>
-                                    <option value="1">1</option>
-                                    <option value="2">2</option>
-                                    <option value="3">3</option>
-                                    <option value="4">4</option>
-                                    <option value="5">5</option>
-                                    <option value="6">6</option>
-                                    <option value="7">7</option>
-                                    <option value="8">8</option>
-                                    <option value="9">9</option>
-                                    <option value="10">10+</option>
-                                </select>
-                            </div>
+                            <select class="form-control search" id="numPeople" name="numPeople" required>
+                                <option value="" disabled selected hidden>Number of People</option>
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                                <option value="5">5</option>
+                                <option value="6">6</option>
+                                <option value="7">7</option>
+                                <option value="8">8</option>
+                                <option value="9">9</option>
+                                <option value="10">10+</option>
+                            </select>
                         </div>
-                        <div style="opacity: 0.8 !important; padding-bottom: 5px;" class="col-md-4">
-                            <div class="input-group">
+                    </div>
+                    <div style="opacity: 0.8 !important; padding-bottom: 5px;" class="col-md-4">
+                        <div class="input-group">
 					<span class="input-group-addon transparentClass" id="basic-addon1"><i class="fa fa-calendar fa-lg"
                                                                                           aria-hidden="true"></i></span>
-                                <input class="form-control search" id="date" value="2017-01-01" type="date"
-                                       name="date" required/>
-                            </div>
+                            <input class="form-control search" id="date" value="2017-01-01" type="date"
+                                   name="date" required/>
                         </div>
-                        <div style="opacity: 0.8 !important; padding-bottom: 5px;" class="col-md-4">
-                            <div class="input-group">
+                    </div>
+                    <div style="opacity: 0.8 !important; padding-bottom: 5px;" class="col-md-4">
+                        <div class="input-group">
                     <span class="input-group-addon transparentClass"><i class="fa fa-clock-o fa-lg"
                                                                         aria-hidden="true"></i></span>
-                                <select class="form-control search" tabindex="3" id="time" aria-label="hour" name="time"
-                                        required>
-                                    <option value="" disabled selected hidden>Select Arrival Time</option>
-                                    <option value="1100">11:00 AM</option>
-                                    <option value="1130">11:30 AM</option>
-                                    <option value="1200">12:00 PM</option>
-                                    <option value="1230">12:30 PM</option>
-                                    <option value="1300">1:00 PM</option>
-                                    <option value="1330">1:30 PM</option>
-                                    <option value="1400">2:00 PM</option>
-                                    <option value="1430">2:30 PM</option>
-                                    <option value="1500">3:00 PM</option>
-                                    <option value="1530">3:30 PM</option>
-                                    <option value="1600">4:00 PM</option>
-                                    <option value="1630">4:30 PM</option>
-                                    <option value="1700">5:00 PM</option>
-                                    <option value="1730">5:30 PM</option>
-                                    <option value="1800">6:00 PM</option>
-                                    <option value="1830">6:30 PM</option>
-                                    <option value="1900">7:00 PM</option>
-                                    <option value="1930">7:30 PM</option>
-                                    <option value="2000">8:00 PM</option>
-                                    <option value="2030">8:30 PM</option>
-                                    <option value="2100">9:00 PM</option>
-                                    <option value="2130">9:30 PM</option>
-                                    <option value="2200">10:00 PM</option>
-                                    <option value="2230">10:30 PM</option>
-                                    <option value="2300">11:00 PM</option>
-                                    <option value="2330">11:30 PM</option>
-                                </select>
-                            </div>
+                            <select class="form-control search" tabindex="3" id="time" aria-label="hour" name="time"
+                                    required>
+                                <option value="" disabled selected hidden>Select Arrival Time</option>
+                                <option value="1100">11:00 AM</option>
+                                <option value="1130">11:30 AM</option>
+                                <option value="1200">12:00 PM</option>
+                                <option value="1230">12:30 PM</option>
+                                <option value="1300">1:00 PM</option>
+                                <option value="1330">1:30 PM</option>
+                                <option value="1400">2:00 PM</option>
+                                <option value="1430">2:30 PM</option>
+                                <option value="1500">3:00 PM</option>
+                                <option value="1530">3:30 PM</option>
+                                <option value="1600">4:00 PM</option>
+                                <option value="1630">4:30 PM</option>
+                                <option value="1700">5:00 PM</option>
+                                <option value="1730">5:30 PM</option>
+                                <option value="1800">6:00 PM</option>
+                                <option value="1830">6:30 PM</option>
+                                <option value="1900">7:00 PM</option>
+                                <option value="1930">7:30 PM</option>
+                                <option value="2000">8:00 PM</option>
+                                <option value="2030">8:30 PM</option>
+                                <option value="2100">9:00 PM</option>
+                                <option value="2130">9:30 PM</option>
+                                <option value="2200">10:00 PM</option>
+                                <option value="2230">10:30 PM</option>
+                                <option value="2300">11:00 PM</option>
+                                <option value="2330">11:30 PM</option>
+                            </select>
                         </div>
-                    </form>
-                </div>
+                    </div>
+                </form>
+            </div>
 
 
-                <div style="background-color: rgba(0,0,0,0.5); border-radius: 10px; margin-top: 15px; padding: 0px"
-                     class="col-md-12">
-
+            <div style="background-color: rgba(0,0,0,0.5); border-radius: 10px; margin-top: 15px; padding: 0px"
+                 class="col-md-12">
+                {% if not user.is_anonymous %}
                     <div id="alert" style="margin: 20px;" class="alert alert-success alert-dismissible fade in"
                          role="alert">
                         <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span
                                 aria-hidden="true">×</span></button>
-                        <h4 id="countdown-text" style="margin: 0px;">You table has been reserved until <span
+                        <h4 id="countdown-text" style="margin: 0px;">Your table has been reserved until <span
                                 id="countdown">5:00</span>.
                         </h4>
                     </div>
+                {% else %}
+                    <div id="alert" style="margin: 20px;" class="alert alert-warning alert-dismissible fade in"
+                         role="alert">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span
+                                aria-hidden="true">×</span></button>
+                        <h4 id="countdown-text" style="margin: 0px;">You need to login first to start ordering.
+                        </h4>
+                    </div>
+                {% endif %}
 
-                    <div class="col-md-3" style="padding: 0">
-                        <img id="place_photo" style="padding-top: 10px; border-radius: 15px;" width="250"
-                             src=""/>
-                    </div>
-                    <div style="text-align: left; margin-left: 0" class="col-md-6">
-                        <h1 id="place_name" style="margin: 0 5px 0 0; padding-top: 18px;"> Restaurant Name </h1>
-                        <h3 id="place_type" style="margin: 0 5px 0 0;"> Restaurant </h3>
-                        <p style="margin: 0" id="place_rating"> Rating </p>
-                    </div>
-                    <div class="col-md-3 text-right">
-                        <button class="btn btn-default" style="margin-right: 5px;"><i class="fa fa-heart"
-                                                                                      aria-hidden="true"></i> Favourite
-                        </button>
-                        <button class="btn btn-default" style="margin-right: 15px;"><i class="fa fa-flag"
-                                                                                       aria-hidden="true"></i> Report
-                        </button>
-                    </div>
-                    <div style="text-align: left;" class="col-md-12">
-                        <hr style="border-width:4px;border-color:rgba(255,255,255,1);">
-                        <div class="row">
-                            <div class="col-md-6">
-                                <h1> About </h1>
-                                <p></p>
-                            </div>
-                            <div class="col-md-6">
-                                <h1> Working Hours </h1>
-                                <p id="working_hours"> Not known. </p>
-                            </div>
+                <div class="col-md-3" style="padding: 0">
+                    <img id="place_photo" style="padding-top: 10px; border-radius: 15px;" width="250"
+                         src=""/>
+                </div>
+                <div style="text-align: left; margin-left: 0" class="col-md-6">
+                    <h1 id="place_name" style="margin: 0 5px 0 0; padding-top: 18px;"> Restaurant Name </h1>
+                    <h3 id="place_type" style="margin: 0 5px 0 0;"> Restaurant </h3>
+                    <p style="margin: 0" id="place_rating"> Rating </p>
+                </div>
+                <div class="col-md-3 text-right">
+                    <button class="btn btn-default" style="margin-right: 5px;"><i class="fa fa-heart"
+                                                                                  aria-hidden="true"></i> Favourite
+                    </button>
+                    <button class="btn btn-default" style="margin-right: 15px;"><i class="fa fa-flag"
+                                                                                   aria-hidden="true"></i> Report
+                    </button>
+                </div>
+                <div style="text-align: left;" class="col-md-12">
+                    <hr style="border-width:4px;border-color:rgba(255,255,255,1);">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h1> Location </h1>
+                            <p id="place_addr"></p>
+
+                            {% if not user.is_anonymous %}
+
+                                <h1> Reservation Details </h1>
+                                <p>Number of People:
+                                    <br/>Date:
+                                    <br/>Time:
+                                </p>
+
+                            {% endif %}
+
                         </div>
-                        <hr style="border-width:4px;border-color:rgba(255,255,255,1);">
-                        <h1>The Menu </h1>
-                        <p>
-                            {% if menu %}
-                                <script>console.log("here at least");</script>
-                                <div class="menu">
-                                    {% for m,cats in menu.items %}
-                                    <script>console.log("cmon bro");</script>
-                                        {% for cat in cats %}
-                                            {% for k,sections in cat.items %}
-                                                {% for section in sections %}
-                                                    <div class="menu-section-container">
-                                                        <div class="menu-section-title">{{ section.title }}</div>
-                                                        <div class="menu-section">
-                                                            {% for item in section.items %}
-                                                                <div class="menu-item-container">
-                                                                    <div class="menu-item">
-                                                                        <div class="menu-item-info"
-                                                                            <div class="menu-item-title">{{ item.item_title }}</div>
-                                                                            <div class="menu-item-title">{{ item.item_title }}
-                                                                                <span id="count"><span/></div>
-                                                                            {% if item.item_description %}
-                                                                                <div class="menu-item-desc">{{ item.item_description }}</div>
-                                                                            {% endif %}
-                                                                        </div>
-                                                                        {% if item.item_options|length == 1 %}
-                                                                            {% for option in item.item_options %}
-                                                                                <div class="menu-item-price">
-                                                                                    £ {{ option.price }}</div>
+                        <div class="col-md-6">
+                            <h1> Working Hours - Currently <span id="openNow"></span></h1>
+                            <br/>
+                            <p id="working_hours"> Not known. </p>
+                        </div>
+                    </div>
+                    <hr style="border-width:4px;border-color:rgba(255,255,255,1);">
+
+                    <h1>The Menu </h1>
+                    <p>
+                        {% if menu %}
+                            <div class="menu">
+                                {% for m,cats in menu.items %}
+                                    {% for cat in cats %}
+                                        {% for k,sections in cat.items %}
+                                            {% for section in sections %}
+                                                <div class="menu-section-container">
+                                                    <div class="menu-section-title">{{ section.title }}</div>
+                                                    <div class="menu-section">
+                                                        {% for item in section.items %}
+                                                            <div class="menu-item-container">
+                                                                <div class="menu-item">
+                                                                    <div class="menu-item-info">
+                                                                        <div class="menu-item-title">{{ item.item_title }}
+                                                                            <span id="count"><span/></div>
+                                                                        {% if item.item_description %}
+                                                                            <div class="menu-item-desc">{{ item.item_description }}</div>
+                                                                        {% endif %}
+                                                                    </div>
+                                                                    {% if item.item_options|length == 1 %}
+                                                                        {% for option in item.item_options %}
+                                                                            <div class="menu-item-price">
+                                                                                £ {{ option.price }}</div>
+                                                                            {% if not user.is_anonymous %}
                                                                                 <span>
 																					<button id="addItem"
                                                                                             style="margin-left: 5px; height:auto; width:auto; background: transparent; border:none"><i
@@ -298,53 +318,56 @@
                                                                                             class="fa fa-minus-circle"
                                                                                             aria-hidden="true"
                                                                                             style="color:#d9534f;"></i></button></span>
-                                                                            {% endfor %}
-                                                                        {% endif %}
-                                                                    </div>
-                                                                    {% if not item.item_options|length == 1 %}
-                                                                        <div class="menu-item-options">
-                                                                            <div class="menu-item-options-container">
-                                                                                {% for option in item.item_options %}
-                                                                                    <div class="menu-item-option">
-                                                                                        <div class="menu-item-option-name">
-                                                                                            {{ option.option_name }}
-                                                                                            <span id="countOption"></span>
-                                                                                        </div>
-                                                                                        <div class="menu-item-option-price">
-                                                                                            £ {{ option.price }}
-                                                                                        </div>
-                                                                                        <button id="addOption"
-                                                                                                style="margin-left: 5px; height:auto; width:auto; background: transparent; border:none">
-                                                                                            <i class="fa fa-plus-circle"
-                                                                                               aria-hidden="true"
-                                                                                               style="color:#5cb85c;"></i>
-                                                                                        </button>
-                                                                                        </span>
-                                                                                        <span>
-																						<button id="removeOption"
+                                                                            {% endif %}
+                                                                        {% endfor %}
+                                                                    {% endif %}
+                                                                </div>
+                                                                {% if not item.item_options|length == 1 %}
+                                                                    <div class="menu-item-options">
+                                                                        <div class="menu-item-options-container">
+                                                                            {% for option in item.item_options %}
+                                                                                <div class="menu-item-option">
+                                                                                    <div class="menu-item-option-name">
+                                                                                        {{ option.option_name }}
+                                                                                        <span id="countOption"></span>
+                                                                                    </div>
+                                                                                    <div class="menu-item-option-price">
+                                                                                        £ {{ option.price }}
+                                                                                    </div>{% if not user.is_anonymous %}
+                                                                                    <button id="addOption"
+                                                                                            style="margin-left: 5px; height:auto; width:auto; background: transparent; border:none">
+                                                                                        <i class="fa fa-plus-circle"
+                                                                                           aria-hidden="true"
+                                                                                           style="color:#5cb85c;"></i>
+                                                                                    </button>
+                                                                                    </span>
+                                                                                    <span>
+                                                                                        <button id="removeOption"
                                                                                                 style="height:auto; width:auto; background: transparent; border:none"><i
                                                                                                 class="fa fa-minus-circle"
                                                                                                 aria-hidden="true"
-                                                                                                style="color:#d9534f;"></i></button></span>
-                                                                                    </div>
-                                                                                {% endfor %}
-                                                                            </div>
+                                                                                                style="color:#d9534f;"></i></button>
+                                                                                    </span>{% endif %}
+                                                                                </div>
+                                                                            {% endfor %}
                                                                         </div>
-                                                                    {% endif %}
-                                                                </div>
-                                                            {% endfor %}
-                                                        </div>
+                                                                    </div>
+                                                                {% endif %}
+                                                            </div>
+                                                        {% endfor %}
                                                     </div>
-                                                    <hr>
-                                                {% endfor %}
+                                                </div>
+                                                <hr>
                                             {% endfor %}
                                         {% endfor %}
                                     {% endfor %}
-                                </div>
-                            {% else %}
-                                <p>No menu exists for this restaurant.</p>
-                            {% endif %}
-                        </p>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            <p>No menu exists for this restaurant.</p>
+                        {% endif %}
+                    </p>
+                    {% if not user.is_anonymous %}
                         <button type="button" class="btn btn-primary btn-success" data-toggle="modal"
                                 data-target="#checkoutModal" style="margin-bottom:15px; float: right;"><i
                                 class="fa fa-check"
@@ -352,208 +375,203 @@
                             Complete Your
                             Order
                         </button>
-                    </div>
-                </div>
-            </div>
-            <br/>
-        </header>
-
-        <div class="modal fade" id="checkoutModal" tabindex="-1" role="dialog" aria-labelledby="checkoutModalLabel">
-            <div style=" width: 640px;" class="modal-dialog modal-custom" role="document">
-                <div style="background-color:rgba(239, 239, 239, 0.9);" class="modal-content">
-                    <div class="modal-body">
-                        <h3><b>Checkout</b></h3>
-                        <div class="row">
-                            <div style="text-align: left; color: black;" class="col-md-6">
-                                <h3> Customer Details</h3>
-                                <table class="table" style="color: black; margin-left: auto;margin-right: auto;">
-                                    <tr>
-                                        <th>Name</th>
-                                        <td>{{ user.get_full_name|default:user.username }}</td>
-                                    </tr>
-                                    <tr>
-                                        <th>Phone</th>
-                                        <td>+44-7xxxxxxxxx</td>
-                                    </tr>
-                                </table>
-                                <div style="text-align: left; color: black;" class="col-md-">
-                                    <h3> Table Details</h3>
-                                    <table class="table" style="color: black; margin-left: auto;margin-right: auto;">
-                                        <tr>
-                                            <th>People</th>
-                                            <td>5</td>
-                                        </tr>
-                                        <tr>
-                                            <th>Time</th>
-                                            <td>£ 5.00</td>
-                                        </tr>
-                                    </table>
-                                </div>
-                            </div>
-                            <div style="text-align: right;" class="col-md-6">
-                                <h3> Order Details </h3>
-                                <table class="table" style="color: black; margin-left: auto;margin-right: auto;">
-                                    <thead>
-                                    <tr>
-                                        <th>Item</th>
-                                        <th>Quantity</th>
-                                        <th>Price</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    <tr>
-                                        <td>Kebab</td>
-                                        <td>01</td>
-                                        <td>£ 5.00</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Fries</td>
-                                        <td>02</td>
-                                        <td>£ 5.00</td>
-                                    </tr>
-                                    </tbody>
-                                    <tfoot>
-                                    <tr>
-                                        <td></td>
-                                        <th>Total</th>
-                                        <td>£ 15.00</td>
-                                    </tr>
-                                    </tfoot>
-                                </table>
-                            </div>
-                            <div class="text-right" style="margin-right:20px;">
-                                <button type="button" class="btn btn-warning" style="margin-bottom:15px"><i
-                                        class="fa fa-pencil"
-                                        aria-hidden="true"></i>
-                                    Modify Order
-                                </button>
-                                <button type="button" class="btn btn-danger" style="margin-bottom:15px"><i
-                                        class="fa fa-ban"
-                                        aria-hidden="true"></i>
-                                    Cancel Order
-                                </button>
-                            </div>
-                        </div>
-                        <hr/>
-                        <!-- Nav tabs -->
-                        <ul style="font-size: 16px;" class="nav nav-tabs" role="tablist">
-                            <li style="background-color: rgba(255, 255, 255, 0.25); border-top-right-radius: 5px;  border-top-left-radius: 5px;"
-                                role="presentation" class="active">
-                                <a href="#home" aria-controls="home" role="tab"
-                                   data-toggle="tab"><i class="fa fa-cutlery" style="margin-right: 3px;"
-                                                        aria-hidden="true"></i>
-                                    Pay in Store</a></li>
-                            <li style="background-color: rgba(255, 255, 255, 0.25); border-top-right-radius: 5px;  border-top-left-radius: 5px;"
-                                role="presentation">
-                                <a href="#profile" aria-controls="profile" role="tab" data-toggle="tab"
-                                   style="margin: 0"><i
-                                        style="margin-right: 3px;" class="fa fa-credit-card-alt" aria-hidden="true"></i>
-                                    Pay
-                                    Online</a></li>
-                        </ul>
-
-                        <!-- Tab panes -->
-                        <div style="background-color: rgba(255, 255, 255, 0.25); padding: 10px; border-radius: 5px;"
-                             class="tab-content">
-                            <div role="tabpanel" class="tab-pane active" id="home">
-                                <br/>
-                                <p style="text-align: left; color: dimgrey;">If you wish to pay in store, your booking
-                                    details
-                                    will be sent to restaurant for confirmation.
-                                    We will you notify you by e-mail once your booking gets accepted.</p>
-                                <div class="text-right">
-                                    <button type="button" class="btn btn-success"><i class="fa fa-check-circle"
-                                                                                     aria-hidden="true"></i> Confirm
-                                        Booking
-                                    </button>
-                                </div>
-                            </div>
-                            <div role="tabpanel" class="tab-pane" id="profile">
-                                <br/>
-                                <form id="checkout-form">
-                                    <p style="color: dimgray; text-align: left;">Credit / Debit Card Payment</p>
-                                    <div class="row">
-                                        <div class="form-group col-md-12">
-                                            <input type="text" class="form-control" id="cardholder-name"
-                                                   placeholder="Card Holder Name">
-                                        </div>
-                                        <div class="form-group col-md-12">
-                                            <input class="form-control" id="card-number" placeholder="Card Number"/>
-                                        </div>
-                                        <div class="form-group col-xs-6 col-md-4">
-                                            <select class="form-control" id="exp-date">
-                                                <option>Month</option>
-                                                <option value="01">Jan (01)</option>
-                                                <option value="02">Feb (02)</option>
-                                                <option value="03">Mar (03)</option>
-                                                <option value="04">Apr (04)</option>
-                                                <option value="05">May (05)</option>
-                                                <option value="06">June (06)</option>
-                                                <option value="07">July (07)</option>
-                                                <option value="08">Aug (08)</option>
-                                                <option value="09">Sep (09)</option>
-                                                <option value="10">Oct (10)</option>
-                                                <option value="11">Nov (11)</option>
-                                                <option value="12">Dec (12)</option>
-                                            </select>
-                                        </div>
-
-                                        <div class="form-group col-xs-6 col-md-4">
-                                            <select class="form-control" id="exp-date">
-                                                <option value="17">2017</option>
-                                                <option value="18">2018</option>
-                                                <option value="19">2019</option>
-                                                <option value="20">2020</option>
-                                                <option value="21">2021</option>
-                                                <option value="22">2022</option>
-                                                <option value="23">2023</option>
-                                            </select>
-                                        </div>
-
-                                        <div class="form-group col-xs-6 col-md-4">
-                                            <input class="form-control" placeholder="CVV" id="cvv"/>
-                                        </div>
-                                    </div>
-                                    <div class="text-right">
-                                        <p style="color: dimgrey;">3D Secure checkout will be used to verify the
-                                            payment.</p>
-                                        <button type="button" class="btn btn-success"> Proceed to Payment
-                                        </button>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-
-
-                    </div>
+                    {% endif %}
                 </div>
             </div>
         </div>
+        <br/>
+    </header>
+
+    <div class="modal fade" id="checkoutModal" tabindex="-1" role="dialog" aria-labelledby="checkoutModalLabel">
+        <div style=" width: 640px;" class="modal-dialog modal-custom" role="document">
+            <div style="background-color:rgba(239, 239, 239, 0.9);" class="modal-content">
+                <div class="modal-body">
+                    <h3><b>Checkout</b></h3>
+                    <div class="row">
+                        <div style="text-align: left; color: black;" class="col-md-6">
+                            <h3> Customer Details</h3>
+                            <table class="table" style="color: black; margin-left: auto;margin-right: auto;">
+                                <tr>
+                                    <th>Name</th>
+                                    <td>{{ user.get_full_name|default:user.username }}</td>
+                                </tr>
+                                <tr>
+                                    <th>Phone</th>
+                                    <td>+44-7xxxxxxxxx</td>
+                                </tr>
+                            </table>
+                            <div style="text-align: left; color: black;" class="col-md-">
+                                <h3> Table Details</h3>
+                                <table class="table" style="color: black; margin-left: auto;margin-right: auto;">
+                                    <tr>
+                                        <th>People</th>
+                                        <td>5</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Time</th>
+                                        <td>£ 5.00</td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                        <div style="text-align: right;" class="col-md-6">
+                            <h3> Order Details </h3>
+                            <table class="table" style="color: black; margin-left: auto;margin-right: auto;">
+                                <thead>
+                                <tr>
+                                    <th>Item</th>
+                                    <th>Quantity</th>
+                                    <th>Price</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td>Kebab</td>
+                                    <td>01</td>
+                                    <td>£ 5.00</td>
+                                </tr>
+                                <tr>
+                                    <td>Fries</td>
+                                    <td>02</td>
+                                    <td>£ 5.00</td>
+                                </tr>
+                                </tbody>
+                                <tfoot>
+                                <tr>
+                                    <td></td>
+                                    <th>Total</th>
+                                    <td>£ 15.00</td>
+                                </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                        <div class="text-right" style="margin-right:20px;">
+                            <button type="button" class="btn btn-warning" style="margin-bottom:15px"><i
+                                    class="fa fa-pencil"
+                                    aria-hidden="true"></i>
+                                Modify Order
+                            </button>
+                            <button type="button" class="btn btn-danger" style="margin-bottom:15px"><i
+                                    class="fa fa-ban"
+                                    aria-hidden="true"></i>
+                                Cancel Order
+                            </button>
+                        </div>
+                    </div>
+                    <hr/>
+                    <!-- Nav tabs -->
+                    <ul style="font-size: 16px;" class="nav nav-tabs" role="tablist">
+                        <li style="background-color: rgba(255, 255, 255, 0.25); border-top-right-radius: 5px;  border-top-left-radius: 5px;"
+                            role="presentation" class="active">
+                            <a href="#home" aria-controls="home" role="tab"
+                               data-toggle="tab"><i class="fa fa-cutlery" style="margin-right: 3px;"
+                                                    aria-hidden="true"></i>
+                                Pay in Store</a></li>
+                        <li style="background-color: rgba(255, 255, 255, 0.25); border-top-right-radius: 5px;  border-top-left-radius: 5px;"
+                            role="presentation">
+                            <a href="#profile" aria-controls="profile" role="tab" data-toggle="tab"
+                               style="margin: 0"><i
+                                    style="margin-right: 3px;" class="fa fa-credit-card-alt" aria-hidden="true"></i>
+                                Pay
+                                Online</a></li>
+                    </ul>
+
+                    <!-- Tab panes -->
+                    <div style="background-color: rgba(255, 255, 255, 0.25); padding: 10px; border-radius: 5px;"
+                         class="tab-content">
+                        <div role="tabpanel" class="tab-pane active" id="home">
+                            <br/>
+                            <p style="text-align: left; color: dimgrey;">If you wish to pay in store, your booking
+                                details
+                                will be sent to restaurant for confirmation.
+                                We will you notify you by e-mail once your booking gets accepted.</p>
+                            <div class="text-right">
+                                <button type="button" class="btn btn-success"><i class="fa fa-check-circle"
+                                                                                 aria-hidden="true"></i> Confirm
+                                    Booking
+                                </button>
+                            </div>
+                        </div>
+                        <div role="tabpanel" class="tab-pane" id="profile">
+                            <br/>
+                            <form id="checkout-form">
+                                <p style="color: dimgray; text-align: left;">Credit / Debit Card Payment</p>
+                                <div class="row">
+                                    <div class="form-group col-md-12">
+                                        <input type="text" class="form-control" id="cardholder-name"
+                                               placeholder="Card Holder Name">
+                                    </div>
+                                    <div class="form-group col-md-12">
+                                        <input class="form-control" id="card-number" placeholder="Card Number"/>
+                                    </div>
+                                    <div class="form-group col-xs-6 col-md-4">
+                                        <select class="form-control" id="exp-date">
+                                            <option>Month</option>
+                                            <option value="01">Jan (01)</option>
+                                            <option value="02">Feb (02)</option>
+                                            <option value="03">Mar (03)</option>
+                                            <option value="04">Apr (04)</option>
+                                            <option value="05">May (05)</option>
+                                            <option value="06">June (06)</option>
+                                            <option value="07">July (07)</option>
+                                            <option value="08">Aug (08)</option>
+                                            <option value="09">Sep (09)</option>
+                                            <option value="10">Oct (10)</option>
+                                            <option value="11">Nov (11)</option>
+                                            <option value="12">Dec (12)</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="form-group col-xs-6 col-md-4">
+                                        <select class="form-control" id="exp-date">
+                                            <option value="17">2017</option>
+                                            <option value="18">2018</option>
+                                            <option value="19">2019</option>
+                                            <option value="20">2020</option>
+                                            <option value="21">2021</option>
+                                            <option value="22">2022</option>
+                                            <option value="23">2023</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="form-group col-xs-6 col-md-4">
+                                        <input class="form-control" placeholder="CVV" id="cvv"/>
+                                    </div>
+                                </div>
+                                <div class="text-right">
+                                    <p style="color: dimgrey;">3D Secure checkout will be used to verify the
+                                        payment.</p>
+                                    <button type="button" class="btn btn-success"> Proceed to Payment
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
 
 
-    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
 
 
 {% endblock %}
 
 {% block footerscripts %}
     <script>
-
         // Search hit
         $('#location').keydown(function (e) {
             if (e.which == 13 && $('.pac-container:visible').length) return false;
         });
-
         //Menu Button
         var item = 0;
-
         $("#addItem").click(function () {
             item = item + 1;
             if (item > 0) {
                 $("#count").text(item);
             }
         });
-
         $("#removeItem").click(function () {
             item = item - 1;
             if (item > 0) {
@@ -563,27 +581,35 @@
                 $("#count").text("");
             }
         });
-
         $("#addOption").click(function () {
             $("#countOption").text("✔");
         });
-
         $("#removeOption").click(function () {
             $("#countOption").text("");
         });
-
         // About the place
         var place_data = {{ google_place_data | safe }}['result'];
         var placeName = place_data['name'];
         var photoSrc = place_data['photos'][0]['photo_reference']
         var placeType = place_data['types'][0].charAt(0).toUpperCase() + place_data['types'][0].slice(1);
+        var placeAddr = place_data['adr_address'];
         var workingHours = place_data['opening_hours']['weekday_text'];
-
+        var openNow = place_data['opening_hours']['open_now'];
+        var workingHoursText = "";
+        jQuery.each(workingHours, function () {
+            workingHoursText += this + '<br />';
+        });
         document.getElementById('place_name').innerHTML = placeName;
         document.getElementById('place_photo').src = photoSrc;
         document.getElementById('place_type').innerHTML = placeType;
-        document.getElementById('working_hours').innerHTML = workingHours;
-
+        document.getElementById('place_addr').innerHTML = placeAddr;
+        document.getElementById('working_hours').innerHTML = workingHoursText;
+        if (openNow == 'true') {
+            openNow = '<b style="color:red">Closed</b>';
+        } else {
+            openNow = '<b style="color:green">Open</b>';
+        }
+        document.getElementById('openNow').innerHTML = openNow;
         var placeRating = '<b style="color:red">Bad</b>';
         if (place_data['rating'] >= 4.5) {
             placeRating = '<b style="color:green">Excellent</b>';
@@ -594,32 +620,31 @@
         }
         var placeRatingText = 'This place has been rated as ' + placeRating + '.';
         document.getElementById('place_rating').innerHTML = placeRatingText;
-
-
-        // Countdown
-        var upgradeTime = 300;
-        var seconds = upgradeTime;
-        function timer() {
-            var days = Math.floor(seconds / 24 / 60 / 60);
-            var hoursLeft = Math.floor((seconds) - (days * 86400));
-            var hours = Math.floor(hoursLeft / 3600);
-            var minutesLeft = Math.floor((hoursLeft) - (hours * 3600));
-            var minutes = Math.floor(minutesLeft / 60);
-            var remainingSeconds = seconds % 60;
-            if (remainingSeconds < 10) {
-                remainingSeconds = "0" + remainingSeconds;
+        {% if not user.is_anonymous %}
+            // Countdown
+            var upgradeTime = 300;
+            var seconds = upgradeTime;
+            function timer() {
+                var days = Math.floor(seconds / 24 / 60 / 60);
+                var hoursLeft = Math.floor((seconds) - (days * 86400));
+                var hours = Math.floor(hoursLeft / 3600);
+                var minutesLeft = Math.floor((hoursLeft) - (hours * 3600));
+                var minutes = Math.floor(minutesLeft / 60);
+                var remainingSeconds = seconds % 60;
+                if (remainingSeconds < 10) {
+                    remainingSeconds = "0" + remainingSeconds;
+                }
+                document.getElementById('countdown').innerHTML = minutes + ":" + remainingSeconds;
+                if (seconds == 0) {
+                    clearInterval(countdownTimer);
+                    document.getElementById('countdown-text').innerHTML = "Your table booking has <b>expired</b>. ";
+                    document.getElementById('alert').className = "alert alert-danger alert-dismissible fade in";
+                } else {
+                    seconds--;
+                }
             }
-            document.getElementById('countdown').innerHTML = minutes + ":" + remainingSeconds;
-            if (seconds == 0) {
-                clearInterval(countdownTimer);
-                document.getElementById('countdown-text').innerHTML = "Your table booking has <b>expired</b>. ";
-                document.getElementById('alert').className = "alert alert-danger alert-dismissible fade in";
-            } else {
-                seconds--;
-            }
-        }
-        var countdownTimer = setInterval('timer()', 1000);
-
+            var countdownTimer = setInterval('timer()', 1000);
+        {% endif %}
         // Set current date
         document.getElementById('date').value = new Date().toJSON().slice(0, 10);
         // Show current time only
@@ -639,22 +664,18 @@
                 });
             }
         });
-
         // Restaurant search
         function initSearch() {
             var input = (document.getElementById('location'));
             var options = {
                 types: ['establishment']
             };
-
             var autocomplete = new google.maps.places.Autocomplete(input, options);
             autocomplete.addListener('place_changed', function () {
-
                 var place = autocomplete.getPlace();
                 $("#location_id").val(place.place_id);
             });
         }
-
     </script>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBCinQHLTxOHgFXAFHjsftWjucn2cI3yWg&libraries=places&callback=initSearch"
             async defer>
