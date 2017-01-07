@@ -189,17 +189,18 @@ def shop_orders(request):
     restaurant = Restaurant.objects.all().filter(user=user)
 
     if restaurant:
-        active_orders = Order.objects.all().filter(restaurant=restaurant).filter(status=1)
-        completed_orders = Order.objects.all().filter(restaurant=restaurant).filter(status=4)
+        accepted_orders = Order.objects.all().filter(restaurant=restaurant).filter(status=1)
+        completed_orders = Order.objects.all().filter(restaurant=restaurant).filter(status=3)
         total_orders = Order.objects.all().filter(restaurant=restaurant)
-
+        pending_orders = Order.objects.all().filter(restaurant=restaurant).filter(status=0)
 
 
         context = {'restaurant_is_available': restaurant[0].is_available,
                    'restaurant_name': restaurant[0].name,
                    'restaurant_pop': restaurant[0].popularity,
-                   'active_orders': len(active_orders),
+                   'accepted_orders': len(accepted_orders),
                    'completed_orders': len(completed_orders),
+                   'pending_orders': len(pending_orders),
                    'total_orders': len(total_orders)
                    }
     else:

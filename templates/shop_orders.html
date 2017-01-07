@@ -76,8 +76,7 @@
 
                 <div class="container block" id="title">
                     <h1>{{ restaurant_name }}</h1>
-                    <p style="margin-top: 8px;">We are currently <b>accepting</b> orders and our popularity is set to
-                        <b>not busy</b>.</p>
+                    <p style="margin-top: 8px;">You should keep your shop profile <b>up-to-date</b> for the best customer experience.</p>
                 </div>
 
                 <div class="container block" id="settings">
@@ -85,10 +84,10 @@
 
                     <div class="row">
                         <div class="col-md-6 text-left">
-                            <p>Active Orders: 5
-                                <br/>Pending Orders: 3
-                                <br/>Completed Orders: 4
-                                <br/>Total Orders: 12
+                            <p>Pending Orders: {{ pending_orders }}
+                                <br />Accepted Orders: {{ accepted_orders }}
+                                <br/>Completed Orders: {{ completed_orders }}
+                                <br/>Total Orders: {{ total_orders }}
                         </div>
                         <div class="col-md-1"></div>
                         <div class="col-md-5">
@@ -158,6 +157,11 @@
                         </thead>
                     </table>
                 </div>
+
+                <div class="container block" id="orders">
+                    <h1>Menu Editor</h1>
+                    <br/>
+                </div>
             </div>
         </div>
     </header>
@@ -170,7 +174,7 @@
 
         function updateReq(data) {
             $.ajax({
-                url: 'http://localhost:8000/api/v1/restaurant/',
+                url: '/api/v1/restaurant/',
                 type: 'POST',
                 contentType: 'application/json',
                 data: JSON.stringify(data),
@@ -183,10 +187,16 @@
 
             if ("{{ restaurant_is_available | safe }}" == "True") {
                 document.getElementById("accept_label").style.opacity = 1;
-                document.getElementById("not_accept_label").style.opacity = 0.5;
             } else {
-                document.getElementById("accept_label").style.opacity = 0.5;
                 document.getElementById("not_accept_label").style.opacity = 1;
+            }
+
+            if ("{{ restaurant_pop | safe }}" == "0") {
+                document.getElementById("not_busy_label").style.opacity = 1;
+            } else if ("{{ restaurant_pop | safe }}" == "1") {
+                document.getElementById("busy_label").style.opacity = 1;
+            } else {
+                document.getElementById("very_busy_label").style.opacity = 1;
             }
 
 
@@ -205,16 +215,19 @@
                 document.getElementById("not_busy_label").style.opacity = 1;
                 document.getElementById("busy_label").style.opacity = 0.5;
                 document.getElementById("very_busy_label").style.opacity = 0.5;
+                updateReq({'popularity': 0});
             })
             $('#set_busy').on('click', function () {
                 document.getElementById("not_busy_label").style.opacity = 0.5;
                 document.getElementById("busy_label").style.opacity = 1;
                 document.getElementById("very_busy_label").style.opacity = 0.5;
+                updateReq({'popularity': 1});
             })
             $('#set_very_busy').on('click', function () {
                 document.getElementById("not_busy_label").style.opacity = 0.5;
                 document.getElementById("busy_label").style.opacity = 0.5;
                 document.getElementById("very_busy_label").style.opacity = 1;
+                updateReq({'popularity': 2});
             })
 
             var orders_table = $('#example').DataTable({
@@ -244,23 +257,25 @@
                         switch (status) {
                             case 0:
                                 label.class = 'info';
-                                label.text = 'New';
+                                label.text = 'Pending';
                                 break;
 
                             case 1:
-                                label.class = 'info';
-                                label.text = 'Pending';
+                                label.class = 'warning';
+                                label.text = 'Active';
                                 break;
 
                             case 2:
                                 label.class = 'danger';
-                                label.text = 'Failed';
+                                label.text = 'Cancelled';
                                 break;
 
                             case 3:
                                 label.class = 'success';
-                                label.text = 'Finished';
+                                label.text = 'Completed';
                                 break;
+
+
                         }
 
                         orders_table.row.add([id, date, restaurant_name, objects[i]['amount'], [label.text, label.class]]).draw();
