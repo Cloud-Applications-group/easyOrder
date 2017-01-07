@@ -181,6 +181,15 @@
 
         $(document).ready(function () {
 
+            if ("{{ restaurant_is_available | safe }}" == "True") {
+                document.getElementById("accept_label").style.opacity = 1;
+                document.getElementById("not_accept_label").style.opacity = 0.5;
+            } else {
+                document.getElementById("accept_label").style.opacity = 0.5;
+                document.getElementById("not_accept_label").style.opacity = 1;
+            }
+
+
             $('#accept_orders').on('click', function () {
                 document.getElementById("accept_label").style.opacity = 1;
                 document.getElementById("not_accept_label").style.opacity = 0.5;

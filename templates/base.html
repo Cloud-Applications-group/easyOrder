@@ -106,7 +106,7 @@
                 <span class="icon-bar"></span>
             </button>
             <a href="/"><h1 style="margin-top: 10px;">
-                <!--<img style="opacity: 0.6" height="40px" src="/static/img/logo.png"/>-->EasyOrder</h1></a>
+                EasyOrder</h1></a>
         </div>
         <div id="navbar" class="navbar-collapse collapse" aria-expanded="false" style="height: 0.666667px;">
             <ul class="nav navbar-nav navbar-right">
@@ -118,12 +118,12 @@
                         <ul class="dropdown-menu">
                             <li><a href="/profile"><span
                                     style="font-size: 20px; "><i class="fa fa-user-circle-o" aria-hidden="true"
-                                                                 style="font-size: 20px; margin-right:15px;"></i> Profile</span></a>
+                                                                 style="font-size: 20px; margin-right:15px;"></i> My Profile</span></a>
                             </li>
                             {% if restaurant %}
                             <li><a href="/shoporders"><span
                                     style="font-size: 20px; "><i class="fa fa-cutlery" aria-hidden="true"
-                                                                 style="font-size: 20px; margin-right:15px;"></i> Restaurant</span></a>
+                                                                 style="font-size: 20px; margin-right:15px;"></i> My Restaurant</span></a>
                             </li>
                             {% endif %}
                             <li><a href="{% url 'auth:logout' %}?next={{ request.path }}"><span
