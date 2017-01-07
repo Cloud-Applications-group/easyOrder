@@ -218,7 +218,7 @@
 
             <div style="background-color: rgba(0,0,0,0.5); border-radius: 10px; margin-top: 15px; padding: 0px"
                  class="col-md-12">
-                {% if not user.is_anonymous %}
+                {% if not user.is_anonymous and is_available == 'true' %}
                     <div id="alert" style="margin: 20px;" class="alert alert-success alert-dismissible fade in"
                          role="alert">
                         <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span
@@ -227,12 +227,20 @@
                                 id="countdown">5:00</span>.
                         </h4>
                     </div>
-                {% else %}
+                {% elif user.is_anonymous %}
                     <div id="alert" style="margin: 20px;" class="alert alert-warning alert-dismissible fade in"
                          role="alert">
                         <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span
                                 aria-hidden="true">×</span></button>
                         <h4 id="countdown-text" style="margin: 0px;">You need to login first to start ordering.
+                        </h4>
+                    </div>
+                {% else %}
+                    <div id="alert" style="margin: 20px;" class="alert alert-danger alert-dismissible fade in"
+                         role="alert">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span
+                                aria-hidden="true">×</span></button>
+                        <h4 id="countdown-text" style="margin: 0px;">Restaurant is currently not accepting orders from EasyOrder.
                         </h4>
                     </div>
                 {% endif %}
@@ -309,7 +317,7 @@
                                                                         {% for option in item.item_options %}
                                                                             <div class="menu-item-price">
                                                                                 £ {{ option.price }}</div>
-                                                                            {% if not user.is_anonymous %}
+                                                                            {% if not user.is_anonymous and is_available == 'true' %}
                                                                                 <span>
 																					<button id="addItem"
                                                                                             style="margin-left: 5px; height:auto; width:auto; background: transparent; border:none"><i
@@ -337,15 +345,16 @@
                                                                                     </div>
                                                                                     <div class="menu-item-option-price">
                                                                                         £ {{ option.price }}
-                                                                                    </div>{% if not user.is_anonymous %}
-                                                                                    <button id="addOption"
-                                                                                            style="margin-left: 5px; height:auto; width:auto; background: transparent; border:none">
-                                                                                        <i class="fa fa-plus-circle"
-                                                                                           aria-hidden="true"
-                                                                                           style="color:#5cb85c;"></i>
-                                                                                    </button>
-                                                                                    </span>
-                                                                                    <span>
+                                                                                    </div>
+                                                                                    {% if not user.is_anonymous and is_available == 'true' %}
+                                                                                        <button id="addOption"
+                                                                                                style="margin-left: 5px; height:auto; width:auto; background: transparent; border:none">
+                                                                                            <i class="fa fa-plus-circle"
+                                                                                               aria-hidden="true"
+                                                                                               style="color:#5cb85c;"></i>
+                                                                                        </button>
+                                                                                        </span>
+                                                                                        <span>
                                                                                         <button id="removeOption"
                                                                                                 style="height:auto; width:auto; background: transparent; border:none"><i
                                                                                                 class="fa fa-minus-circle"
@@ -371,7 +380,7 @@
                             <p>No menu exists for this restaurant.</p>
                         {% endif %}
                     </p>
-                    {% if not user.is_anonymous %}
+                    {% if not user.is_anonymous and is_available == 'true' %}
                         <button type="button" class="btn btn-primary btn-success" data-toggle="modal"
                                 data-target="#checkoutModal" style="margin-bottom:15px; float: right;"><i
                                 class="fa fa-check"
@@ -637,7 +646,7 @@
         document.getElementById('place_rating').innerHTML = placeRatingText;
 
 
-        {% if not user.is_anonymous %}
+        {% if not user.is_anonymous and is_available == 'true' %}
             // Countdown
             var upgradeTime = 300;
             var seconds = upgradeTime;

@@ -76,7 +76,8 @@
 
                 <div class="container block" id="title">
                     <h1>{{ restaurant_name }}</h1>
-                    <p style="margin-top: 8px;">You should keep your shop profile <b>up-to-date</b> for the best customer experience.</p>
+                    <p style="margin-top: 8px;">You should keep your shop profile <b>up-to-date</b> for the best
+                        customer experience.</p>
                 </div>
 
                 <div class="container block" id="settings">
@@ -85,7 +86,7 @@
                     <div class="row">
                         <div class="col-md-6 text-left">
                             <p>Pending Orders: {{ pending_orders }}
-                                <br />Accepted Orders: {{ accepted_orders }}
+                                <br/>Accepted Orders: {{ accepted_orders }}
                                 <br/>Completed Orders: {{ completed_orders }}
                                 <br/>Total Orders: {{ total_orders }}
                         </div>
@@ -101,12 +102,12 @@
                                              data-toggle="buttons">
                                             <label id="accept_label" class="btn btn-success active"
                                                    style="opacity: 0.5; !important;">
-                                                <span type="radio" name="options" id="accept_orders" autocomplete="off"
+                                                <span type="radio" name="options" autocomplete="off"
                                                 > Yes </span>
                                             </label>
                                             <label id="not_accept_label" class="btn btn-danger"
                                                    style="opacity: 0.5; !important;">
-                                                <span type="radio" name="options" id="not_accept_orders"
+                                                <span type="radio" name="options"
                                                       autocomplete="off"> No </span>
                                             </label>
                                         </div>
@@ -119,18 +120,18 @@
                                         <div class="btn-group" style=" margin: 10px;" data-toggle="buttons">
                                             <label id="not_busy_label" class="btn btn-success active"
                                                    style="opacity: 0.5; !important;">
-                                                <span id="set_not_busy" type="radio" name="options" id="set_not_busy"
+                                                <span type="radio" name="options" id="set_not_busy"
                                                       autocomplete="off"
-                                                      checked> Not </span>
+                                                      checked> Not Busy</span>
                                             </label>
                                             <label id="busy_label" class="btn btn-warning"
                                                    style="opacity: 0.5; !important;">
-                                                <span type="radio" name="options" id="set_busy" autocomplete="off">
+                                                <span type="radio" name="options" autocomplete="off">
                                                 Busy </span>
                                             </label>
                                             <label id="very_busy_label" class="btn btn-danger"
                                                    style="opacity: 0.5; !important;">
-                                                <span type="radio" name="options" id="set_very_busy"
+                                                <span type="radio" name="options"
                                                       autocomplete="off"> Very Busy </span>
                                             </label>
                                         </div>
@@ -150,7 +151,7 @@
                         <tr style="color: white;">
                             <th>ID</th>
                             <th>Date</th>
-                            <th>Restaurant</th>
+                            <th>User</th>
                             <th>Amount</th>
                             <th>Status</th>
                         </tr>
@@ -200,30 +201,30 @@
             }
 
 
-            $('#accept_orders').on('click', function () {
+            $('#accept_label').on('click', function () {
                 document.getElementById("accept_label").style.opacity = 1;
                 document.getElementById("not_accept_label").style.opacity = 0.5;
                 updateReq({'is_available': true});
             })
-            $('#not_accept_orders').on('click', function () {
+            $('#not_accept_label').on('click', function () {
                 document.getElementById("accept_label").style.opacity = 0.5;
                 document.getElementById("not_accept_label").style.opacity = 1;
                 updateReq({'is_available': false});
             })
 
-            $('#set_not_busy').on('click', function () {
+            $('#not_busy_label').on('click', function () {
                 document.getElementById("not_busy_label").style.opacity = 1;
                 document.getElementById("busy_label").style.opacity = 0.5;
                 document.getElementById("very_busy_label").style.opacity = 0.5;
                 updateReq({'popularity': 0});
             })
-            $('#set_busy').on('click', function () {
+            $('#busy_label').on('click', function () {
                 document.getElementById("not_busy_label").style.opacity = 0.5;
                 document.getElementById("busy_label").style.opacity = 1;
                 document.getElementById("very_busy_label").style.opacity = 0.5;
                 updateReq({'popularity': 1});
             })
-            $('#set_very_busy').on('click', function () {
+            $('#very_busy_label').on('click', function () {
                 document.getElementById("not_busy_label").style.opacity = 0.5;
                 document.getElementById("busy_label").style.opacity = 0.5;
                 document.getElementById("very_busy_label").style.opacity = 1;
@@ -250,7 +251,7 @@
                     for (var i in objects) {
                         var id = objects[i]['id'];
                         var date = objects[i]['date_time'];
-                        var restaurant_name = objects[i]['restaurant']['name'];
+                        var user_name = objects[i]['user']['username'];
                         var status = objects[i].status;
                         var label = {};
 
@@ -278,7 +279,7 @@
 
                         }
 
-                        orders_table.row.add([id, date, restaurant_name, objects[i]['amount'], [label.text, label.class]]).draw();
+                        orders_table.row.add([id, date, user_name, objects[i]['amount'], [label.text, label.class]]).draw();
 
                     }
                 });
