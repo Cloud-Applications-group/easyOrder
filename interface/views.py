@@ -138,10 +138,15 @@ def place(request):
 
     user = request.user
 
+
     location_id = request.GET.get('place_id')
     date = request.GET.get('date')
     num_people = request.GET.get('numPeople')
     time = request.GET.get('time')
+
+    restaurant = Restaurant.objects.all().filter(location_id=location_id)
+    is_available = restaurant[0].is_available
+    popularity = restaurant[0].popularity
 
     # redirect to home page if no location id is given
     if not location_id:
@@ -156,7 +161,9 @@ def place(request):
         'menu': menu,
         'date': date,
         'num_people': num_people,
-        'time': time
+        'time': time,
+        'is_available': is_available,
+        'popularity': popularity
     }
     if not user.is_anonymous:
         context['restaurant'] = Restaurant.objects.all().filter(user=request.user)
