@@ -6,7 +6,7 @@
     {% if error %}
         {{ error }}
     {% else %}
-        
+
 
     {% endif %}
 
@@ -14,6 +14,15 @@
 
 {% block footerscripts  %}
     <script>
+
+
+     $.getJSON('/api/v1/rest_order/?format=json', function(response) {
+            var objects = response.objects;
+            for (var i in objects) {
+                    console.log(i)
+
+                }
+        });
 
 
     </script>

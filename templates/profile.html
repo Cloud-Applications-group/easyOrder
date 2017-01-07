@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+
+{% block content %}
+
+
+    <header>
+        <div class="header-content">
+            <div class="header-content-inner">
+
+            </div>
+        </div>
+    </header>
+
+
+{% endblock %}
+
+{% block footerscripts  %}
+    <script>
+
+     $.getJSON('/api/v1/user_order/?format=json', function(response) {
+            var objects = response.objects;
+            for (var i in objects) {
+                    console.log(i)
+
+                }
+        });
+
+
+    $.getJSON('/api/v1/user_restaurant/?format=json', function(response) {
+                var objects = response.objects;
+                for (var i in objects) {
+                        console.log(i)
+
+                    }
+            });
+
+
+    </script>
+
+{% endblock %}

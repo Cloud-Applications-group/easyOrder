@@ -8,7 +8,7 @@ from django.contrib.auth import login as auth_login
 from django.shortcuts import render
 from django.template import RequestContext
 from django.views.decorators.csrf import csrf_protect
-from .models import Restaurant
+from .models import Restaurant, Order
 from utils import google_place_details
 
 
@@ -188,3 +188,17 @@ def shop_orders(request):
         context['error'] = True
 
     return render(request, 'shop_orders.html', context)
+
+
+@login_required
+def profile(request):
+    context = {}
+    user = request.user
+    restaurant = Restaurant.objects.all().filter(user=user)
+    orders = Order.objects.all().filter(user=user)
+
+    context['orders'] = orders
+    context['restaurant'] = restaurant
+
+
+    return render(request, 'profile.html', context)

@@ -8,7 +8,7 @@ from tastypie import fields
 
 
 
-class OrderResource(ModelResource):
+class RestaurantOrderResource(ModelResource):
 
     def apply_filters(self, request, applicable_filters):
 
@@ -22,7 +22,43 @@ class OrderResource(ModelResource):
 
     class Meta:
         queryset = Order.objects.all()
-        resource_name = 'order'
+        resource_name = 'rest_order'
+        excludes = ['user']
+
+
+class UserOrderResource(ModelResource):
+
+    def apply_filters(self, request, applicable_filters):
+
+        user = request.user
+        if request.user.is_anonymous():
+            return Order.objects.none()
+        order = Order.objects.all().filter(user=user)
+        return order
+
+
+    class Meta:
+        queryset = Order.objects.all()
+        resource_name = 'user_order'
+        excludes = ['user']
+
+
+class UserRestaurantResource(ModelResource):
+
+    def apply_filters(self, request, applicable_filters):
+
+        user = request.user
+        if request.user.is_anonymous():
+            return Order.objects.none()
+        rest = Restaurant.objects.all().filter(user=user)
+        return rest
+
+
+    class Meta:
+        queryset = Restaurant.objects.all()
+        resource_name = 'user_restaurant'
+        excludes = ['user']
+
 
 
 
