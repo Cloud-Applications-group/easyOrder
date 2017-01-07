@@ -4,7 +4,7 @@ from interface.models import *
 from tastypie.constants import ALL
 from tastypie.constants import ALL_WITH_RELATIONS
 from tastypie import fields
-from tastypie.authorization import Authorization
+from tastypie.authorization import ReadOnlyAuthorization, Authorization
 
 
 
@@ -33,9 +33,7 @@ class RestaurantResource(ModelResource):
                 for i in keys:
                     restaurant.update(**{i : bundle.data.get(i)})
 
-
-
-        return bundle
+        return Exception("Updated")
 
 
     class Meta:
