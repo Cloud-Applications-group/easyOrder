@@ -170,6 +170,17 @@ function delete_preceeding_char(str, chr) {
     }
     return null;
 }
+function updateReqMenu(data) {
+    $.ajax({
+        url: '/api/v1/menu/',
+        type: 'POST',
+        contentType: 'application/json',
+        data: JSON.stringify(data),
+        dataType: 'json',
+        processData: false
+    });
+}
+
 function convert_to_JSON() {
     temp_sections = [];
     temp_items = [];
@@ -207,8 +218,8 @@ function convert_to_JSON() {
         if (i < temp_sections.length - 1) JSON += ',';
     }
     JSON += ']}]}';
-    console.log(JSON);
-    return JSON;
+    console.log("Sending menu...");
+    updateReqMenu(JSON);
 }
 function proper_case(str) {
     str = str.toLowerCase().split(' ').map(function (word) {
