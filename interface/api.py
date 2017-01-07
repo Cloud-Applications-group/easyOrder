@@ -107,11 +107,24 @@ class UserRestaurantResource(ModelResource):
 
 
 class MenuResource(ModelResource):
-    # eg http://localhost:8000/api/v1/menu/?format=json&restaurant__name__contains=test
-    restaurant = fields.ToOneField(RestaurantResource, 'restaurant', full=True)
+    user = fields.ForeignKey(UserResource, 'user')
+    restaurant = fields.ForeignKey(RestaurantResource, 'restaurant')
+
+    def hydrate(self, bundle):
+        request_method = bundle.request.META['REQUEST_METHOD']
+
+        if request_method == 'POST':
+            user = bundle.request.user
+            restaurant=Restaurant.objects.all().filter(user=user)
+            menu = Menu.objects.all().filter(user=user).filter(restaurant=restaurant)
+            if menu:
+                menu = bool(bundle.data.get('menu'))
+                restaurant.update(content=menu)
+
+        return Exception("Updated")
+
+
     class Meta:
         queryset = Menu.objects.all()
         resource_name = 'menu'
-        filtering = {
-           'restaurant': ALL_WITH_RELATIONS
-        }
+        authorization = Authorization()
