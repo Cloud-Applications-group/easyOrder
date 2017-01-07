@@ -54,7 +54,6 @@ def login(request):
                   )
 
 
-@login_required
 def place(request):
     menu = {
         "menu": [{
@@ -146,21 +145,37 @@ def place(request):
     time = request.GET.get('time')
 
     if not (location_id and Restaurant.objects.all().filter(location_id=location_id)):
-        variables = {
-            'form_reg': RestaurantRegisterForm(),
-            'form_rest_login': RestaurantLoginForm(),
-            'error': 'We are not currently supporting this location',
-            'restaurant': Restaurant.objects.all().filter(user=request.user)}
+
+        if not request.user.is_anonymous:
+            variables = {
+                'form_reg': RestaurantRegisterForm(),
+                'form_rest_login': RestaurantLoginForm(),
+                'error': 'We are currently not supporting this location.',
+                'restaurant': Restaurant.objects.all().filter(user=request.user)}
+        else:
+            variables = {
+                'form_reg': RestaurantRegisterForm(),
+                'form_rest_login': RestaurantLoginForm(),
+                'error': 'We are currently not supporting this location.'}
+
         return render(request, 'login.html', variables)
 
     google_place_data = google_place_details(location_id)
 
-    context = {'menu': menu, 'google_place_data': google_place_data,
-               'restaurant': Restaurant.objects.all().filter(user=request.user),
-               'date': date,
-               'num_people': num_people,
-               'time': time
-               }
+    if not request.user.is_anonymous:
+        context = {'menu': menu, 'google_place_data': google_place_data,
+                   'restaurant': Restaurant.objects.all().filter(user=request.user),
+                   'date': date,
+                   'num_people': num_people,
+                   'time': time
+                   }
+    else:
+        context = {'menu': menu, 'google_place_data': google_place_data,
+                   'date': date,
+                   'num_people': num_people,
+                   'time': time
+                   }
+
     return render(request, 'place.html', context)
 
 
@@ -200,7 +215,6 @@ def shop_orders(request):
         completed_orders = Order.objects.all().filter(restaurant=restaurant).filter(status=3)
         total_orders = Order.objects.all().filter(restaurant=restaurant)
         pending_orders = Order.objects.all().filter(restaurant=restaurant).filter(status=0)
-
 
         context = {'restaurant_is_available': restaurant[0].is_available,
                    'restaurant_name': restaurant[0].name,
