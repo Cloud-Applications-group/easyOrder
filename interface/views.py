@@ -145,8 +145,20 @@ def place(request):
     time = request.GET.get('time')
 
     restaurant = Restaurant.objects.all().filter(location_id=location_id)
-    is_available = restaurant[0].is_available
+    if restaurant[0].is_available:
+        is_available = 'Opened'
+    else:
+        is_available = 'Closed'
+
     popularity = restaurant[0].popularity
+    if popularity == 0:
+        popularity = 'Not Busy'
+    elif popularity == 1:
+        popularity = 'Busy'
+    elif popularity == 2:
+        popularity = 'Very Busy'
+
+
 
     # redirect to home page if no location id is given
     if not location_id:
