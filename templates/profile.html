@@ -20,7 +20,7 @@
                         <th>Date</th>
                         <th>Restaurant</th>
                         <th>Amount</th>
-                        <th>Status</th
+                        <th>Status</th>
                     </tr>
                 </thead>
                 <tfoot>
@@ -34,6 +34,13 @@
                 </tfoot>
                 </table>
             </div>
+            {% if restaurant %}
+                <div class="header-content-inner" style="background-color: #5cb85c">
+                    <a href="/shoporders"><h1>Restaurant</h1></a>
+
+                </div>
+            {% endif %}
+
         </div>
     </header>
 

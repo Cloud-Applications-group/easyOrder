@@ -23,6 +23,7 @@ class RestaurantResource(ModelResource):
 
 
 class RestaurantOrderResource(ModelResource):
+    restaurant = fields.ForeignKey(RestaurantResource, 'restaurant', full=True)
 
     def apply_filters(self, request, applicable_filters):
 
