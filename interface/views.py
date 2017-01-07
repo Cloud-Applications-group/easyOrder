@@ -5,7 +5,7 @@ from django.contrib.auth import login as auth_login
 from django.views.decorators.csrf import csrf_protect
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
-from .models import Restaurant, Order
+from .models import Restaurant, Order, Menu
 from utils import google_place_details
 
 
@@ -25,11 +25,16 @@ def login(request):
                 username=form_reg.cleaned_data['username'],
                 password=form_reg.cleaned_data['password1'],
             )
-            Restaurant.objects.create(
+            restaurant = Restaurant.objects.create(
                 user=user,
                 location_id=form_reg.cleaned_data['location_id'],
                 info='{}',
                 name=form_reg.cleaned_data['shop_name']
+            )
+            Menu.objects.create(
+                user = user,
+                restaurant = restaurant,
+                menu = "{}"
             )
             return HttpResponseRedirect('/')
         elif form_log.is_valid():
@@ -234,7 +239,8 @@ def shop_orders(request):
                    'total_orders': len(total_orders)
                    }
     else:
-        context['error'] = True
+        context['error'] = "You do not own a shop mate!"
+        return render(request, 'login.html', context)
 
     return render(request, 'shop_orders.html', context)
 
