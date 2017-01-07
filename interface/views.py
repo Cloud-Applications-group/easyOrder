@@ -11,6 +11,12 @@ from utils import google_place_details
 
 @csrf_protect
 def login(request):
+
+    variables = {
+        'form_reg': RestaurantRegisterForm(),
+        'form_rest_login': RestaurantLoginForm()
+    }
+
     if request.method == 'POST':
         form_reg = RestaurantRegisterForm(request.POST)
         form_log = RestaurantLoginForm(request.POST)
@@ -35,12 +41,11 @@ def login(request):
                 auth_login(request, user)
                 return HttpResponseRedirect('/profile')
             else:
-                return HttpResponseRedirect('/')
-
-    variables = {
-        'form_reg': RestaurantRegisterForm(),
-        'form_rest_login': RestaurantLoginForm()
-    }
+                variables['error'] = 'Login Failed. Incorrect username or password.'
+                return render(request,
+                              'login.html',
+                              variables,
+                              )
 
     if not request.user.is_anonymous:
         variables['restaurant'] = Restaurant.objects.all().filter(user=request.user)
@@ -140,6 +145,10 @@ def place(request):
 
 
     location_id = request.GET.get('place_id')
+
+    if not location_id:
+        return HttpResponseRedirect('/')
+
     date = request.GET.get('date')
     num_people = request.GET.get('numPeople')
     time = request.GET.get('time')
@@ -157,12 +166,6 @@ def place(request):
         popularity = '<b style="color:orange">busy</b>'
     elif popularity == 2:
         popularity = '<b style="color:red">very busy</b>'
-
-
-
-    # redirect to home page if no location id is given
-    if not location_id:
-        return HttpResponseRedirect('/')
 
     google_place_data = google_place_details(location_id)
 
