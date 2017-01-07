@@ -134,23 +134,27 @@
         <header style="background-color: white;">
             <div class="container">
                 <div class="row">
-                    <form action="/home" method="GET">
+                    <form id="searchForm" action="/place" method="GET">
                         <div class="col-md-12" style="padding-bottom: 20px; padding-top: 80px;">
                             <div class="input-group">
-                    <span class="input-group-addon transparentClass"><i class="fa fa-cutlery fa-lg"
-                                                                        aria-hidden="true"></i></span>
+                         <span class="input-group-addon transparentClass"><i class="fa fa-cutlery fa-lg"
+                                                                             aria-hidden="true"></i></span>
                                 <input style="height: 60px; font-size: 25px" class="form-control" id="location"
                                        type="text"
                                        placeholder="Tell us your destination." required/>
-                                <input type="hidden" id="location_id" name="place_id" value="">
+                                <span style="border: 2px white; background-color: rgba(94, 184,92,0.93);cursor: pointer;"
+                                      class="input-group-addon">
+                                <input style="width: 100%; height: 100%; padding-right: 50px; border: 2px white; background-color: rgba(94, 184,92,0.0);padding-left: 50px; color: white; font-size: 28px;"
+                                       type="submit" id="submit" value="Search" required/></span>
                             </div>
+                            <input type="hidden" id="location_id" name="place_id" value="">
                         </div>
                         <div style="opacity: 0.8 !important; padding-bottom: 5px;" class="col-md-4">
                             <div class="input-group">
                     <span class="input-group-addon transparentClass"><i class="fa fa-users fa-lg"
                                                                         aria-hidden="true"></i></span>
                                 <select class="form-control search" id="numPeople" name="numPeople" required>
-                                    <option disabled selected hidden>Number of People</option>
+                                    <option value="" disabled selected hidden>Number of People</option>
                                     <option value="1">1</option>
                                     <option value="2">2</option>
                                     <option value="3">3</option>
@@ -169,7 +173,7 @@
 					<span class="input-group-addon transparentClass" id="basic-addon1"><i class="fa fa-calendar fa-lg"
                                                                                           aria-hidden="true"></i></span>
                                 <input class="form-control search" id="date" value="2017-01-01" type="date"
-                                       name="date"/>
+                                       name="date" required/>
                             </div>
                         </div>
                         <div style="opacity: 0.8 !important; padding-bottom: 5px;" class="col-md-4">
@@ -178,7 +182,7 @@
                                                                         aria-hidden="true"></i></span>
                                 <select class="form-control search" tabindex="3" id="time" aria-label="hour" name="time"
                                         required>
-                                    <option disabled selected hidden>Select Arrival Time</option>
+                                    <option value="" disabled selected hidden>Select Arrival Time</option>
                                     <option value="1100">11:00 AM</option>
                                     <option value="1130">11:30 AM</option>
                                     <option value="1200">12:00 PM</option>
@@ -275,7 +279,8 @@
                                                                 <div class="menu-item-container">
                                                                     <div class="menu-item">
                                                                         <div class="menu-item-info">
-                                                                            <div class="menu-item-title">{{ item.item_title }} <span id="count"><span/></div>
+                                                                            <div class="menu-item-title">{{ item.item_title }}
+                                                                                <span id="count"><span/></div>
                                                                             {% if item.item_description %}
                                                                                 <div class="menu-item-desc">{{ item.item_description }}</div>
                                                                             {% endif %}
@@ -284,10 +289,18 @@
                                                                             {% for option in item.item_options %}
                                                                                 <div class="menu-item-price">
                                                                                     £ {{ option.price }}</div>
-																					<span>
-																					<button id="addItem" style="margin-left: 5px; height:auto; width:auto; background: transparent; border:none"><i class="fa fa-plus-circle" aria-hidden="true" style="color:#5cb85c;"></i></button></span>
-																					<span>
-																					<button id="removeItem" style="height:auto; width:auto; background: transparent; border:none"><i class="fa fa-minus-circle" aria-hidden="true" style="color:#d9534f;"></i></button></span>
+                                                                                <span>
+																					<button id="addItem"
+                                                                                            style="margin-left: 5px; height:auto; width:auto; background: transparent; border:none"><i
+                                                                                            class="fa fa-plus-circle"
+                                                                                            aria-hidden="true"
+                                                                                            style="color:#5cb85c;"></i></button></span>
+                                                                                <span>
+																					<button id="removeItem"
+                                                                                            style="height:auto; width:auto; background: transparent; border:none"><i
+                                                                                            class="fa fa-minus-circle"
+                                                                                            aria-hidden="true"
+                                                                                            style="color:#d9534f;"></i></button></span>
                                                                             {% endfor %}
                                                                         {% endif %}
                                                                     </div>
@@ -297,14 +310,25 @@
                                                                                 {% for option in item.item_options %}
                                                                                     <div class="menu-item-option">
                                                                                         <div class="menu-item-option-name">
-                                                                                            {{ option.option_name }} <span id="countOption"></span>
+                                                                                            {{ option.option_name }}
+                                                                                            <span id="countOption"></span>
                                                                                         </div>
                                                                                         <div class="menu-item-option-price">
                                                                                             £ {{ option.price }}
                                                                                         </div>
-																						<button id="addOption" style="margin-left: 5px; height:auto; width:auto; background: transparent; border:none"><i class="fa fa-plus-circle" aria-hidden="true" style="color:#5cb85c;"></i></button></span>
-																						<span>
-																						<button id="removeOption" style="height:auto; width:auto; background: transparent; border:none"><i class="fa fa-minus-circle" aria-hidden="true" style="color:#d9534f;"></i></button></span>
+                                                                                        <button id="addOption"
+                                                                                                style="margin-left: 5px; height:auto; width:auto; background: transparent; border:none">
+                                                                                            <i class="fa fa-plus-circle"
+                                                                                               aria-hidden="true"
+                                                                                               style="color:#5cb85c;"></i>
+                                                                                        </button>
+                                                                                        </span>
+                                                                                        <span>
+																						<button id="removeOption"
+                                                                                                style="height:auto; width:auto; background: transparent; border:none"><i
+                                                                                                class="fa fa-minus-circle"
+                                                                                                aria-hidden="true"
+                                                                                                style="color:#d9534f;"></i></button></span>
                                                                                     </div>
                                                                                 {% endfor %}
                                                                             </div>
@@ -517,37 +541,39 @@
 
 {% block footerscripts %}
     <script>
-	
-		//Menu Button
-		var item = 0;
-		
-		$("#addItem").click(function () {
-		item = item + 1;
-		if(item > 0)
-		{
-			$("#count").text(item);
-		}
-		});
-		
-		$("#removeItem").click(function () {
-		item = item - 1;
-		if(item > 0)
-		{
-			$("#count").text(item);			
-		}
-		else
-		{
-			$("#count").text("");	
-		}
-		});
-		
-		$("#addOption").click(function () {
-		$("#countOption").text("✔");
-		});
-		
-		$("#removeOption").click(function () {
-		$("#countOption").text("");
-		});
+
+        // Search hit
+        $('#location').keydown(function (e) {
+            if (e.which == 13 && $('.pac-container:visible').length) return false;
+        });
+
+        //Menu Button
+        var item = 0;
+
+        $("#addItem").click(function () {
+            item = item + 1;
+            if (item > 0) {
+                $("#count").text(item);
+            }
+        });
+
+        $("#removeItem").click(function () {
+            item = item - 1;
+            if (item > 0) {
+                $("#count").text(item);
+            }
+            else {
+                $("#count").text("");
+            }
+        });
+
+        $("#addOption").click(function () {
+            $("#countOption").text("✔");
+        });
+
+        $("#removeOption").click(function () {
+            $("#countOption").text("");
+        });
 
         // About the place
         var place_data = {{ google_place_data | safe }}['result'];
@@ -644,24 +670,8 @@
 
                 var place = autocomplete.getPlace();
                 $("#location_id").val(place.place_id);
-
-                // Check if it is DB
-                $.ajax({
-                    url: "/api/v1/restaurant",
-                    type: "GET",
-                    data: {
-                        place_id: place.place_id
-                    },
-
-                    // handle a successful response
-                    success: function (data) {
-                        alert(JSON.stringify(data));
-                    },
-                });
-
             });
         }
-
 
     </script>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBCinQHLTxOHgFXAFHjsftWjucn2cI3yWg&libraries=places&callback=initSearch"

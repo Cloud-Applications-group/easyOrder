@@ -33,19 +33,20 @@ def login(request):
             username = request.POST['username']
             password = request.POST['password']
 
-            user = authenticate(username = username, password = password)
+            user = authenticate(username=username, password=password)
             if user is not None:
                 auth_login(request, user)
-                return HttpResponseRedirect('/home')
+                return HttpResponseRedirect('/profile')
             else:
                 return HttpResponseRedirect('/')
-
-
 
     variables = {
         'form_reg': RestaurantRegisterForm(),
         'form_rest_login': RestaurantLoginForm()
     }
+
+    if not request.user.is_anonymous:
+        variables['restaurant'] = Restaurant.objects.all().filter(user=request.user)
 
     return render(request,
                   'login.html',
@@ -54,7 +55,7 @@ def login(request):
 
 
 @login_required
-def homepage(request):
+def place(request):
     menu = {
         "menu": [{
             "category": [{
@@ -145,14 +146,15 @@ def homepage(request):
         variables = {
             'form_reg': RestaurantRegisterForm(),
             'form_rest_login': RestaurantLoginForm(),
-            'error': 'We are not currently supporting this location'}
+            'error': 'We are not currently supporting this location',
+            'restaurant': Restaurant.objects.all().filter(user=request.user)}
         return render(request, 'login.html', variables)
-
 
     google_place_data = google_place_details(location_id)
 
-    context = {'menu': menu, 'google_place_data' : google_place_data }
-    return render(request, 'homepage.html', context)
+    context = {'menu': menu, 'google_place_data': google_place_data,
+               'restaurant': Restaurant.objects.all().filter(user=request.user)}
+    return render(request, 'place.html', context)
 
 
 @csrf_protect
@@ -179,11 +181,13 @@ def register(request):
                   variables,
                   )
 
+
 @login_required
 def shop_orders(request):
-    context = {}
     user = request.user
     restaurant = Restaurant.objects.all().filter(user=user)
+    context = {'restaurant_is_available': restaurant[0], 'restaurant_name': restaurant[0]}
+
     if not restaurant:
         context['error'] = True
 
@@ -192,13 +196,9 @@ def shop_orders(request):
 
 @login_required
 def profile(request):
-    context = {}
+    context = {'restaurant': Restaurant.objects.all().filter(user=request.user)}
     user = request.user
-    restaurant = Restaurant.objects.all().filter(user=user)
     orders = Order.objects.all().filter(user=user)
-
     context['orders'] = orders
-    context['restaurant'] = restaurant
-
 
     return render(request, 'profile.html', context)

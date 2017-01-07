@@ -1,66 +1,107 @@
 {% extends "base.html" %}
 
+{% block customCSS %}
+
+label{
+display: none;
+}
+
+#example_info, #example_previous, #example_next{
+font-size: 20px;
+font-weight: 200;
+color: white;
+}
+
+td{
+background-color: rgba(0, 2, 18, 0.25) !important;
+}
+
+.odd {
+background-color: rgba(0, 0, 0, 0.1) !important;
+}
+
+.even {
+background-color: rgba(0, 0, 0, 0.5) !important;
+}
+
+input[type='search']{
+font-size: 20px;
+font-weight: 200;
+color: white;
+border-radius: 10px;
+background-color: rgba(0, 2, 18, 0.25);
+border: 2px black;
+}
+
+select {
+font-size: 20px;
+font-weight: 200;
+color: white;
+border-radius: 10px;
+background-color: rgba(0, 2, 18, 0.25);
+border: 2px black;
+}
+
+.current {
+    display: none !important;
+}
+
+{% endblock %}
 
 {% block content %}
 
 
-     <script src="https://cdn.datatables.net/1.10.13/js/jquery.dataTables.min.js"></script>
-    <link href="https://cdn.datatables.net/1.10.13/css/jquery.dataTables.min.css" rel="stylesheet"
-          type="text/css">
+<script src="https://cdn.datatables.net/1.10.13/js/jquery.dataTables.min.js"></script>
+<link href="https://cdn.datatables.net/1.10.13/css/jquery.dataTables.min.css" rel="stylesheet"
+      type="text/css">
 
 
-    <header>
-        <div class="header-content">
-            <div class="header-content-inner" style="background-color: #5cb85c">
-                <h1>Orders</h1>
-                <table id="example" class="display" width="100%">
-                             <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Date</th>
-                        <th>Restaurant</th>
-                        <th>Amount</th>
-                        <th>Status</th>
-                    </tr>
+<header>
+    <div class="header-content">
+        <div class="container"
+             style="background-color: rgba(0, 2, 18, 0.25); color: black; border-radius: 20px; padding: 15px;">
+            <h1 style="font-size: 38px; font-weight: 200;">My Orders</h1>
+            <br/>
+            <table id="example" class="display" width="100%" style="color: white">
+                <thead>
+                <tr style="color: white;">
+                    <th>ID</th>
+                    <th>Date</th>
+                    <th>Restaurant</th>
+                    <th>Amount</th>
+                    <th>Status</th>
+                </tr>
                 </thead>
-                <tfoot>
-                    <tr>
-                        <th>ID</th>
-                        <th>Date</th>
-                        <th>Restaurant</th>
-                        <th>Amount</th>
-                        <th>Status</th>
-                    </tr>
-                </tfoot>
-                </table>
-            </div>
-            {% if restaurant %}
-                <div class="header-content-inner" style="background-color: #5cb85c">
-                    <a href="/shoporders"><h1>Restaurant</h1></a>
-
-                </div>
-            {% endif %}
-
+            </table>
         </div>
-    </header>
+    </div>
+</header>
 
 
 {% endblock %}
 
 {% block footerscripts  %}
-    <script>
+<script>
 
-    $(document).ready(function() {
+    $(document).ready(function () {
 
         var orders_table = $('#example').DataTable({
-                "aaSorting": [[0,"desc"]],
-                "columnDefs": [ {
-                    "targets": 4,
-                    "render": function ( data, type, full, meta ) {
-                        return '<span class="label label-'+data[1]+'">'+data[0]+'</span>';
+            "searching": false,
+            "language": {
+                "lengthMenu": "Display _MENU_ records per page",
+                "zeroRecords": "No orders to display",
+                "info": "Page _PAGE_ of _PAGES_",
+                "infoEmpty": "No orders found.",
+                "infoFiltered": "(filtered from _MAX_ total records)"
+            },
+            "aaSorting": [[0, "desc"]],
+            "columnDefs": [{
+                "targets": 4,
+                "render": function (data, type, full, meta) {
+                    return '<span class="label label-' + data[1] + '">' + data[0] + '</span>';
                 }
-            } ]
-            });
+            }]
+        });
 
 
         var order_timer = setInterval(displayOrders, 20000);
@@ -80,22 +121,22 @@
 
                         case 0:
                             label.class = 'info';
-                            label.text = 'New';
+                            label.text = 'Accepted';
                             break;
 
                         case 1:
-                            label.class = 'info';
+                            label.class = 'warning';
                             label.text = 'Pending';
                             break;
 
                         case 2:
                             label.class = 'danger';
-                            label.text = 'Failed';
+                            label.text = 'Not Accepted';
                             break;
 
                         case 3:
                             label.class = 'success';
-                            label.text = 'Finished';
+                            label.text = 'Completed';
                             break;
 
 
@@ -119,6 +160,6 @@
     });
 
 
-    </script>
+</script>
 
 {% endblock %}
