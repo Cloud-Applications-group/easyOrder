@@ -1,4 +1,4 @@
-from django.conf.urls import url, include
+from django.conf.urls import url
 from interface import views
 
 urlpatterns = (
@@ -6,6 +6,5 @@ urlpatterns = (
     url(r'place', views.place, name='place'),
     url(r'register', views.register, name='register'),
     url(r'shoporders', views.shop_orders, name='shop_orders'),
-    url(r'menu', views.menu, name='menu'),
     url(r'profile', views.profile, name='profile')
 )
