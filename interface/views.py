@@ -146,17 +146,17 @@ def place(request):
 
     restaurant = Restaurant.objects.all().filter(location_id=location_id)
     if restaurant[0].is_available:
-        is_available = 'Opened'
+        is_available = 'true'
     else:
-        is_available = 'Closed'
+        is_available = 'false'
 
     popularity = restaurant[0].popularity
     if popularity == 0:
-        popularity = 'Not Busy'
+        popularity = '<b style="color:green">not busy</b>'
     elif popularity == 1:
-        popularity = 'Busy'
+        popularity = '<b style="color:orange">busy</b>'
     elif popularity == 2:
-        popularity = 'Very Busy'
+        popularity = '<b style="color:red">very busy</b>'
 
 
 
