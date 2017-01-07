@@ -27,9 +27,11 @@ class RestaurantResource(ModelResource):
         if request_method == 'POST':
             user = bundle.request.user
             is_available = bool(bundle.data.get('is_available'))
+            keys = list(bundle.data.keys())
             restaurant = Restaurant.objects.all().filter(user=user)
             if restaurant:
-                restaurant.update(is_available=is_available)
+                for i in keys:
+                    restaurant.update(**{i : bundle.data.get(i)})
 
 
 
