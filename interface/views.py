@@ -141,6 +141,9 @@ def place(request):
     }
 
     location_id = request.GET.get('place_id')
+    date = request.GET.get('date')
+    num_people = request.GET.get('numPeople')
+    time = request.GET.get('time')
 
     if not (location_id and Restaurant.objects.all().filter(location_id=location_id)):
         variables = {
@@ -153,7 +156,11 @@ def place(request):
     google_place_data = google_place_details(location_id)
 
     context = {'menu': menu, 'google_place_data': google_place_data,
-               'restaurant': Restaurant.objects.all().filter(user=request.user)}
+               'restaurant': Restaurant.objects.all().filter(user=request.user),
+               'date': date,
+               'num_people': num_people,
+               'time': time
+               }
     return render(request, 'place.html', context)
 
 
