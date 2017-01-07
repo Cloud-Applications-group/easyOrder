@@ -193,12 +193,14 @@ def shop_orders(request):
         completed_orders = Order.objects.all().filter(restaurant=restaurant).filter(status=4)
         total_orders = Order.objects.all().filter(restaurant=restaurant)
 
+
+
         context = {'restaurant_is_available': restaurant[0].is_available,
                    'restaurant_name': restaurant[0].name,
                    'restaurant_pop': restaurant[0].popularity,
-                   'active_orders': active_orders,
-                   'completed_orders':completed_orders,
-                   'total_orders': total_orders
+                   'active_orders': len(active_orders),
+                   'completed_orders': len(completed_orders),
+                   'total_orders': len(total_orders)
                    }
     else:
         context['error'] = True
