@@ -313,25 +313,6 @@
                                                                             <div class="menu-item-desc">{{ item.item_description }}</div>
                                                                         {% endif %}
                                                                     </div>
-<<<<<<< HEAD
-																	<div class="menu-item-price">
-																		£ {{ item.item_price }}</div>
-																	{% if not user.is_anonymous %}
-																		<span>
-																			<button id="addItem"
-																					style="margin-left: 5px; height:auto; width:auto; background: transparent; border:none"><i
-																					class="fa fa-plus-circle"
-																					aria-hidden="true"
-																					style="color:#5cb85c;"></i></button></span>
-																		<span>
-																			<button id="removeItem"
-																					style="height:auto; width:auto; background: transparent; border:none"><i
-																					class="fa fa-minus-circle"
-																					aria-hidden="true"
-																					style="color:#d9534f;"></i></button></span>
-																	{% endif %}
-                                                                </div>
-=======
                                                                     {% if item.item_options|length == 1 %}
                                                                         {% for option in item.item_options %}
                                                                             <div class="menu-item-price">
@@ -385,7 +366,6 @@
                                                                         </div>
                                                                     </div>
                                                                 {% endif %}
->>>>>>> a4d35ec620fcc11c59bd4feb22f353608ec1360f
                                                             </div>
                                                         {% endfor %}
                                                     </div>
