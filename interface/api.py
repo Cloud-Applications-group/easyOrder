@@ -5,6 +5,20 @@ from tastypie.constants import ALL
 from tastypie.constants import ALL_WITH_RELATIONS
 from tastypie import fields
 
+class RestaurantResource(ModelResource):
+    # eg http://localhost:8000/api/v1/restaurant/?format=json
+    # or
+    # http://localhost:8000/api/v1/restaurant/?format=json&name__contains=test
+
+
+    class Meta:
+        queryset = Restaurant.objects.all()
+        resource_name = 'restaurant'
+        filtering = {
+
+            'location_id': ALL_WITH_RELATIONS,
+            'name': ALL_WITH_RELATIONS
+        }
 
 
 
@@ -24,9 +38,11 @@ class RestaurantOrderResource(ModelResource):
         queryset = Order.objects.all()
         resource_name = 'rest_order'
         excludes = ['user']
+        limit = 0
 
 
 class UserOrderResource(ModelResource):
+    restaurant = fields.ForeignKey(RestaurantResource, 'restaurant', full=True)
 
     def apply_filters(self, request, applicable_filters):
 
@@ -41,6 +57,7 @@ class UserOrderResource(ModelResource):
         queryset = Order.objects.all()
         resource_name = 'user_order'
         excludes = ['user']
+        limit = 0
 
 
 class UserRestaurantResource(ModelResource):
@@ -58,24 +75,11 @@ class UserRestaurantResource(ModelResource):
         queryset = Restaurant.objects.all()
         resource_name = 'user_restaurant'
         excludes = ['user']
+        limit = 0
 
 
 
 
-class RestaurantResource(ModelResource):
-    # eg http://localhost:8000/api/v1/restaurant/?format=json
-    # or
-    # http://localhost:8000/api/v1/restaurant/?format=json&name__contains=test
-
-
-    class Meta:
-        queryset = Restaurant.objects.all()
-        resource_name = 'restaurant'
-        filtering = {
-
-            'location_id': ALL_WITH_RELATIONS,
-            'name': ALL_WITH_RELATIONS
-        }
 
 
 

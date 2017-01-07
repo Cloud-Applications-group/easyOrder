@@ -4,10 +4,35 @@
 {% block content %}
 
 
+     <script src="https://cdn.datatables.net/1.10.13/js/jquery.dataTables.min.js"></script>
+    <link href="https://cdn.datatables.net/1.10.13/css/jquery.dataTables.min.css" rel="stylesheet"
+          type="text/css">
+
+
     <header>
         <div class="header-content">
-            <div class="header-content-inner">
-
+            <div class="header-content-inner" style="background-color: #5cb85c">
+                <h1>Orders</h1>
+                <table id="example" class="display" width="100%">
+                             <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Date</th>
+                        <th>Restaurant</th>
+                        <th>Amount</th>
+                        <th>Status</th
+                    </tr>
+                </thead>
+                <tfoot>
+                    <tr>
+                        <th>ID</th>
+                        <th>Date</th>
+                        <th>Restaurant</th>
+                        <th>Amount</th>
+                        <th>Status</th>
+                    </tr>
+                </tfoot>
+                </table>
             </div>
         </div>
     </header>
@@ -18,22 +43,73 @@
 {% block footerscripts  %}
     <script>
 
-     $.getJSON('/api/v1/user_order/?format=json', function(response) {
-            var objects = response.objects;
-            for (var i in objects) {
-                    console.log(i)
+    $(document).ready(function() {
 
+        var orders_table = $('#example').DataTable({
+                "aaSorting": [[0,"desc"]],
+                "columnDefs": [ {
+                    "targets": 4,
+                    "render": function ( data, type, full, meta ) {
+                        return '<span class="label label-'+data[1]+'">'+data[0]+'</span>';
                 }
-        });
+            } ]
+            });
 
 
-    $.getJSON('/api/v1/user_restaurant/?format=json', function(response) {
+        var order_timer = setInterval(displayOrders, 20000);
+        displayOrders()
+
+        function displayOrders() {
+
+            $.getJSON('/api/v1/user_order/?format=json', function (response) {
                 var objects = response.objects;
+                orders_table.clear().draw();
                 for (var i in objects) {
-                        console.log(i)
+
+                    var status = objects[i].status;
+                    var label = {};
+
+                    switch (status) {
+
+                        case 0:
+                            label.class = 'info';
+                            label.text = 'New';
+                            break;
+
+                        case 1:
+                            label.class = 'info';
+                            label.text = 'Pending';
+                            break;
+
+                        case 2:
+                            label.class = 'danger';
+                            label.text = 'Failed';
+                            break;
+
+                        case 3:
+                            label.class = 'success';
+                            label.text = 'Finished';
+                            break;
+
 
                     }
+
+                    orders_table.row.add([objects[i]['id'], objects[i]['date_time'], objects[i]['restaurant']['name'], objects[i]['amount'], [label.text, label.class]]).draw();
+
+                }
             });
+        }
+
+
+        $.getJSON('/api/v1/user_restaurant/?format=json', function (response) {
+            var objects = response.objects;
+            for (var i in objects) {
+                console.log(i)
+
+            }
+        });
+
+    });
 
 
     </script>

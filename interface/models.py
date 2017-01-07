@@ -1,6 +1,9 @@
 from __future__ import unicode_literals
 from django.contrib.auth.models import User
 from django.db import models
+from datetime import datetime
+import pytz
+from django.conf import settings
 # Create your models here.
 
 # Order status
@@ -17,6 +20,8 @@ STATUS_CHOICES = (
     (STATUS_COMPLETED,          'Completed')
 )
 
+def add_now():
+    return datetime.now(getattr(pytz, settings.TIME_ZONE))
 
 class Restaurant(models.Model):
     user = models.ForeignKey(User, null=True, blank=True, default=None)
@@ -34,7 +39,11 @@ class Order(models.Model):
     content = models.TextField(null=False, blank=False)
     amount = models.IntegerField(null=False, blank=False)
     status = models.IntegerField(null=False, blank=False, default=STATUS_NEW, choices=STATUS_CHOICES)
+    date_time = models.DateTimeField("Submitted on", null=False, blank=True, default=add_now)
 
 class Menu(models.Model):
     restaurant = models.ForeignKey(Restaurant, null=False, blank=False)
     content = models.TextField(null=False, blank=False)
+
+
+
