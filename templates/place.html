@@ -224,8 +224,14 @@
                                 aria-hidden="true">×</span></button>
                         <h4 id="countdown-text" style="margin: 0px;">Your table has been reserved until <span
                                 id="countdown">5:00</span>.
-                        </h4>
+                        </h4>						
                     </div>
+					<div id="alert_order" style="margin: 20px; display:none;" class="alert alert-danger alert-dismissible fade in"
+                         role="alert">
+						 <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span
+                                aria-hidden="true">×</span></button>
+						 <h4 id="order_empty_error" style="margin: 0px;">Your order is empty</h4>
+					</div>
                 {% elif user.is_anonymous %}
                     <div id="alert" style="margin: 20px;" class="alert alert-warning alert-dismissible fade in"
                          role="alert">
@@ -352,8 +358,7 @@
                             {% endif %}
                         </p>
                         {% if not user.is_anonymous and is_available == 'true' %}
-                            <button id="orderBtn" type="button" class="btn btn-primary btn-success" data-toggle="modal"
-                                    data-target="#checkoutModal" style="margin-bottom:15px; float: right;"><i
+                            <button id="orderBtn" type="button" class="btn btn-primary btn-success" style="margin-bottom:15px; float: right;"><i
                                     class="fa fa-check"
                                     aria-hidden="true"></i>
                                 Complete Your
@@ -420,12 +425,12 @@
                             </table>
                         </div>
                         <div class="text-right" style="margin-right:20px;">
-                            <button type="button" class="btn btn-warning" style="margin-bottom:15px"><i
+                            <button id="modify_order" type="button" class="btn btn-warning" style="margin-bottom:15px"><i
                                     class="fa fa-pencil"
                                     aria-hidden="true"></i>
                                 Modify Order
                             </button>
-                            <button type="button" class="btn btn-danger" style="margin-bottom:15px"><i
+                            <button id="cancel_order" type="button" class="btn btn-danger" style="margin-bottom:15px"><i
                                     class="fa fa-ban"
                                     aria-hidden="true"></i>
                                 Cancel Order
@@ -471,7 +476,8 @@
                             </div>
                         </div>
                         <div role="tabpanel" class="tab-pane" id="profile">
-                            <br/>
+						<span id="payment_error" style="color:red"></span>
+                            <br/>							
                             <form id="checkout-form">
                                 <p style="color: dimgray; text-align: left;">Credit / Debit Card Payment</p>
                                 <div class="row">
@@ -519,7 +525,7 @@
                                 <div class="text-right">
                                     <p style="color: dimgrey;">3D Secure checkout will be used to verify the
                                         payment.</p>
-                                    <button type="button" class="btn btn-success"> Proceed to Payment
+                                    <button id="payment_order" type="button" class="btn btn-success"> Currently Not Supported
                                     </button>
                                 </div>
                             </form>
@@ -581,13 +587,14 @@
             }
         });
 
+		//Modal close function
         $("#checkoutModal").on("hidden.bs.modal", function () {
             $("#orderTable").find('tbody').html("");
             final_order = null;
         });
 
         //Submit
-        $("#orderBtn").click(function () {
+        $("#orderBtn").click(function (e) {
             var order = {};
             var  total = 0;
             for (var i in item) {
@@ -604,8 +611,20 @@
             $("#order_total").html('£' + total);
             order['amount'] = total;
             final_order = order;
-        });
+			//If the order is empty
+			if(total == 0)
+			{				
+				$('#alert_order').toggle('slow');
+			}
+			else
+			{
+				$('#alert_order').toggle('hide');
+				$('#checkoutModal').modal();
+			}
 
+        });
+		
+		//On Click sending data to backend
         $('#confirm_order').click(function(){
 
             $('#order_content').val(JSON.stringify(final_order));
@@ -615,6 +634,18 @@
             $('#order_restaurant_name').val('{{ location_id }}');
             $('#order_form').submit();
         });
+		
+		//Modify Order
+		$("#modify_order").click(function(){
+			$("#checkoutModal").modal('hide');
+		});
+		
+		//Cancel Order
+		$("#cancel_order").click(function(){
+			$("#checkoutModal").modal('hide');
+			location.reload();
+		});
+		
 
         // About the place
         var place_data = {{ google_place_data | safe }}['result'];
