@@ -57,7 +57,6 @@
     font-size: 38px; font-weight: 200;
     }
 
-
 {% endblock %}
 
 {% block content %}
@@ -65,7 +64,6 @@
     <script src="https://cdn.datatables.net/1.10.13/js/jquery.dataTables.min.js"></script>
     <link href="https://cdn.datatables.net/1.10.13/css/jquery.dataTables.min.css" rel="stylesheet"
           type="text/css">
-
     <header>
         <div class="header-content">
             <div class="container">
@@ -74,9 +72,10 @@
                     <h1>My Details</h1>
                     <br/>
                     <div style="color: white" class="col-md-4">
-                       Username:
+                        <p>Here should be the profile image</p>
                     </div>
                     <div style="color: white" class="col-md-8">
+                         <p>We should pull FB Graph data and display shit here</p>
                     </div>
                 </div>
                 <div class="container block"
@@ -99,14 +98,11 @@
         </div>
     </header>
 
-
 {% endblock %}
-
 {% block footerscripts %}
+
     <script>
-
         $(document).ready(function () {
-
             var orders_table = $('#example').DataTable({
                 "searching": false,
                 "language": {
@@ -125,12 +121,10 @@
                 }]
             });
 
-
             var order_timer = setInterval(displayOrders, 20000);
             displayOrders()
 
             function displayOrders() {
-
                 $.getJSON('/api/v1/user_order/?format=json', function (response) {
                     var objects = response.objects;
                     orders_table.clear().draw();
@@ -160,17 +154,11 @@
                                 label.class = 'success';
                                 label.text = 'Completed';
                                 break;
-
-
                         }
-
                         orders_table.row.add([objects[i]['id'], objects[i]['date_time'], objects[i]['restaurant']['name'], objects[i]['amount'], [label.text, label.class]]).draw();
-
                     }
                 });
             }
-
-
             $.getJSON('/api/v1/user_restaurant/?format=json', function (response) {
                 var objects = response.objects;
                 for (var i in objects) {
@@ -180,8 +168,6 @@
             });
 
         });
-
-
     </script>
 
 {% endblock %}

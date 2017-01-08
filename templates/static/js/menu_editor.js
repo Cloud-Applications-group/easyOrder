@@ -94,7 +94,7 @@ function edit_section(id) {
     $('#section' + id).prepend(
         '<div style="display:none;padding: 0px 0px 10px 0px;" id="section' + id + '-edit-title">' +
         '<input type="text" style="font-size:75%;" id="section' + id + '-edit-title-input" value="' + proper_case(sections[id]) + '" onfocus="$(\'#section' + id + '-invalid-edit\').hide();" required>' +
-        '<input type="button" value="Update" onclick="update_section(' + id + ',$(\'#section' + id + '-edit-title-input\').val())">' +
+        '<input type="button" style="margin: 5px; background-color: #3285b8; color: white;" value="Update" onclick="update_section(' + id + ',$(\'#section' + id + '-edit-title-input\').val())">' +
         '<br>' +
         '<p id="section' + id + '-invalid-edit" style="font-size:75%;display:none;color: white;">Invalid section name.</p>' +
         '</div>'
@@ -129,31 +129,30 @@ function get_section_template(id) {
         '<div class="section-contents" id="section%id%-contents">' +
         '</div>' +
         '<div id="section%id%-new-item" class="new-item">' +
-        'New item:' +
+        'New item' +
         '<br>' +
         '<div class="item-input">' +
-        '<div class="item-input-label">Name:</div>' +
+        '<div class="item-input-label" style="float:left">Name</div>' +
         '<input style="width:100%;" type="text" id="section%id%-item-name" onfocus="$(\'#section%id%-invalid-item\').hide()">' +
         '</div>' +
         '<div class="item-input">' +
-        '<div class="item-input-label">Description:</div>' +
+        '<div class="item-input-label" style="float:left">Description</div>' +
         '<textarea style="resize:none;width:100%;" id="section%id%-item-description" onfocus="$(\'#section%id%-invalid-desc\').hide()" />' +
         '</div>' +
         '<div class="item-input">' +
-        '<div class="item-input-label">Price:</div>' +
+        '<div class="item-input-label" style="float:left">Price</div>' +
         '<input type="number" style="width:100%;" value="0" min="0" id="section%id%-item-price">' +
         '</div>' +
-        '<br>' +
-        '<input type="button" id="section%id%-add-item" value="Add"' +
+        '<input type="button" id="section%id%-add-item" style="background-color: #4cb8a0; color: white !important; margin: 15px;" value="Add Item"' +
         'onclick="new_item(' +
         '$(\'#section%id%-item-name\').val(),' +
         '$(\'#section%id%-item-description\').val(), ' +
         '$(\'#section%id%-item-price\').val(),' +
-        '\'%id%\')">' +
+        '\'%id%\')"><br />' +
         '<p id="section%id%-invalid-item" style="font-size:75%;display:none;color: white; margin: 10px;">Invalid item name.</p>' +
         '<p id="section%id%-invalid-desc" style="font-size:75%;display:none;color: white; margin: 10px;">Invalid description.</p>' +
         '</div>' +
-        '<hr style="border-width: 3px;">' +
+        '<hr>' +
         '</div>';
     template = template.replace(/%id%/g, id);
     template = template.replace(/%name%/g, proper_case(sections[id]));
@@ -179,6 +178,12 @@ function updateReqMenu(data) {
         dataType: 'json',
         processData: false
     });
+    $('#submit').css('background-color', 'green');
+    $('#submit').val('Menu Saved');
+    setTimeout(function () {
+        $('#submit').css('background-color', 'rgba(55,142,197, 1)');
+        $('#submit').val("Save Menu");
+    }, 2000);
 }
 
 function convert_to_JSON() {
@@ -219,7 +224,7 @@ function convert_to_JSON() {
     }
     JSON += ']}]}';
     console.log("Sending menu...");
-    updateReqMenu({'menu':JSON});
+    updateReqMenu({'menu': JSON});
 }
 function proper_case(str) {
     str = str.toLowerCase().split(' ').map(function (word) {
