@@ -76,3 +76,23 @@ class RestaurantLoginForm(forms.Form):
     password = forms.CharField(
         widget=forms.PasswordInput(attrs={'class': 'form-control ', 'type':'password',
                                    'placeholder':"Password."}), label=_(""))
+
+
+
+class OrderForm(forms.Form):
+
+    content = forms.CharField(widget=forms.TextInput({'id': 'order_content', 'type':'hidden' }), label=_(""),
+                                 )
+
+    people = forms.CharField(widget=forms.TextInput({'id': 'order_people', 'type': 'hidden'}),
+                                      label=_(""),
+                                      )
+    date = forms.CharField(widget=forms.TextInput({'id': 'order_date', 'type': 'hidden'}),
+                                      label=_(""),
+                                      )
+    time = forms.CharField(widget=forms.TextInput({'id': 'order_time', 'type': 'hidden'}),
+                           label=_(""),
+                           )
+
+    restaurant_name = forms.CharField(widget=forms.TextInput({'id': 'order_restaurant_name', 'type': 'hidden'}), label=_(""),
+                              )

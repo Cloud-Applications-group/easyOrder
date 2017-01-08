@@ -320,8 +320,7 @@
                                                                             {% endif %}</div>
                                                                     </div>
                                                                     <div id="price-{{ item.item_id }}"
-                                                                         class="menu-item-price">
-                                                                        £ {{ item.item_price }}</div>
+                                                                         class="menu-item-price">£{{ item.item_price }}</div>
                                                                     {% if not user.is_anonymous and is_available == 'true' %}
                                                                         <span>
 																		<button class="itemBtn"
@@ -411,11 +410,11 @@
                                 </thead>
                                 <tbody>
                                 </tbody>
-                                <tfoot id="total">
+                                <tfoot>
                                 <tr>
                                     <td></td>
                                     <th>Total</th>
-                                    <td></td>
+                                    <td id="order_total"></td>
                                 </tr>
                                 </tfoot>
                             </table>
@@ -461,7 +460,11 @@
                                 will be sent to restaurant for confirmation.
                                 We will you notify you by e-mail once your booking gets accepted.</p>
                             <div class="text-right">
-                                <button type="button" class="btn btn-success"><i class="fa fa-check-circle"
+                                <form id="order_form" method="post" action="?">
+                                    {% csrf_token %}
+                                    {{ order_form }}
+                                </form>
+                                <button id="confirm_order" type="button" class="btn btn-success"><i class="fa fa-check-circle"
                                                                                  aria-hidden="true"></i> Confirm
                                     Booking
                                 </button>
@@ -534,6 +537,8 @@
 
 {% block footerscripts %}
     <script>
+        var final_order = null;
+
 
         // Search hit
         $('#location').keydown(function (e) {
@@ -542,6 +547,7 @@
 
         //Menu Button
         var item = {};
+
         //for (var i = 0; i < 100; i++) item[i] = 0;
         $(".itemBtn").click(function () {
             var id = $(this).attr('id').split('-')[1];
@@ -560,12 +566,6 @@
 
         });
 
-        $("#orderBtn").click(function () {
-            for (var i in item) {
-                $("#orderTable").find('tbody').append("A");
-            }
-        });
-
         $(".itemRemBtn").click(function () {
             var id = $(this).attr('id').split('-')[1];
             if (id in item && item[id] > 0) {
@@ -577,13 +577,49 @@
                 else {
                     $("#count-" + id).text("");
                 }
+
             }
+        });
+
+        $("#checkoutModal").on("hidden.bs.modal", function () {
+            $("#orderTable").find('tbody').html("");
+            final_order = null;
+        });
+
+        //Submit
+        $("#orderBtn").click(function () {
+            var order = {};
+            var  total = 0;
+            for (var i in item) {
+                if (item[i] > 0) {
+                    order[$("#itemTitle-" + i).text()] = $("#count-" + i).text();
+                    var count = parseInt($("#count-" + i).text().substring(0, $("#count-" + i).text().length - 1));
+                    var price = parseInt($("#price-" + i).text().substring(1));
+                    var item_total = count * price;
+                    total = total + item_total;
+
+                    $("#orderTable").find('tbody').append('<tr class="remove"><td>' + $("#itemTitle-" + i).text() + '</td>' + '<td>' + $("#count-" + i).text() + '</td>' + '<td class="eachPrice">' + $("#price-" + i).text() + '</td>' + '</tr>');
+                }
+            }
+            $("#order_total").html('£' + total);
+            order['amount'] = total;
+            final_order = order;
+        });
+
+        $('#confirm_order').click(function(){
+
+            $('#order_content').val(JSON.stringify(final_order));
+            $('#order_people').val({{ num_people }});
+            $('#order_date').val('{{ date }}');
+            $('#order_time').val('{{ time }}');
+            $('#order_restaurant_name').val('{{ location_id }}');
+            $('#order_form').submit();
         });
 
         // About the place
         var place_data = {{ google_place_data | safe }}['result'];
         var placeName = place_data['name'];
-        var photoSrc = place_data['photos'][0]['photo_reference']
+        var photoSrc = place_data['photos'][0]['photo_reference'];
         var placeType = place_data['types'][0].charAt(0).toUpperCase() + place_data['types'][0].slice(1);
         var placeAddr = place_data['adr_address'];
         var workingHours = place_data['opening_hours']['weekday_text'];

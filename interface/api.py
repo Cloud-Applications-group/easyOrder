@@ -107,5 +107,5 @@ class OrderResource(ModelResource):
     class Meta:
         queryset = Order.objects.all()
         resource_name = 'order'
-        allowed_methods = ['get', 'post', 'patch']
+        allowed_methods = ['put']
         authorization = Authorization()

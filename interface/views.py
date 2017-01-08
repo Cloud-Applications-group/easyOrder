@@ -63,6 +63,27 @@ def login(request):
 
 
 def place(request):
+    if request.method == 'POST':
+        form_order = OrderForm(request.POST)
+        if form_order.is_valid():
+            user = request.user
+            place_id = request.POST['restaurant_name']
+            content = json.loads(request.POST['content'])
+            people = request.POST['people']
+            date = request.POST['date']
+            time = request.POST['time']
+            amount = content['amount']
+            restaurant = Restaurant.objects.all().filter(location_id=place_id)
+
+            Order.objects.create(user=user,
+                                 restaurant=restaurant[0],
+                                 content = request.POST['content'],
+                                 amount = amount,
+                                 reservation_date_time = date + ' ' + time,
+                                 people=int(people),
+                                 )
+        return HttpResponseRedirect('/profile')
+
 
     user = request.user
     context = {}
@@ -105,6 +126,8 @@ def place(request):
     context['time']= time
     context['is_available']= is_available
     context['popularity']= popularity
+    context['order_form'] = OrderForm()
+    context['location_id'] = location_id
 
     if not user.is_anonymous:
         context['restaurant'] = Restaurant.objects.all().filter(user=request.user)

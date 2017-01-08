@@ -54,9 +54,10 @@ class Order(models.Model):
     restaurant = models.ForeignKey(Restaurant, null=False, blank=False)
     content = models.TextField(null=False, blank=False)
     amount = models.IntegerField(null=False, blank=False)
+    people = models.IntegerField(null=False, blank=False, default=1)
     status = models.IntegerField(null=False, blank=False, default=STATUS_NEW, choices=STATUS_CHOICES)
     date_time = models.DateTimeField("Submitted on", null=False, blank=True, default=add_now)
-    reservation_date_time = models.DateTimeField("Reserve time", null=False, blank=False, default=add_now)
+    reservation_date_time = models.TextField("Reserve time", null=False, blank=False, default='now')
 
 class Menu(models.Model):
     user = models.ForeignKey(User, null=True, blank=True, default=None)
