@@ -62,73 +62,6 @@ def login(request):
 
 
 def place(request):
-    menu = {
-		"menu": [{
-			"item_count": 9,  
-			"category": [{
-				"title": "Sides",
-				"category_id": 1,
-				"items": [
-					{
-						"item_id": 1,
-						"item_title": "Chips",
-						"item_description": "Our signature triple-fried chips",
-						"item_price": 1.50
-					}, {
-						"item_id": 2,
-						"item_title": "Chicken Wings",
-						"item_description": "Piri-piri seasoned wings",
-						"item_price": 2.50
-					}, {
-						"item_id": 3,
-						"item_title": "Onion rings",
-						"item_description": "Beer-battered onion rings",
-						"item_price": 2.00
-					}
-				]}, {
-				"title": "Mains",
-				"category_id": 2,
-				"items": [
-					{
-						"item_id": 1,
-						"item_title": "Hotdog",
-						"item_description": "A 9 inch American-style hotdog served with a side of chips or wedges",
-						"item_price": 5.50
-					}, {
-						"item_id": 2,
-						"item_title": "Pizza",
-						"item_description": "Fully loaded deep-pan pepperoni pizza",
-						"item_price": 7.50
-					}, {
-						"item_id": 3,
-						"item_title": "Burger",
-						"item_description": "100% beef quarter pounder, served in a brioche bun with a side of chips or wedges",
-						"item_price": 6.50
-					}
-				]}, {
-				"title": "Drinks",
-				"category_id": 3,
-				"items": [
-					{
-						"item_id": 1,
-						"item_title": "Coke",
-						"item_description": "Coca-cola on draught",
-						"item_price": 1.00
-					}, {
-						"item_id": 2,
-						"item_title": "Lemonade",
-						"item_description": "",
-						"item_price": 5.50
-					}, {
-						"item_id": 3,
-						"item_title": "Beer",
-						"item_description": "400cl glass of Peroni Nastro Azzurro",
-						"item_price": 6.00
-					}]
-				}]
-			}
-		]
-	}
 
     user = request.user
     context = {}
@@ -165,7 +98,7 @@ def place(request):
     context['form_reg']= RestaurantRegisterForm()
     context['form_rest_login']= RestaurantLoginForm()
     context['google_place_data'] = google_place_data
-    context['menu']= Menu.objects.all().filter(user=user).filter(restaurant=restaurant).content
+    context['menu']= str(Menu.objects.all().filter(restaurant=restaurant)[0].content)
     context['date']= date
     context['num_people'] =num_people
     context['time']= time
@@ -214,7 +147,8 @@ def shop_orders(request):
         total_orders = Order.objects.all().filter(restaurant=restaurant)
         pending_orders = Order.objects.all().filter(restaurant=restaurant).filter(status=0)
 
-        context = {'restaurant_is_available': restaurant[0].is_available,
+        context = {'restaurant': restaurant,
+                   'restaurant_is_available': restaurant[0].is_available,
                    'restaurant_name': restaurant[0].name,
                    'restaurant_pop': restaurant[0].popularity,
                    'accepted_orders': len(accepted_orders),
