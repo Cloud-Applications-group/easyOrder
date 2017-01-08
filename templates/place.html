@@ -306,23 +306,23 @@
 														<div class="menu-item-container">
 															<div class="menu-item">
 																<div class="menu-item-info">
-																	<div class="menu-item-title">{{ item.item_title }}
-																		<span id="count"><span/></div>
+																	<div><div id="itemTitle-{{item.item_id}}" class="menu-item-title">{{ item.item_title }}</div>
+																		<span id="count-{{item.item_id}}"><span/></div>
 																	{% if item.item_description %}
 																		<div class="menu-item-desc">{{ item.item_description }}</div>
 																	{% endif %}
 																</div>
-																<div class="menu-item-price">
+																<div id="price-{{item.item_id}}" class="menu-item-price">
 																	£ {{ item.item_price }}</div>
 																{% if not user.is_anonymous and is_available == 'true' %}
 																	<span>
-																		<button id="addItem"
+																		<button class="itemBtn" id="addItem-{{item.item_id}}"
 																				style="margin-left: 5px; height:auto; width:auto; background: transparent; border:none"><i
 																				class="fa fa-plus-circle"
 																				aria-hidden="true"
 																				style="color:#5cb85c;"></i></button></span>
 																	<span>
-																		<button id="removeItem"
+																		<button class="itemRemBtn" id="removeItem-{{item.item_id}}"
 																				style="height:auto; width:auto; background: transparent; border:none"><i
 																				class="fa fa-minus-circle"
 																				aria-hidden="true"
@@ -343,7 +343,7 @@
                         {% endif %}
                     </p>
                     {% if not user.is_anonymous and is_available == 'true' %}
-                        <button type="button" class="btn btn-primary btn-success" data-toggle="modal"
+                        <button id="orderBtn" type="button" class="btn btn-primary btn-success" data-toggle="modal"
                                 data-target="#checkoutModal" style="margin-bottom:15px; float: right;"><i
                                 class="fa fa-check"
                                 aria-hidden="true"></i>
@@ -370,28 +370,24 @@
                                     <th>Name</th>
                                     <td>{{ user.get_full_name|default:user.username }}</td>
                                 </tr>
-                                <tr>
-                                    <th>Phone</th>
-                                    <td>+44-7xxxxxxxxx</td>
-                                </tr>
                             </table>
                             <div style="text-align: left; color: black;" class="col-md-">
                                 <h3> Table Details</h3>
                                 <table class="table" style="color: black; margin-left: auto;margin-right: auto;">
                                     <tr>
                                         <th>People</th>
-                                        <td>5</td>
+                                        <td>{{ num_people }}</td>
                                     </tr>
                                     <tr>
                                         <th>Time</th>
-                                        <td>£ 5.00</td>
+                                        <td>{{time}}</td>
                                     </tr>
                                 </table>
                             </div>
                         </div>
                         <div style="text-align: right;" class="col-md-6">
                             <h3> Order Details </h3>
-                            <table class="table" style="color: black; margin-left: auto;margin-right: auto;">
+                            <table id="orderTable" class="table" style="color: black; margin-left: auto;margin-right: auto;">
                                 <thead>
                                 <tr>
                                     <th>Item</th>
@@ -399,23 +395,13 @@
                                     <th>Price</th>
                                 </tr>
                                 </thead>
-                                <tbody>
-                                <tr>
-                                    <td>Kebab</td>
-                                    <td>01</td>
-                                    <td>£ 5.00</td>
-                                </tr>
-                                <tr>
-                                    <td>Fries</td>
-                                    <td>02</td>
-                                    <td>£ 5.00</td>
-                                </tr>
+                                <tbody>                             
                                 </tbody>
-                                <tfoot>
+                                <tfoot id="total">
                                 <tr>
                                     <td></td>
                                     <th>Total</th>
-                                    <td>£ 15.00</td>
+                                    <td></td>
                                 </tr>
                                 </tfoot>
                             </table>
@@ -535,39 +521,39 @@
 
 {% block footerscripts %}
     <script>
-        var i = '{{ menu | safe }}';
-        console.log(i);
+       
         // Search hit
         $('#location').keydown(function (e) {
             if (e.which == 13 && $('.pac-container:visible').length) return false;
         });
 
         //Menu Button
-        var item = 0;
-
-        $("#addItem").click(function () {
-            item = item + 1;
-            if (item > 0) {
-                $("#count").text(item);
+        var item = [];
+		for (var i = 0; i < 100; i++) item[i] = 0;
+        $(".itemBtn").click(function () {
+			var id = $(this).attr('id').split('-')[1];
+            item[id] = item[id] + 1;
+            if (item[id] > 0) {
+                $("#count-"+id).text(item[id]);
             }
-        });
+			$("#orderBtn").click(function () {
+				$("#orderTable").find('tbody').append('<tr class="remove"><td>' + $("#itemTitle-"+id).text() + '</td>'+ '<td>'+ $("#count-"+id).text() +'</td>' +'<td class="eachPrice">'+ $("#price-"+id).text() +'</td>' +'</tr>');
+			});			
+			
+			/*$(.itemRemBtn).on("click", '.remove' , function() {
+				$(this).parent().remove();
+			});*/
+        });		
 
-        $("#removeItem").click(function () {
-            item = item - 1;
-            if (item > 0) {
-                $("#count").text(item);
+        $(".itemRemBtn").click(function () {
+			var id = $(this).attr('id').split('-')[1];
+            item[id] = item[id] - 1;
+            if (item[id] > 0) {
+                $("#count-"+id).text(item[id]);
             }
             else {
-                $("#count").text("");
+                $("#count-"+id).text("");
             }
-        });
-
-        $("#addOption").click(function () {
-            $("#countOption").text("✔");
-        });
-
-        $("#removeOption").click(function () {
-            $("#countOption").text("");
         });
 
         // About the place
