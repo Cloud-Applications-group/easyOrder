@@ -103,12 +103,25 @@
     animation: bounce 2s infinite;
     }
 
+    .wallClock{
+    position: absolute;
+    opacity: 0.7;
+    top: 70px;
+    float: left;
+    left: 130px;
+    font-size: 85px;
+    color: white;
+    overflow: hidden;
+    font-weight: 600;
+    }
+
 
 {% endblock %}
 
 {% block content %}
     <header style="background-image: url('static/img/bg-front.jpg');">
         <div id="scroll_helper" class="arrow bounce"></div>
+        <div id="txt" class="wallClock"></div>
         <div id="header" class="header-content">
             <div class="header-content-inner">
                 <form id="searchForm" action="/place" method="GET">
@@ -209,7 +222,7 @@
                         <i class="fa fa-4x fa-map-marker text-primary sr-icons" data-sr-id="3"
                            style="; visibility: visible;  -webkit-transform: scale(1); opacity: 1;transform: scale(1); opacity: 1;-webkit-transition: -webkit-transform 0.6s cubic-bezier(0.6, 0.2, 0.1, 1) 0s, opacity 0.6s cubic-bezier(0.6, 0.2, 0.1, 1) 0s; transition: transform 0.6s cubic-bezier(0.6, 0.2, 0.1, 1) 0s, opacity 0.6s cubic-bezier(0.6, 0.2, 0.1, 1) 0s; "></i>
                         <h3>Find Location</h3>
-                        <p class="text-muted">Find a Restaurant, Cafe or Bar and chose a nice table.</p>
+                        <p class="text-muted">Find a nice Restaurant, Cafe or Bar. We will get your table arranged.</p>
                     </div>
                 </div>
                 <div class="col-lg-3 col-md-6 text-center">
@@ -225,7 +238,7 @@
                         <i class="fa fa-4x fa-paper-plane text-primary sr-icons" data-sr-id="4"
                            style="; visibility: visible;  -webkit-transform: scale(1); opacity: 1;transform: scale(1); opacity: 1;-webkit-transition: -webkit-transform 0.6s cubic-bezier(0.6, 0.2, 0.1, 1) 0s, opacity 0.6s cubic-bezier(0.6, 0.2, 0.1, 1) 0s; transition: transform 0.6s cubic-bezier(0.6, 0.2, 0.1, 1) 0s, opacity 0.6s cubic-bezier(0.6, 0.2, 0.1, 1) 0s; "></i>
                         <h3>Order</h3>
-                        <p class="text-muted">Let us know your arrival time, so nothing gets cold.</p>
+                        <p class="text-muted">Let us know your arrival time, so nothing gets cold. </p>
                     </div>
                 </div>
                 <div class="col-lg-3 col-md-6 text-center">
@@ -247,7 +260,9 @@
                 </div>
                 <div class="col-lg-8 col-sm-6">
                     <h1 style="padding: 5%"> Own a Restaurant, Café or Bar ? </h1>
-                    <p> Register your shop to start creating your first online waiter service. EasyOrder allows hungry people to select a restaurant they want to dine in,<br /> assigns them a table according to the group size and lets them order their food in advance. Making everyone smile.
+                    <p> Register your shop to start creating your first online waiter service. EasyOrder allows hungry
+                        people to select a restaurant they want to dine in,<br/> assigns them a table according to the
+                        group size and lets them order their food in advance. Making everyone smile.
                         <br/> <br/>
                         <button style="font-size: 18px; font-weight: 200;" type="button" data-toggle="modal"
                                 data-target="#myModal-restaurant-reg" id="shop_reg_modal_button"
@@ -313,7 +328,7 @@
                     'border': "2px white",
                     'margin-top': "10px"
                 });
-                if(!err1){
+                if (!err1) {
                     $("#err_strong_label").html("Oow");
                 } else {
                     $("#err_strong_label").html("Ahh");
@@ -332,9 +347,31 @@
             }
         });
 
+        function startTime() {
+            var today = new Date();
+            var h = today.getHours();
+            var m = today.getMinutes();
+            var s = today.getSeconds();
+            m = checkTime(m);
+            s = checkTime(s);
+            document.getElementById('txt').innerHTML =
+                h + ":" + m;
+            var t = setTimeout(startTime, 500);
+        }
+        function checkTime(i) {
+            if (i < 10) {
+                i = "0" + i
+            }
+            ;  // add zero in front of numbers < 10
+            return i;
+        }
+
         {% if not error %}
 
             $(document).ready(function () {
+
+                startTime();
+
                 if (!is_searching) {
                     setTimeout(function () {
                         if (!$('#location').is(':focus') && $('#location').val() === "" && !is_searching) {

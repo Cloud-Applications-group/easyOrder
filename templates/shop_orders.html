@@ -130,7 +130,7 @@
 
                 <div class="container block" id="settings">
                     <h1>Quick Statistics & Settings</h1>
-                    <br />
+                    <br/>
                     <div class="row">
                         <div class="col-md-1"></div>
                         <div class="col-md-4 text-left">
@@ -138,9 +138,14 @@
                                 <br/>Accepted Orders: <span style="margin-left: 25px;">{{ accepted_orders }}</span>
                                 <br/>Completed Orders: <span style="margin-left: 13px;">{{ completed_orders }}</span>
                                 <br/>Total Orders: <span style="margin-left: 58px;">{{ total_orders }}</span>
-                                <br/><br/><a href="#menu">
-                                    <button class="btn btn-info"><i class="fa fa-map-o" aria-hidden="true"></i> <span style="margin-left: 6px;">Go to Menu Editor</span></button>
+                                <br/><br/>
+                                <a href="#menu">
+                                    <button id="menuButton" onclick="gotoMenuEditor()" class="btn btn-info"><i
+                                            class="fa fa-map-o"
+                                            aria-hidden="true"></i> <span
+                                            style="margin-left: 6px;">Go to Menu Editor</span></button>
                                 </a>
+
                         </div>
                         <div class="col-md-5">
                             <table style="padding: 5px; float: right">
@@ -251,7 +256,7 @@
     <!-- Modal -->
     <div class="modal fade" id="orderModal" tabindex="-1" role="dialog" aria-labelledby="orderModalLabel">
         <div class="modal-dialog">
-            <div style="background-color:rgba(17,34,50,0.78);" class="modal-content">
+            <div style="background-color:rgba(17,34,50,0.9);" class="modal-content">
                 <div class="modal-header"><h1>Details for Order <span id="order_id_label">[###]</span></h1></div>
                 <div class="modal-body">
                     <div class="row">
