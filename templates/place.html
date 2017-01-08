@@ -535,7 +535,8 @@
 
 {% block footerscripts %}
     <script>
-
+        var i = '{{ menu | safe }}';
+        console.log(i);
         // Search hit
         $('#location').keydown(function (e) {
             if (e.which == 13 && $('.pac-container:visible').length) return false;

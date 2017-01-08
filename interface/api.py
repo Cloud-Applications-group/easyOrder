@@ -100,3 +100,12 @@ class MenuResource(ModelResource):
         resource_name = 'menu'
         allowed_methods = ['get', 'post', 'patch']
         authorization = Authorization()
+
+
+class OrderResource(ModelResource):
+
+    class Meta:
+        queryset = Order.objects.all()
+        resource_name = 'order'
+        allowed_methods = ['get', 'post', 'patch']
+        authorization = Authorization()

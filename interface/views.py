@@ -7,6 +7,7 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 from .models import Restaurant, Order, Menu
 from utils import google_place_details
+import json
 
 
 @csrf_protect
@@ -98,7 +99,7 @@ def place(request):
     context['form_reg']= RestaurantRegisterForm()
     context['form_rest_login']= RestaurantLoginForm()
     context['google_place_data'] = google_place_data
-    context['menu']= str(Menu.objects.all().filter(restaurant=restaurant)[0].content)
+    context['menu']= json.loads(Menu.objects.all().filter(restaurant=restaurant)[0].content)
     context['date']= date
     context['num_people'] =num_people
     context['time']= time
