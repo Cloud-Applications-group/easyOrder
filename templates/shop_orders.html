@@ -200,7 +200,7 @@
                     <table id="example" class="display" width="100%" style="color: white">
                         <thead>
                         <tr style="color: white;">
-                            <th>ID</th>
+                            <th>Details</th>
                             <th>Date</th>
                             <th>User</th>
                             <th>Amount</th>
@@ -246,7 +246,41 @@
         </center>
     </section>
 
-
+    <!-- Modal -->
+    <div class="modal fade" id="orderModal" tabindex="-1" role="dialog" aria-labelledby="orderModalLabel">
+        <div class="modal-dialog">
+            <div style="background-color:rgba(239,231,221,0.42);" class="modal-content">
+                <div class="modal-header"><h1>Details for Order <span id="order_id_label">[###]</span></h1></div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12 text-primary">
+                            <center>
+                                <p>You can view, update, accept or cancel an order.</p>
+                                <table width="100%">
+                                    <tbody>
+                                    <tr>
+                                        <th>Item</th>
+                                        <th>Price</th>
+                                        <th>#</th>
+                                    </tr>
+                                    <tr>
+                                        <td>Jill</td>
+                                        <td>Smith</td>
+                                        <td>50</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </center>
+                            <br/>
+                        </div>
+                        <button class="btn btn-warning">Accept</button>
+                        <button class="btn btn-success">Complete</button>
+                        <button class="btn btn-danger">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}
 
 {% block footerscripts %}
@@ -258,12 +292,6 @@
         $('#add-section').on('click', function () {
             $('#menu_info_text').hide();
         });
-
-        $(document).ready(function () {
-
-
-        });
-
 
         function updateReq(data) {
             $.ajax({
@@ -330,6 +358,11 @@
                     "render": function (data, type, full, meta) {
                         return '<span class="label label-' + data[1] + '">' + data[0] + '</span>';
                     }
+                }, {
+                    "targets": 0,
+                    "render": function (data, type, full, meta) {
+                        return '<button class="btn btn-secondary" style="color: black" data-orderid="' + data + '" data-toggle="modal" data-target="#orderModal"> Show </button>';
+                    }
                 }]
             });
 
@@ -342,7 +375,7 @@
                     orders_table.clear().draw();
                     for (var i in objects) {
                         var id = objects[i]['id'];
-                        var date = objects[i]['date_time'];
+                        var date = objects[i]['reservation_date_time'];
                         var user_name = objects[i]['user']['username'];
                         var status = objects[i].status;
                         var label = {};
@@ -376,6 +409,13 @@
                     }
                 });
             }
+        });
+
+        $('#orderModal').on('show.bs.modal', function (e) {
+
+            var orderID = e.relatedTarget.dataset['orderid'];
+            $("#order_id_label").html('#' + orderID);
+
         });
 
         {% if menu %}

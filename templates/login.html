@@ -107,9 +107,6 @@
 {% endblock %}
 
 {% block content %}
-
-
-
     <header>
         <div id="scroll_helper" class="arrow bounce"></div>
         <div id="header" class="header-content">
@@ -192,15 +189,13 @@
                         </div>
                     </div>
                 </form>
-                <div style="height: 80px; display: block; overflow:hidden;"  class="col-md-12">
-                    {% if error %}
-                        <div hidden id="error_alert"
-                             style="background-color: rgba(184,53,22,0.7); color: white; border: 2px white; margin-top: 10px;"
-                             class="alert alert-danger alert-dismissable">
-                            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-                            <strong>Oops!</strong> {{ error }}
-                        </div>
-                    {% endif %}
+                <div style="height: 80px; display: block; overflow:hidden;" class="col-md-12">
+                    <div {% if not error %} hidden {% endif %} id="error_alert"
+                                            class="alert alert-dismissable">
+                        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                        <strong id="err_strong_label">Oops!</strong> <span id="err_label">{{ error }}</span>
+                    </div>
+
                 </div>
             </div>
         </div>
@@ -277,7 +272,7 @@
                     <form method="post" action=".">
                         {% csrf_token %}
                         {{ form_reg }}
-                        <br />
+                        <br/>
                         <input type="submit" class="btn btn-primary" value="Register Shop"/>
                     </form>
                 </div>
@@ -290,8 +285,64 @@
 {% block footerscripts %}
     <script>
 
+        {% if not error %}
+
+            $(document).ready(function () {
+
+                setTimeout(function () {
+
+                    if (!$('#location').is(':focus')) {
+
+                        $("#error_alert").css("background-color", "");
+                        $("#error_alert").css({
+                            'background-color': "rgba(38,184,20,0.55)",
+                            'color': "white",
+                            'border': "2px white",
+                            'margin-top': "10px"
+                        });
+                        $("#err_strong_label").html("Hey!")
+                        $("#err_label").html("Start typing the name of a restaurant to get started.")
+                        $("#error_alert").slideDown("slow");
+
+                        var show = true;
+
+                        $('#location').focus(function () {
+                            show = false;
+                            $("#error_alert").slideUp("fast");
+                        });
+
+                        if (show) {
+
+                            setTimeout(function () {
+
+                                $("#error_alert").slideUp("fast");
+
+                                setTimeout(function () {
+                                    $("#err_strong_label").html("")
+                                    $("#err_label").html("You can then select the date, time and number of your people to search.")
+                                    $("#error_alert").slideDown("slow");
+
+                                    $('#location').focus(function () {
+                                        $("#error_alert").slideUp("fast");
+                                    });
+                                }, 1000);
+                            }, 3000);
+                        }
+                    }
+                }, 3000);
+
+            });
+
+        {% endif %}
+
         {% if error %}
             $(document).ready(function () {
+                $("#error_alert").css({
+                    'background-color': "rgba(184,53,22,0.7)",
+                    'color': "white",
+                    'border': "2px white",
+                    'margin-top': "10px"
+                });
                 $("#error_alert").slideDown();
             });
         {% endif %}

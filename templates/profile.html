@@ -155,7 +155,7 @@
                                 label.text = 'Completed';
                                 break;
                         }
-                        orders_table.row.add([objects[i]['id'], objects[i]['date_time'], objects[i]['restaurant']['name'], objects[i]['amount'], [label.text, label.class]]).draw();
+                        orders_table.row.add([objects[i]['id'], objects[i]['reservation_date_time'], objects[i]['restaurant']['name'], objects[i]['amount'], [label.text, label.class]]).draw();
                     }
                 });
             }
