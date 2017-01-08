@@ -306,15 +306,18 @@
                                                         {% for item in section.items %}
                                                             <div class="menu-item-container">
                                                                 <div class="menu-item">
-                                                                    <div class="menu-item-info">
-                                                                        <div>
-                                                                            <div id="itemTitle-{{ item.item_id }}"
-                                                                                 class="menu-item-title">{{ item.item_title }}</div>
-                                                                            <span id="count-{{ item.item_id }}"><span/>
+                                                                    <div class="menu-item-info row">
+                                                                        <div class="col-md-2" style="margin-top: 5px;">
+                                                                            <span id="count-{{ item.item_id }}"></span>
                                                                         </div>
-                                                                        {% if item.item_description %}
-                                                                            <div class="menu-item-desc">{{ item.item_description }}</div>
-                                                                        {% endif %}
+                                                                        <div class="col-md-10">
+                                                                            <div>
+                                                                                <div id="itemTitle-{{ item.item_id }}"
+                                                                                     class="menu-item-title">{{ item.item_title }}</div>
+                                                                            </div>
+                                                                            {% if item.item_description %}
+                                                                                <div class="menu-item-desc">{{ item.item_description }}</div>
+                                                                            {% endif %}</div>
                                                                     </div>
                                                                     <div id="price-{{ item.item_id }}"
                                                                          class="menu-item-price">
@@ -538,31 +541,42 @@
         });
 
         //Menu Button
-        var item = [];
-        for (var i = 0; i < 100; i++) item[i] = 0;
+        var item = {};
+        //for (var i = 0; i < 100; i++) item[i] = 0;
         $(".itemBtn").click(function () {
             var id = $(this).attr('id').split('-')[1];
-            item[id] = item[id] + 1;
-            if (item[id] > 0) {
-                $("#count-" + id).text(item[id]);
+            if (!(id in item)) {
+                item[id] = 1;
             }
-            $("#orderBtn").click(function () {
-                $("#orderTable").find('tbody').append('<tr class="remove"><td>' + $("#itemTitle-" + id).text() + '</td>' + '<td>' + $("#count-" + id).text() + '</td>' + '<td class="eachPrice">' + $("#price-" + id).text() + '</td>' + '</tr>');
-            });
+            else
+                item[id] = item[id] + 1;
+            if (item[id] > 0) {
+                $("#count-" + id).fadeOut("fast");
+                setTimeout(function () {
+                    $("#count-" + id).text(item[id] + " x ")
+                }, 300);
+                $("#count-" + id).fadeIn("slow");
+            }
 
-            /*$(.itemRemBtn).on("click", '.remove' , function() {
-             $(this).parent().remove();
-             });*/
+        });
+
+        $("#orderBtn").click(function () {
+            for (var i in item) {
+                $("#orderTable").find('tbody').append("A");
+            }
         });
 
         $(".itemRemBtn").click(function () {
             var id = $(this).attr('id').split('-')[1];
-            item[id] = item[id] - 1;
-            if (item[id] > 0) {
-                $("#count-" + id).text(item[id]);
-            }
-            else {
-                $("#count-" + id).text("");
+            if (id in item && item[id] > 0) {
+
+                item[id] = item[id] - 1;
+                if (item[id] > 0) {
+                    $("#count-" + id).text(item[id] + " x ");
+                }
+                else {
+                    $("#count-" + id).text("");
+                }
             }
         });
 
