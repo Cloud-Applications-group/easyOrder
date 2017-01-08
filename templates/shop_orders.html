@@ -200,11 +200,12 @@
                     <table id="example" class="display" width="100%" style="color: white">
                         <thead>
                         <tr style="color: white;">
+                            <th>Order ID</th>
                             <th>Date</th>
                             <th>User</th>
                             <th>Amount</th>
                             <th>Status</th>
-                            <th>Details</th>
+                            <th></th>
                         </tr>
                         </thead>
                     </table>
@@ -365,12 +366,12 @@
             var orders_table = $('#example').DataTable({
                 "aaSorting": [[0, "desc"]],
                 "columnDefs": [{
-                    "targets": 3,
+                    "targets": 4,
                     "render": function (data, type, full, meta) {
                         return '<span class="label label-' + data[1] + '">' + data[0] + '</span>';
                     }
                 }, {
-                    "targets": 4,
+                    "targets": 5,
                     "render": function (data, type, full, meta) {
                         return "<button style='color: black' class='btn btn-secondary' data-toggle='modal' data-target='#orderModal' data-content='" + data[1] + "' data-orderid='" + data[0] + "'> See Details </button>";
                     }
@@ -413,7 +414,7 @@
                                 label.text = 'Completed';
                                 break;
                         }
-                        orders_table.row.add([date, user_name, objects[i]['amount'], [label.text, label.class], [objects[i]['id'], JSON.stringify(content)]]).draw();
+                        orders_table.row.add([id, date, user_name, objects[i]['amount'], [label.text, label.class], [objects[i]['id'], JSON.stringify(content)]]).draw();
 
                     }
                 });
@@ -444,7 +445,7 @@
                 });
 
                 orderContent += '<tr><td colspan="2" style="background-color: transparent !important;">&nbsp;</td></tr>';
-                orderContent += '<tr><td style="float:right; padding-right: 6px;background-color: transparent !important;">Total Amount:</td><td style="background-color: transparent !important;"> £' + orderContentData['amount'] + '</td></tr>';
+                orderContent += '<tr><td style="float:right; padding-right: 6px;background-color: transparent !important;">Total Amount:</td><td style="background-color: transparent !important; text-align: center"> £' + orderContentData['amount'] + '</td></tr>';
                 orderContent += '</tbody></table>'
 
                 $("#order_id_label").html('#' + orderID);

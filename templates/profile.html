@@ -68,15 +68,8 @@
         <div class="header-content">
             <div class="container">
                 <div class="container block"
-                     style="background-color: rgba(0, 2, 18, 0.25); color: black; border-radius: 20px; padding: 15px;">
-                    <h1>My Details</h1>
-                    <br/>
-                    <div style="color: white" class="col-md-4">
-
-                    </div>
-                    <div style="color: white" class="col-md-8">
-
-                    </div>
+                     style="background-color: rgba(0, 2, 18, 0.25); color: black; border-radius: 20px; padding: 6px;">
+                    <h1><i class="fa fa-user-circle-o" aria-hidden="true"></i> My Account</h1>
                 </div>
                 <div class="container block"
                      style="background-color: rgba(0, 2, 18, 0.25); color: black; border-radius: 20px; padding: 15px;">
@@ -145,8 +138,8 @@
                 }]
             });
 
-            var order_timer = setInterval(displayOrders, 20000);
             displayOrders();
+            setInterval(displayOrders, 30000);
 
             $('#orderModal').on('show.bs.modal', function (e) {
 
@@ -168,7 +161,7 @@
                 });
 
                 orderContent += '<tr><td colspan="2" style="background-color: transparent !important;">&nbsp;</td></tr>';
-                orderContent += '<tr><td style="float:right; padding-right: 6px;background-color: transparent !important;">Total Amount:</td><td style="background-color: transparent !important;"> £' + orderContentData['amount'] + '</td></tr>';
+                orderContent += '<tr><td style="float:right; padding-right: 6px;background-color: transparent !important;">Total Amount:</td><td style="background-color: transparent !important;text-align: center;"> £' + orderContentData['amount'] + '</td></tr>';
                 orderContent += '</tbody></table>'
 
                 $("#order_id_label").html('#' + orderID);
