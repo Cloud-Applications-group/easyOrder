@@ -252,6 +252,9 @@
 {% block footerscripts %}
     <script>
 
+        var restaurant_id = {{id}};
+        var menu_id = {{ menu_id }};
+
         $('#add-section').on('click', function () {
             $('#menu_info_text').hide();
         });
@@ -264,7 +267,8 @@
 
         function updateReq(data) {
             $.ajax({
-                url: '/api/v1/restaurant/',
+                url: '/api/v1/restaurant/' + restaurant_id + '/',
+                headers: {'X-HTTP-Method-Override': 'PATCH'},
                 type: 'POST',
                 contentType: 'application/json',
                 data: JSON.stringify(data),

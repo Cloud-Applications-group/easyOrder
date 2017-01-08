@@ -146,8 +146,10 @@ def shop_orders(request):
         completed_orders = Order.objects.all().filter(restaurant=restaurant).filter(status=3)
         total_orders = Order.objects.all().filter(restaurant=restaurant)
         pending_orders = Order.objects.all().filter(restaurant=restaurant).filter(status=0)
+        menu = Menu.objects.all().filter(user=user).filter(restaurant=restaurant)
 
         context = {'restaurant': restaurant,
+                   'id': restaurant[0].id,
                    'restaurant_is_available': restaurant[0].is_available,
                    'restaurant_name': restaurant[0].name,
                    'restaurant_pop': restaurant[0].popularity,
@@ -155,7 +157,8 @@ def shop_orders(request):
                    'completed_orders': len(completed_orders),
                    'pending_orders': len(pending_orders),
                    'total_orders': len(total_orders),
-                   'menu': str(Menu.objects.all().filter(user=user).filter(restaurant=restaurant)[0].content)
+                   'menu_id': str(menu[0].id),
+                   'menu': str(menu[0].content)
                    }
     else:
         context['error'] = "You do not own a shop mate!"

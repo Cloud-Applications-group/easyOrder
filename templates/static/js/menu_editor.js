@@ -171,7 +171,8 @@ function delete_preceeding_char(str, chr) {
 }
 function updateReqMenu(data) {
     $.ajax({
-        url: '/api/v1/menu/',
+        url: '/api/v1/menu/' + menu_id + '/',
+        headers: {'X-HTTP-Method-Override': 'PATCH'},
         type: 'POST',
         contentType: 'application/json',
         data: JSON.stringify(data),
@@ -224,7 +225,7 @@ function convert_to_JSON() {
     }
     JSON += ']}]}';
     console.log("Sending menu...");
-    updateReqMenu({'menu': JSON});
+    updateReqMenu({'content': JSON});
 }
 function proper_case(str) {
     str = str.toLowerCase().split(' ').map(function (word) {

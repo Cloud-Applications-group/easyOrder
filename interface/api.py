@@ -21,26 +21,12 @@ class UserResource(ModelResource):
         }
 
 class RestaurantResource(ModelResource):
-    user = fields.ForeignKey(UserResource, 'user')
-
-    def hydrate(self, bundle):
-        request_method = bundle.request.META['REQUEST_METHOD']
-
-        if request_method == 'POST':
-            user = bundle.request.user
-            is_available = bool(bundle.data.get('is_available'))
-            keys = list(bundle.data.keys())
-            restaurant = Restaurant.objects.all().filter(user=user)
-            if restaurant:
-                for i in keys:
-                    restaurant.update(**{i : bundle.data.get(i)})
-
-        return Exception("Updated")
 
 
     class Meta:
         queryset = Restaurant.objects.all()
         resource_name = 'restaurant'
+        allowed_methods = ['get', 'post', 'patch']
         authorization = Authorization()
         filtering = {
 
@@ -109,21 +95,8 @@ class UserRestaurantResource(ModelResource):
 
 class MenuResource(ModelResource):
 
-    def hydrate(self, bundle):
-        request_method = bundle.request.META['REQUEST_METHOD']
-
-        if request_method == 'POST':
-            user = bundle.request.user
-            restaurant=Restaurant.objects.all().filter(user=user)
-            menu = Menu.objects.all().filter(user=user).filter(restaurant=restaurant)
-            if menu:
-                menu_data = bundle.data.get('menu')
-                menu.update(content=str(menu_data))
-
-        return Exception("Updated")
-
-
     class Meta:
         queryset = Menu.objects.all()
         resource_name = 'menu'
+        allowed_methods = ['get', 'post', 'patch']
         authorization = Authorization()
