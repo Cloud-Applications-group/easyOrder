@@ -5,7 +5,7 @@
     h2,h3{color: #777;}
 
     .form-control {
-    background-color: rgba(0,0,0,0.9) !important;
+    background-color: rgba(0,0,0,0.8) !important;
     height: 35px;
     font-size: 18px;
     color: white;
@@ -121,7 +121,7 @@
                             <span style="border: 2px white; background-color: rgba(94, 184,92,0.93);cursor: pointer;"
                                   class="input-group-addon">
                                 <input style="width: 100%; height: 100%; padding-right: 50px; border: 2px white; background-color: rgba(94, 184,92,0.0);padding-left: 50px; color: white; font-size: 28px;"
-                                       type="submit" id="submit" value="Search"/></span>
+                                       type="submit" id="submit" value="GO"/></span>
                         </div>
                         <input type="hidden" id="location_id" name="place_id" value="">
                     </div>
@@ -247,8 +247,7 @@
                 </div>
                 <div class="col-lg-8 col-sm-6">
                     <h1 style="padding: 5%"> Own a Restaurant, Café or Bar ? </h1>
-                    <p> EasyOrder is completely free and always will be! Register your shop below to start creating your
-                        first online waiter.
+                    <p> Register your shop to start creating your first online waiter service. EasyOrder allows hungry people to select a restaurant they want to dine in,<br /> assigns them a table according to the group size and lets them order their food in advance. Making everyone smile.
                         <br/> <br/>
                         <button style="font-size: 18px; font-weight: 200;" type="button" data-toggle="modal"
                                 data-target="#myModal-restaurant-reg" id="shop_reg_modal_button"
@@ -309,7 +308,7 @@
             if (is_err) {
                 $("#error_alert").css("background-color", "");
                 $("#error_alert").css({
-                    'background-color': "rgba(184,143,17,0.51)",
+                    'background-color': "rgba(184,143,17,0.70)",
                     'color': "white",
                     'border': "2px white",
                     'margin-top': "10px"
@@ -342,7 +341,7 @@
 
                             $("#error_alert").css("background-color", "");
                             $("#error_alert").css({
-                                'background-color': "rgba(38,184,20,0.55)",
+                                'background-color': "rgba(38,184,20,0.70)",
                                 'color': "white",
                                 'border': "2px white",
                                 'margin-top': "10px"
@@ -364,7 +363,7 @@
                                     setTimeout(function () {
                                         if (!is_searching) {
                                             $("#err_strong_label").html("");
-                                            $("#err_label").html("You can then select the date, time and number of your people to search.");
+                                            $("#err_label").html("Once you decide where to eat, select the date, time and number of your people then hit GO.");
                                             $("#error_alert").slideDown("slow");
 
                                             $('#location').focus(function () {

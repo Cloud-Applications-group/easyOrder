@@ -129,19 +129,19 @@
                 </div>
 
                 <div class="container block" id="settings">
-                    <h1>Restaurant Stats & Settings</h1>
-
+                    <h1>Quick Statistics & Settings</h1>
+                    <br />
                     <div class="row">
-                        <div class="col-md-6 text-left">
-                            <p>Pending Orders: {{ pending_orders }}
-                                <br/>Accepted Orders: {{ accepted_orders }}
-                                <br/>Completed Orders: {{ completed_orders }}
-                                <br/>Total Orders: {{ total_orders }}
+                        <div class="col-md-1"></div>
+                        <div class="col-md-4 text-left">
+                            <p>Pending Orders: <span style="margin-left: 32px;">{{ pending_orders }}</span>
+                                <br/>Accepted Orders: <span style="margin-left: 25px;">{{ accepted_orders }}</span>
+                                <br/>Completed Orders: <span style="margin-left: 13px;">{{ completed_orders }}</span>
+                                <br/>Total Orders: <span style="margin-left: 58px;">{{ total_orders }}</span>
                                 <br/><br/><a href="#menu">
-                                    <button class="btn btn-info"> Create / Edit Menu</button>
+                                    <button class="btn btn-info"><i class="fa fa-map-o" aria-hidden="true"></i> <span style="margin-left: 6px;">Go to Menu Editor</span></button>
                                 </a>
                         </div>
-                        <div class="col-md-1"></div>
                         <div class="col-md-5">
                             <table style="padding: 5px; float: right">
                                 <tbody>
@@ -213,6 +213,7 @@
             </div>
         </div>
     </header>
+    <section style="background-color: grey; margin: 0; padding: 5px"></section>
     <section style="background-color: rgba(179,184,180,0.33); min-height: 100%" class="text-primary" id="menu">
         <center>
             <div class="container">

@@ -113,9 +113,9 @@
         <div id="navbar" class="navbar-collapse collapse" aria-expanded="false" style="height: 0.666667px;">
             <ul class="nav navbar-nav navbar-right">
                 {% if user and not user.is_anonymous %}
-                    <li class="dropdown" data-hover="dropdown">
+                    <li style="color: black !important;" class="dropdown" data-hover="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown">
-					<span style="font-size: 20px; padding: 15px;">
+					<span style="font-size: 20px; padding: 15px;{% if request.path == '/' %}color: grey !important;{% endif %}">
 					{{ user.get_full_name|default:user.username }} <i class="fa fa-chevron-down" aria-hidden="true"></i></span></a>
                         <ul class="dropdown-menu">
                             <li><a href="/profile"><span
@@ -136,7 +136,7 @@
                     </li>
                 {% else %}
                     <li><a href="#" data-toggle="modal" data-target="#myModal"><span
-                            style="font-size: 22px; padding: 15px; color: white;"><i class="fa fa-key"
+                            style="font-size: 22px; padding: 15px;{% if request.path == '/' %}color: grey !important;{% endif %}"><i class="fa fa-key"
                                                                                      aria-hidden="true"></i> Login</span></a>
                     </li>
                 {% endif %}

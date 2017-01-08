@@ -144,7 +144,7 @@
                             <span style="border: 2px white; background-color: rgba(94, 184,92,0.93);cursor: pointer;"
                                   class="input-group-addon">
                                 <input style="width: 100%; height: 100%; padding-right: 50px; border: 2px white; background-color: rgba(94, 184,92,0.0);padding-left: 50px; color: white; font-size: 28px;"
-                                       type="submit" id="submit" value="Search" required/></span>
+                                       type="submit" id="submit" value="GO" required/></span>
                         </div>
                         <input type="hidden" id="location_id" name="place_id" value="">
                     </div>
@@ -680,13 +680,13 @@
 
         var placeRating = '<b style="color:red">bad</b>';
         if (place_data['rating'] >= 4.5) {
-            placeRating = '<b style="color:green">excellent</b>';
+            placeRating = '<b style="color:darkgreen">excellent</b>';
         } else if (place_data['rating'] >= 4) {
             placeRating = '<b style="color:darkgreen">good</b>';
         } else if (place_data['rating'] >= 3) {
             placeRating = '<b style="color:orange">fair</b>';
         }
-        var placeRatingText = 'This place has been rated as ' + placeRating + ',';
+        var placeRatingText = 'This place has been rated as ' + placeRating + ' and ';
         document.getElementById('place_rating').innerHTML = placeRatingText;
 
 
