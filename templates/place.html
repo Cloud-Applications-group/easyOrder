@@ -130,7 +130,6 @@
 {% block content %}
 
 
-
     <header style="background-color: white;">
         <div class="container">
             <div class="row">
@@ -240,7 +239,8 @@
                          role="alert">
                         <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span
                                 aria-hidden="true">×</span></button>
-                        <h4 id="countdown-text" style="margin: 0px;">Restaurant is currently not accepting orders from EasyOrder.
+                        <h4 id="countdown-text" style="margin: 0px;">Restaurant is currently not accepting orders from
+                            EasyOrder.
                         </h4>
                     </div>
                 {% endif %}
@@ -293,63 +293,73 @@
                     <hr style="border-width:4px;border-color:rgba(255,255,255,1);">
 
                     <h1>The Menu </h1>
-                    <p>
-                        {% if menu %}
-                            <div class="menu">
-                                {% for m,cats in menu.items %}
-                                    {% for cat in cats %}
-										{% for section in cat.category %}
-											<div class="menu-section-container">
-												<div class="menu-section-title">{{ section.title }}</div>
-												<div class="menu-section">
-													{% for item in section.items %}
-														<div class="menu-item-container">
-															<div class="menu-item">
-																<div class="menu-item-info">
-																	<div><div id="itemTitle-{{item.item_id}}" class="menu-item-title">{{ item.item_title }}</div>
-																		<span id="count-{{item.item_id}}"><span/></div>
-																	{% if item.item_description %}
-																		<div class="menu-item-desc">{{ item.item_description }}</div>
-																	{% endif %}
-																</div>
-																<div id="price-{{item.item_id}}" class="menu-item-price">
-																	£ {{ item.item_price }}</div>
-																{% if not user.is_anonymous and is_available == 'true' %}
-																	<span>
-																		<button class="itemBtn" id="addItem-{{item.item_id}}"
-																				style="margin-left: 5px; height:auto; width:auto; background: transparent; border:none"><i
-																				class="fa fa-plus-circle"
-																				aria-hidden="true"
-																				style="color:#5cb85c;"></i></button></span>
-																	<span>
-																		<button class="itemRemBtn" id="removeItem-{{item.item_id}}"
-																				style="height:auto; width:auto; background: transparent; border:none"><i
-																				class="fa fa-minus-circle"
-																				aria-hidden="true"
-																				style="color:#d9534f;"></i></button></span>
-																{% endif %}
-															</div>
-														</div>
-													{% endfor %}
-												</div>
-											</div>
-											<hr>
+                    {% if not user.is_anonymous %}
+                        <p>
+                            {% if menu %}
+                                <div class="menu">
+                                    {% for m,cats in menu.items %}
+                                        {% for cat in cats %}
+                                            {% for section in cat.category %}
+                                                <div class="menu-section-container">
+                                                    <div class="menu-section-title">{{ section.title }}</div>
+                                                    <div class="menu-section">
+                                                        {% for item in section.items %}
+                                                            <div class="menu-item-container">
+                                                                <div class="menu-item">
+                                                                    <div class="menu-item-info">
+                                                                        <div>
+                                                                            <div id="itemTitle-{{ item.item_id }}"
+                                                                                 class="menu-item-title">{{ item.item_title }}</div>
+                                                                            <span id="count-{{ item.item_id }}"><span/>
+                                                                        </div>
+                                                                        {% if item.item_description %}
+                                                                            <div class="menu-item-desc">{{ item.item_description }}</div>
+                                                                        {% endif %}
+                                                                    </div>
+                                                                    <div id="price-{{ item.item_id }}"
+                                                                         class="menu-item-price">
+                                                                        £ {{ item.item_price }}</div>
+                                                                    {% if not user.is_anonymous and is_available == 'true' %}
+                                                                        <span>
+																		<button class="itemBtn"
+                                                                                id="addItem-{{ item.item_id }}"
+                                                                                style="margin-left: 5px; height:auto; width:auto; background: transparent; border:none"><i
+                                                                                class="fa fa-plus-circle"
+                                                                                aria-hidden="true"
+                                                                                style="color:#5cb85c;"></i></button></span>
+                                                                        <span>
+																		<button class="itemRemBtn"
+                                                                                id="removeItem-{{ item.item_id }}"
+                                                                                style="height:auto; width:auto; background: transparent; border:none"><i
+                                                                                class="fa fa-minus-circle"
+                                                                                aria-hidden="true"
+                                                                                style="color:#d9534f;"></i></button></span>
+                                                                    {% endif %}
+                                                                </div>
+                                                            </div>
+                                                        {% endfor %}
+                                                    </div>
+                                                </div>
+                                                <hr>
+                                            {% endfor %}
                                         {% endfor %}
                                     {% endfor %}
-                                {% endfor %}
-                            </div>
-                        {% else %}
-                            <p>No menu exists for this restaurant.</p>
+                                </div>
+                            {% else %}
+                                <p>No menu exists for this restaurant.</p>
+                            {% endif %}
+                        </p>
+                        {% if not user.is_anonymous and is_available == 'true' %}
+                            <button id="orderBtn" type="button" class="btn btn-primary btn-success" data-toggle="modal"
+                                    data-target="#checkoutModal" style="margin-bottom:15px; float: right;"><i
+                                    class="fa fa-check"
+                                    aria-hidden="true"></i>
+                                Complete Your
+                                Order
+                            </button>
                         {% endif %}
-                    </p>
-                    {% if not user.is_anonymous and is_available == 'true' %}
-                        <button id="orderBtn" type="button" class="btn btn-primary btn-success" data-toggle="modal"
-                                data-target="#checkoutModal" style="margin-bottom:15px; float: right;"><i
-                                class="fa fa-check"
-                                aria-hidden="true"></i>
-                            Complete Your
-                            Order
-                        </button>
+                    {% else %}
+                        <p>Please log in to check out the menu, book your place and order your food!</p>
                     {% endif %}
                 </div>
             </div>
@@ -380,14 +390,15 @@
                                     </tr>
                                     <tr>
                                         <th>Time</th>
-                                        <td>{{time}}</td>
+                                        <td>{{ time }}</td>
                                     </tr>
                                 </table>
                             </div>
                         </div>
                         <div style="text-align: right;" class="col-md-6">
                             <h3> Order Details </h3>
-                            <table id="orderTable" class="table" style="color: black; margin-left: auto;margin-right: auto;">
+                            <table id="orderTable" class="table"
+                                   style="color: black; margin-left: auto;margin-right: auto;">
                                 <thead>
                                 <tr>
                                     <th>Item</th>
@@ -395,7 +406,7 @@
                                     <th>Price</th>
                                 </tr>
                                 </thead>
-                                <tbody>                             
+                                <tbody>
                                 </tbody>
                                 <tfoot id="total">
                                 <tr>
@@ -516,12 +527,11 @@
     </div>
 
 
-
 {% endblock %}
 
 {% block footerscripts %}
     <script>
-       
+
         // Search hit
         $('#location').keydown(function (e) {
             if (e.which == 13 && $('.pac-container:visible').length) return false;
@@ -529,30 +539,30 @@
 
         //Menu Button
         var item = [];
-		for (var i = 0; i < 100; i++) item[i] = 0;
+        for (var i = 0; i < 100; i++) item[i] = 0;
         $(".itemBtn").click(function () {
-			var id = $(this).attr('id').split('-')[1];
+            var id = $(this).attr('id').split('-')[1];
             item[id] = item[id] + 1;
             if (item[id] > 0) {
-                $("#count-"+id).text(item[id]);
+                $("#count-" + id).text(item[id]);
             }
-			$("#orderBtn").click(function () {
-				$("#orderTable").find('tbody').append('<tr class="remove"><td>' + $("#itemTitle-"+id).text() + '</td>'+ '<td>'+ $("#count-"+id).text() +'</td>' +'<td class="eachPrice">'+ $("#price-"+id).text() +'</td>' +'</tr>');
-			});			
-			
-			/*$(.itemRemBtn).on("click", '.remove' , function() {
-				$(this).parent().remove();
-			});*/
-        });		
+            $("#orderBtn").click(function () {
+                $("#orderTable").find('tbody').append('<tr class="remove"><td>' + $("#itemTitle-" + id).text() + '</td>' + '<td>' + $("#count-" + id).text() + '</td>' + '<td class="eachPrice">' + $("#price-" + id).text() + '</td>' + '</tr>');
+            });
+
+            /*$(.itemRemBtn).on("click", '.remove' , function() {
+             $(this).parent().remove();
+             });*/
+        });
 
         $(".itemRemBtn").click(function () {
-			var id = $(this).attr('id').split('-')[1];
+            var id = $(this).attr('id').split('-')[1];
             item[id] = item[id] - 1;
             if (item[id] > 0) {
-                $("#count-"+id).text(item[id]);
+                $("#count-" + id).text(item[id]);
             }
             else {
-                $("#count-"+id).text("");
+                $("#count-" + id).text("");
             }
         });
 
