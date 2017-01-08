@@ -72,10 +72,10 @@
                     <h1>My Details</h1>
                     <br/>
                     <div style="color: white" class="col-md-4">
-                        <p>Here should be the profile image</p>
+
                     </div>
                     <div style="color: white" class="col-md-8">
-                         <p>We should pull FB Graph data and display shit here</p>
+
                     </div>
                 </div>
                 <div class="container block"
@@ -85,11 +85,11 @@
                     <table id="example" class="display" width="100%" style="color: white">
                         <thead>
                         <tr style="color: white;">
-                            <th>ID</th>
                             <th>Date</th>
                             <th>Restaurant</th>
                             <th>Amount</th>
                             <th>Status</th>
+                            <th></th>
                         </tr>
                         </thead>
                     </table>
@@ -97,6 +97,25 @@
             </div>
         </div>
     </header>
+
+    <!-- Modal -->
+    <div class="modal fade" id="orderModal" tabindex="-1" role="dialog" aria-labelledby="orderModalLabel">
+        <div class="modal-dialog">
+            <div style="background-color:rgba(17,34,50,0.78);" class="modal-content">
+                <div class="modal-header"><h1>Details for Order <span id="order_id_label">[###]</span></h1></div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12 text-primary">
+                            <center>
+                                <span id="order-content"></span>
+                            </center>
+                            <br/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
 {% endblock %}
 {% block footerscripts %}
@@ -114,9 +133,14 @@
                 },
                 "aaSorting": [[0, "desc"]],
                 "columnDefs": [{
-                    "targets": 4,
+                    "targets": 3,
                     "render": function (data, type, full, meta) {
                         return '<span class="label label-' + data[1] + '">' + data[0] + '</span>';
+                    }
+                }, {
+                    "targets": 4,
+                    "render": function (data, type, full, meta) {
+                        return "<button style='color: black' class='btn btn-secondary' data-toggle='modal' data-target='#orderModal' data-content='" + data[1] + "' data-orderid='" + data[0] + "'> View Details</button>";
                     }
                 }]
             });
@@ -124,7 +148,32 @@
             var order_timer = setInterval(displayOrders, 20000);
             displayOrders();
 
-            var order_content = {};
+            $('#orderModal').on('show.bs.modal', function (e) {
+
+                var orderID = e.relatedTarget.dataset['orderid'];
+                var orderContentData = e.relatedTarget.dataset['content'];
+
+                orderContentData = JSON.parse(orderContentData);
+                var orderContent = '<table width="100%"><tbody><tr><th>Item</th><th>#</th></tr>';
+                var no = 0;
+                jQuery.each(orderContentData, function (i, val) {
+                    if (i !== "amount") {
+                        if (no % 2 == 0) {
+                            orderContent += "<tr style='background-color: rgba(0,0,0,0.18) !important;'><td>" + i + "</td>" + "<td>" + val.replace("x", "") + "</td></tr>";
+                        } else {
+                            orderContent += "<tr><td>" + i + "</td>" + "<td>" + val.replace("x", "") + "</td></tr>";
+                        }
+                        no++;
+                    }
+                });
+
+                orderContent += '<tr><td colspan="2" style="background-color: transparent !important;">&nbsp;</td></tr>';
+                orderContent += '<tr><td style="float:right; padding-right: 6px;background-color: transparent !important;">Total Amount:</td><td style="background-color: transparent !important;"> £' + orderContentData['amount'] + '</td></tr>';
+                orderContent += '</tbody></table>'
+
+                $("#order_id_label").html('#' + orderID);
+                $("#order-content").html(orderContent);
+            });
 
             function displayOrders() {
                 $.getJSON('/api/v1/user_order/?format=json', function (response) {
@@ -133,7 +182,6 @@
                     for (var i in objects) {
                         var content = JSON.parse(objects[i]['content']);
 
-                        order_content[objects[i]['id']] = content;
                         var status = objects[i].status;
                         var label = {};
 
@@ -159,11 +207,10 @@
                                 label.text = 'Completed';
                                 break;
                         }
-                        orders_table.row.add([objects[i]['id'], objects[i]['reservation_date_time'], objects[i]['restaurant']['name'], objects[i]['amount'], [label.text, label.class]]).draw();
+                        orders_table.row.add([objects[i]['reservation_date_time'], objects[i]['restaurant']['name'], objects[i]['amount'], [label.text, label.class], [objects[i]['id'], JSON.stringify(content)]]).draw();
                     }
                 });
             }
-
         });
     </script>
 

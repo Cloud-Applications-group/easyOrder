@@ -121,10 +121,10 @@
                                                                  style="font-size: 20px; margin-right:15px;"></i> My Account</span></a>
                             </li>
                             {% if not user.is_anonymous and restaurant %}
-                            <li><a href="/shoporders"><span
-                                    style="font-size: 20px; "><i class="fa fa-cutlery" aria-hidden="true"
-                                                                 style="font-size: 20px; margin-right:15px;"></i> My Restaurant</span></a>
-                            </li>
+                                <li><a href="/shoporders"><span
+                                        style="font-size: 20px; "><i class="fa fa-cutlery" aria-hidden="true"
+                                                                     style="font-size: 20px; margin-right:15px;"></i> My Restaurant</span></a>
+                                </li>
                             {% endif %}
                             <li><a href="{% url 'auth:logout' %}?next={{ request.path }}"><span
                                     style="font-size: 20px;"><i class="fa fa-power-off" aria-hidden="true"
@@ -156,27 +156,27 @@
                     </center>
                     <div id="login-body">
                         <ul style="font-size: 16px;" class="nav nav-tabs" role="tablist">
-                            <li
-                                role="presentation" class="active">
+                            <li role="presentation" class="active">
                                 <a href="#home" aria-controls="home" role="tab"
                                    data-toggle="tab"><i class="fa fa-user-circle-o" style="margin-right: 3px;"
                                                         aria-hidden="true"></i>
-                                    User</a>
+                                    User {% if request.path != '/' %} Login {% endif %}</a>
                             </li>
-                            <li
-                                role="presentation">
-                                <a href="#profile" aria-controls="profile" role="tab" data-toggle="tab"
-                                   style="margin: 0"><i
-                                        style="margin-right: 3px;" class="fa fa-key" aria-hidden="true"></i>
-                                    Restaurant</a>
-                            </li>
+                            {% if request.path == '/' %}
+                                <li role="presentation">
+                                    <a href="#profile" aria-controls="profile" role="tab" data-toggle="tab"
+                                       style="margin: 0"><i
+                                            style="margin-right: 3px;" class="fa fa-key" aria-hidden="true"></i>
+                                        Restaurant</a>
+                                </li>
+                            {% endif %}
                         </ul>
                         <!-- Tab panes -->
                         <div style="background-color: rgba(255, 255, 255, 0); padding: 10px; border-radius: 5px;"
                              class="tab-content">
 
                             <div style="background-color:rgba(239, 239, 239, 0);" role="tabpanel"
-                                 class="tab-pane active"                              id="home">
+                                 class="tab-pane active" id="home">
                                 <div id="fb_button">
                                     <br/>
                                     <a href="{% url 'social:begin' 'facebook' %}?next={{ request.path }}"
@@ -184,17 +184,21 @@
                                             src="/static/img/login/fb_login_button.png" width="300px"/></a>
                                 </div>
                             </div>
-                            <div role="tabpanel" class="tab-pane" id="profile">
-                                <form action="" method="post">
-                                    <br />
-                                    <p style="color:black; float: left;">Restaurant owners only.</p>
-                                    {% csrf_token %}
-                                    {{ form_rest_login }}
-                                    <br />
-                                    <input style="float: right; margin-left: 8px;" value="Login" type="submit" class="btn btn-primary">
-                                    <button style="float: right" class="btn btn-warning">Help</button>
-                                </form>
-                            </div>
+                            {% if request.path == '/' %}
+                                <div style="background-color:rgba(239, 239, 239, 0);" role="tabpanel"
+                                     class="tab-pane" id="profile">
+                                    <form action="" method="post">
+                                        <br/>
+                                        <p style="color:black; float: left;">Restaurant owners only.</p>
+                                        {% csrf_token %}
+                                        {{ form_rest_login }}
+                                        <br/>
+                                        <input style="float: right; margin-left: 8px;" value="Login" type="submit"
+                                               class="btn btn-primary">
+                                        <button style="float: right" class="btn btn-warning">Help</button>
+                                    </form>
+                                </div>
+                            {% endif %}
                         </div>
                     </div>
                 </div>

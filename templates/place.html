@@ -281,10 +281,10 @@
 
                             {% if not user.is_anonymous %}
 
-                                <h1> Reservation Details </h1>
-                                <p>Number of People: {{ num_people }}
-                                    <br/>Date: {{ date }}
-                                    <br/>Time: {{ time }}
+                                <h1 style="margin-bottom: 10px;"> Reservation Details </h1>
+                                <p><i class="fa fa-users" aria-hidden="true"></i> {{ num_people }} People
+                                    <br/><i class="fa fa-calendar" aria-hidden="true"></i> {{ date }}
+                                    <br/><i class="fa fa-clock-o" aria-hidden="true"></i> {{ time }}
                                 </p>
 
                             {% endif %}
@@ -389,7 +389,7 @@
                                 </tr>
                             </table>
                             <div style="text-align: left; color: black;" class="col-md-">
-                                <h3> Table Details</h3>
+                                <h3> Reservation Details</h3>
                                 <table class="table" style="color: black; margin-left: auto;margin-right: auto;">
                                     <tr>
                                         <th>People</th>
@@ -674,13 +674,13 @@
         }
         document.getElementById('openNow').innerHTML = openNow;
 
-        var placeRating = '<b style="color:red">Bad</b>';
+        var placeRating = '<b style="color:red">bad</b>';
         if (place_data['rating'] >= 4.5) {
-            placeRating = '<b style="color:green">Excellent</b>';
+            placeRating = '<b style="color:green">excellent</b>';
         } else if (place_data['rating'] >= 4) {
-            placeRating = '<b style="color:darkgreen">Good</b>';
+            placeRating = '<b style="color:darkgreen">good</b>';
         } else if (place_data['rating'] >= 3) {
-            placeRating = '<b style="color:orange">Fair</b>';
+            placeRating = '<b style="color:orange">fair</b>';
         }
         var placeRatingText = 'This place has been rated as ' + placeRating + ',';
         document.getElementById('place_rating').innerHTML = placeRatingText;

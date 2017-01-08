@@ -189,7 +189,7 @@
                         </div>
                     </div>
                 </form>
-                <div style="height: 80px; display: block; overflow:hidden;" class="col-md-12">
+                <div style="font-size: 18px; height: 80px; display: block; overflow:hidden;" class="col-md-12">
                     <div {% if not error %} hidden {% endif %} id="error_alert"
                                             class="alert alert-dismissable">
                         <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
@@ -233,7 +233,7 @@
                         <i class="fa fa-4x fa-heart text-primary sr-icons" data-sr-id="5"
                            style="; visibility: visible;  -webkit-transform: scale(1); opacity: 1;transform: scale(1); opacity: 1;-webkit-transition: -webkit-transform 0.6s cubic-bezier(0.6, 0.2, 0.1, 1) 0s, opacity 0.6s cubic-bezier(0.6, 0.2, 0.1, 1) 0s; transition: transform 0.6s cubic-bezier(0.6, 0.2, 0.1, 1) 0s, opacity 0.6s cubic-bezier(0.6, 0.2, 0.1, 1) 0s; "></i>
                         <h3>Get Ready</h3>
-                        <p class="text-muted">Never wait for food anymore!</p>
+                        <p class="text-muted">Enjoy your food, at the right time and at the right location.</p>
                     </div>
                 </div>
             </div>
@@ -285,52 +285,101 @@
 {% block footerscripts %}
     <script>
 
+        var is_searching = false;
+
+        $("#submit").click(function (event) {
+
+            is_searching = true;
+            var err = "Looks like you forgot to select ";
+            var err1, err2, is_err = false;
+
+            if ($('#numPeople').val() === null) {
+                err += "the number of people";
+                is_err = true;
+                err1 = true;
+            }
+            if ($('#time').val() === null) {
+                if (err1) {
+                    err += " and ";
+                }
+                err += "the time of your booking";
+                is_err = true;
+                err2 = true;
+            }
+            if (is_err) {
+                $("#error_alert").css("background-color", "");
+                $("#error_alert").css({
+                    'background-color': "rgba(184,143,17,0.51)",
+                    'color': "white",
+                    'border': "2px white",
+                    'margin-top': "10px"
+                });
+                if(!err1){
+                    $("#err_strong_label").html("Oow");
+                } else {
+                    $("#err_strong_label").html("Ahh");
+                }
+
+                $("#err_label").html(err + ".");
+                $("#error_alert").slideDown("slow");
+
+                $('#time').on('change', function () {
+                    $("#error_alert").slideUp("slow");
+                });
+                $('#numPeople').on('change', function () {
+                    $("#error_alert").slideUp("slow");
+                });
+
+            }
+        });
+
         {% if not error %}
 
             $(document).ready(function () {
+                if (!is_searching) {
+                    setTimeout(function () {
+                        if (!$('#location').is(':focus') && $('#location').val() === "" && !is_searching) {
 
-                setTimeout(function () {
+                            $("#error_alert").css("background-color", "");
+                            $("#error_alert").css({
+                                'background-color': "rgba(38,184,20,0.55)",
+                                'color': "white",
+                                'border': "2px white",
+                                'margin-top': "10px"
+                            });
+                            $("#err_strong_label").html("Hey!");
+                            $("#err_label").html("Start typing the name of a restaurant to get started.");
+                            $("#error_alert").slideDown("slow");
 
-                    if (!$('#location').is(':focus')) {
-
-                        $("#error_alert").css("background-color", "");
-                        $("#error_alert").css({
-                            'background-color': "rgba(38,184,20,0.55)",
-                            'color': "white",
-                            'border': "2px white",
-                            'margin-top': "10px"
-                        });
-                        $("#err_strong_label").html("Hey!")
-                        $("#err_label").html("Start typing the name of a restaurant to get started.")
-                        $("#error_alert").slideDown("slow");
-
-                        var show = true;
-
-                        $('#location').focus(function () {
-                            show = false;
-                            $("#error_alert").slideUp("fast");
-                        });
-
-                        if (show) {
-
+                            $('#location').focus(function () {
+                                if (!is_searching) {
+                                    $("#error_alert").slideUp("fast");
+                                }
+                            });
                             setTimeout(function () {
 
-                                $("#error_alert").slideUp("fast");
+                                if (!is_searching) {
+                                    $("#error_alert").slideUp("fast");
 
-                                setTimeout(function () {
-                                    $("#err_strong_label").html("")
-                                    $("#err_label").html("You can then select the date, time and number of your people to search.")
-                                    $("#error_alert").slideDown("slow");
+                                    setTimeout(function () {
+                                        if (!is_searching) {
+                                            $("#err_strong_label").html("");
+                                            $("#err_label").html("You can then select the date, time and number of your people to search.");
+                                            $("#error_alert").slideDown("slow");
 
-                                    $('#location').focus(function () {
-                                        $("#error_alert").slideUp("fast");
-                                    });
-                                }, 1000);
-                            }, 3000);
+                                            $('#location').focus(function () {
+                                                if (!is_searching) {
+                                                    $("#error_alert").slideUp("fast");
+                                                }
+                                            });
+                                        }
+                                    }, 1000);
+                                }
+                            }, 3700);
+
                         }
-                    }
-                }, 3000);
-
+                    }, 2000);
+                }
             });
 
         {% endif %}

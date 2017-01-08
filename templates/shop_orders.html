@@ -200,11 +200,11 @@
                     <table id="example" class="display" width="100%" style="color: white">
                         <thead>
                         <tr style="color: white;">
-                            <th>Details</th>
                             <th>Date</th>
                             <th>User</th>
                             <th>Amount</th>
                             <th>Status</th>
+                            <th>Details</th>
                         </tr>
                         </thead>
                     </table>
@@ -249,33 +249,28 @@
     <!-- Modal -->
     <div class="modal fade" id="orderModal" tabindex="-1" role="dialog" aria-labelledby="orderModalLabel">
         <div class="modal-dialog">
-            <div style="background-color:rgba(239,231,221,0.42);" class="modal-content">
+            <div style="background-color:rgba(17,34,50,0.78);" class="modal-content">
                 <div class="modal-header"><h1>Details for Order <span id="order_id_label">[###]</span></h1></div>
                 <div class="modal-body">
                     <div class="row">
                         <div class="col-md-12 text-primary">
-                            <center>
-                                <p>You can view, update, accept or cancel an order.</p>
-                                <table width="100%">
-                                    <tbody>
-                                    <tr>
-                                        <th>Item</th>
-                                        <th>Price</th>
-                                        <th>#</th>
-                                    </tr>
-                                    <tr>
-                                        <td>Jill</td>
-                                        <td>Smith</td>
-                                        <td>50</td>
-                                    </tr>
-                                    </tbody>
-                                </table>
-                            </center>
-                            <br/>
+                            <span id="order-content"></span>
+                            <hr/>
                         </div>
-                        <button class="btn btn-warning">Accept</button>
-                        <button class="btn btn-success">Complete</button>
-                        <button class="btn btn-danger">Cancel</button>
+                        <div style="padding-top: 5px; margin: 6px; margin-left: 10px; float: left;">
+                            <button id="acceptOrderButton" class="btn btn-warning">Accept Order
+                            </button>
+                            <button id="completeOrderButton" class="btn btn-success">
+                                Complete Order
+                            </button>
+                            <button id="cancelOrderButton" class="btn btn-danger">Cancel Order
+                            </button>
+                        </div>
+                        <div style="padding-top: 5px; margin: 6px; margin-right: 10px; float: right;">
+                            <button class="btn btn-default"
+                                    onclick="hideModal()">Close
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -285,6 +280,10 @@
 
 {% block footerscripts %}
     <script>
+
+        function hideModal() {
+            $('#orderModal').modal('toggle');
+        }
 
         var restaurant_id = {{id}};
         var menu_id = {{ menu_id }};
@@ -300,6 +299,18 @@
                 type: 'POST',
                 contentType: 'application/json',
                 data: JSON.stringify(data),
+                dataType: 'json',
+                processData: false
+            });
+        }
+
+        function updateOrderStatus(orderID, status) {
+            $.ajax({
+                url: '/api/v1/order/' + orderID + '/',
+                headers: {'X-HTTP-Method-Override': 'PATCH'},
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify({"status": status}),
                 dataType: 'json',
                 processData: false
             });
@@ -354,20 +365,20 @@
             var orders_table = $('#example').DataTable({
                 "aaSorting": [[0, "desc"]],
                 "columnDefs": [{
-                    "targets": 4,
+                    "targets": 3,
                     "render": function (data, type, full, meta) {
                         return '<span class="label label-' + data[1] + '">' + data[0] + '</span>';
                     }
                 }, {
-                    "targets": 0,
+                    "targets": 4,
                     "render": function (data, type, full, meta) {
-                        return '<button class="btn btn-secondary" style="color: black" data-orderid="' + data + '" data-toggle="modal" data-target="#orderModal"> Show </button>';
+                        return "<button style='color: black' class='btn btn-secondary' data-toggle='modal' data-target='#orderModal' data-content='" + data[1] + "' data-orderid='" + data[0] + "'> See Details </button>";
                     }
                 }]
             });
 
-            var order_timer = setInterval(displayOrders, 10000);
             displayOrders();
+            setInterval(displayOrders, 10000);
 
             function displayOrders() {
                 $.getJSON('/api/v1/rest_order/?format=json', function (response) {
@@ -375,6 +386,7 @@
                     orders_table.clear().draw();
                     for (var i in objects) {
                         var id = objects[i]['id'];
+                        var content = JSON.parse(objects[i]['content']);
                         var date = objects[i]['reservation_date_time'];
                         var user_name = objects[i]['user']['username'];
                         var status = objects[i].status;
@@ -400,35 +412,81 @@
                                 label.class = 'success';
                                 label.text = 'Completed';
                                 break;
-
-
                         }
-
-                        orders_table.row.add([id, date, user_name, objects[i]['amount'], [label.text, label.class]]).draw();
+                        orders_table.row.add([date, user_name, objects[i]['amount'], [label.text, label.class], [objects[i]['id'], JSON.stringify(content)]]).draw();
 
                     }
                 });
             }
-        });
 
-        $('#orderModal').on('show.bs.modal', function (e) {
+            $('#orderModal').on('show.bs.modal', function (e) {
 
-            var orderID = e.relatedTarget.dataset['orderid'];
-            $("#order_id_label").html('#' + orderID);
+                var orderID = e.relatedTarget.dataset['orderid'];
+                var orderContentData = e.relatedTarget.dataset['content'];
 
-        });
+                $('#acceptOrderButton').attr('data-orderid', orderID);
+                $('#completeOrderButton').attr('data-orderid', orderID);
+                $('#cancelOrderButton').attr('data-orderid', orderID);
 
-        {% if menu %}
-            $(document).ready(function () {
+                // Populate order table
+                orderContentData = JSON.parse(orderContentData);
+                var orderContent = '<table width="100%"><tbody><tr><th>Item</th><th>#</th></tr>';
+                var no = 0;
+                jQuery.each(orderContentData, function (i, val) {
+                    if (i !== "amount") {
+                        if (no % 2 == 0) {
+                            orderContent += "<tr style='background-color: rgba(0,0,0,0.18) !important;'><td>" + i + "</td>" + "<td>" + val.replace("x", "") + "</td></tr>";
+                        } else {
+                            orderContent += "<tr><td>" + i + "</td>" + "<td>" + val.replace("x", "") + "</td></tr>";
+                        }
+                        no++;
+                    }
+                });
 
-                var JSONtext = '{{ menu | safe }}';
-                if (JSONtext.length !== 46) {
-                    $('#menu_info_text').hide();
-                }
-                JSON_to_form(JSONtext);
+                orderContent += '<tr><td colspan="2" style="background-color: transparent !important;">&nbsp;</td></tr>';
+                orderContent += '<tr><td style="float:right; padding-right: 6px;background-color: transparent !important;">Total Amount:</td><td style="background-color: transparent !important;"> £' + orderContentData['amount'] + '</td></tr>';
+                orderContent += '</tbody></table>'
+
+                $("#order_id_label").html('#' + orderID);
+                $("#order-content").html(orderContent);
+
+                // Order Status Updates..
+                $('#acceptOrderButton').click(function (e) {
+                    var orderID = $.parseJSON($(this).attr('data-orderid'));
+                    updateOrderStatus(orderID, 1);
+                    setTimeout(function () {
+                        displayOrders();
+                    }, 100);
+                });
+                $('#completeOrderButton').click(function (e) {
+                    var orderID = $.parseJSON($(this).attr('data-orderid'));
+                    updateOrderStatus(orderID, 3);
+                    setTimeout(function () {
+                        displayOrders();
+                    }, 100);
+                });
+                $('#cancelOrderButton').click(function (e) {
+                    var orderID = $.parseJSON($(this).attr('data-orderid'));
+                    updateOrderStatus(orderID, 2);
+                    setTimeout(function () {
+                        displayOrders();
+                    }, 100);
+                });
 
             });
-        {% endif %}
+
+            {% if menu %}
+                $(document).ready(function () {
+
+                    var JSONtext = '{{ menu | safe }}';
+                    if (JSONtext.length !== 46) {
+                        $('#menu_info_text').hide();
+                    }
+                    JSON_to_form(JSONtext);
+
+                });
+            {% endif %}
+        });
 
     </script>
 
