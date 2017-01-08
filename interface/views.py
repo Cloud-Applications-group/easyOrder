@@ -77,7 +77,7 @@ def place(request):
 
             Order.objects.create(user=user,
                                  restaurant=restaurant[0],
-                                 content = request.POST['content'],
+                                 content = json.dumps(content),
                                  amount = amount,
                                  reservation_date_time = date + ' ' + time,
                                  people=int(people),

@@ -122,14 +122,18 @@
             });
 
             var order_timer = setInterval(displayOrders, 20000);
-            displayOrders()
+            displayOrders();
+
+            var order_content = {};
 
             function displayOrders() {
                 $.getJSON('/api/v1/user_order/?format=json', function (response) {
                     var objects = response.objects;
                     orders_table.clear().draw();
                     for (var i in objects) {
+                        var content = JSON.parse(objects[i]['content']);
 
+                        order_content[objects[i]['id']] = content;
                         var status = objects[i].status;
                         var label = {};
 
@@ -159,13 +163,6 @@
                     }
                 });
             }
-            $.getJSON('/api/v1/user_restaurant/?format=json', function (response) {
-                var objects = response.objects;
-                for (var i in objects) {
-                    console.log(i)
-
-                }
-            });
 
         });
     </script>
