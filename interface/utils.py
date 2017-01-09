@@ -15,10 +15,17 @@ def google_place_details(location_id):
 
     resp = requests.get(url=url, params=params)
     data = (json.loads(resp.text))
-    r = requests.get('https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=' +
+
+    try:
+
+        r = requests.get('https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=' +
                      data['result']['photos'][0][
                          'photo_reference'] + '&key=AIzaSyBCinQHLTxOHgFXAFHjsftWjucn2cI3yWg')
-    data['result']['photos'][0]['photo_reference'] = r.url
+        data['result']['photos'][0]['photo_reference'] = r.url
+
+    except KeyError:
+        return None
+
     if validate_google_data(data):
         return json.dumps(data)
     return False

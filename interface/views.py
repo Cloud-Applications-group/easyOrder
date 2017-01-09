@@ -12,7 +12,6 @@ import json
 
 @csrf_protect
 def login(request):
-
     variables = {
         'form_reg': RestaurantRegisterForm(),
         'form_rest_login': RestaurantLoginForm()
@@ -33,9 +32,9 @@ def login(request):
                 name=form_reg.cleaned_data['shop_name']
             )
             Menu.objects.create(
-                user = user,
-                restaurant = restaurant,
-                content = "{}"
+                user=user,
+                restaurant=restaurant,
+                content="{}"
             )
             return HttpResponseRedirect('/')
         elif form_log.is_valid():
@@ -77,13 +76,12 @@ def place(request):
 
             Order.objects.create(user=user,
                                  restaurant=restaurant[0],
-                                 content = json.dumps(content),
-                                 amount = amount,
-                                 reservation_date_time = date + ' ' + time,
+                                 content=json.dumps(content),
+                                 amount=amount,
+                                 reservation_date_time=date + ' ' + time,
                                  people=int(people),
                                  )
         return HttpResponseRedirect('/profile')
-
 
     user = request.user
     context = {}
@@ -115,17 +113,22 @@ def place(request):
     elif popularity == 2:
         popularity = '<b style="color:red">very busy</b>'
 
+    context['form_reg'] = RestaurantRegisterForm()
+    context['form_rest_login'] = RestaurantLoginForm()
+
     google_place_data = google_place_details(location_id)
 
-    context['form_reg']= RestaurantRegisterForm()
-    context['form_rest_login']= RestaurantLoginForm()
+    if not (google_place_data):
+        context['error'] = 'This location is not fully supported yet.'
+        return render(request, 'login.html', context)
+
     context['google_place_data'] = google_place_data
-    context['menu']= json.loads(Menu.objects.all().filter(restaurant=restaurant)[0].content)
-    context['date']= date
-    context['num_people'] =num_people
-    context['time']= time
-    context['is_available']= is_available
-    context['popularity']= popularity
+    context['menu'] = json.loads(Menu.objects.all().filter(restaurant=restaurant)[0].content)
+    context['date'] = date
+    context['num_people'] = num_people
+    context['time'] = time
+    context['is_available'] = is_available
+    context['popularity'] = popularity
     context['order_form'] = OrderForm()
     context['location_id'] = location_id
 
@@ -158,6 +161,7 @@ def register(request):
                   'register.html',
                   variables,
                   )
+
 
 @login_required
 def shop_orders(request):
