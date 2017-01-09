@@ -86,6 +86,9 @@ def place(request):
     user = request.user
     context = {}
 
+    context['form_reg'] = RestaurantRegisterForm()
+    context['form_rest_login'] = RestaurantLoginForm()
+
     location_id = request.GET.get('place_id')
 
     if not location_id:
@@ -112,9 +115,6 @@ def place(request):
         popularity = '<b style="color:orange">busy</b>'
     elif popularity == 2:
         popularity = '<b style="color:red">very busy</b>'
-
-    context['form_reg'] = RestaurantRegisterForm()
-    context['form_rest_login'] = RestaurantLoginForm()
 
     google_place_data = google_place_details(location_id)
 

@@ -105,7 +105,7 @@
 
     .wallClock{
     position: absolute;
-    opacity: 0.7;
+    opacity: 0.80;
     top: 70px;
     float: left;
     left: 130px;
@@ -129,7 +129,7 @@
                         <div class="input-group">
                          <span class="input-group-addon transparentClass"><i class="fa fa-cutlery fa-lg"
                                                                              aria-hidden="true"></i></span>
-                            <input style="height: 60px; font-size: 25px" class="form-control" id="location" type="text"
+                            <input style="height: 60px; font-size: 25px" value="" class="form-control" id="location" type="text"
                                    placeholder="Tell us your destination." required/>
                             <span style="border: 2px white; background-color: rgba(94, 184,92,0.93);cursor: pointer;"
                                   class="input-group-addon">
@@ -305,7 +305,7 @@
 
             is_searching = true;
             var err = "Looks like you forgot to select ";
-            var err1, err2, is_err = false;
+            var err1, err2, err3, is_err = false;
 
             if ($('#numPeople').val() === null) {
                 err += "the number of people";
@@ -320,6 +320,10 @@
                 is_err = true;
                 err2 = true;
             }
+            if ($('#location').val().length === 0) {
+                is_err = true;
+                err3 = true;
+            }
             if (is_err) {
                 $("#error_alert").css("background-color", "");
                 $("#error_alert").css({
@@ -333,8 +337,17 @@
                 } else {
                     $("#err_strong_label").html("Ahh");
                 }
-
-                $("#err_label").html(err + ".");
+                if (err3) {
+                    $("#err_label").html("Please select your destination before continuing.");
+                    setTimeout(function () {
+                         $("#error_alert").slideUp("slow");
+                    }, 5000);
+                } else {
+                    $("#err_label").html(err + ".");
+                    setTimeout(function () {
+                         $("#error_alert").slideUp("slow");
+                    }, 7000);
+                }
                 $("#error_alert").slideDown("slow");
 
                 $('#time').on('change', function () {
@@ -345,6 +358,7 @@
                 });
 
             }
+
         });
 
         function startTime() {
