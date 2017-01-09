@@ -92,7 +92,8 @@ def place(request):
     location_id = request.GET.get('place_id')
 
     if not location_id:
-        return HttpResponseRedirect('/')
+        context['error'] = 'This location does not exist.'
+        return render(request, 'login.html', context)
 
     date = request.GET.get('date')
     num_people = request.GET.get('numPeople')

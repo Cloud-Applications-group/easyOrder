@@ -223,7 +223,7 @@
                         <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span
                                 aria-hidden="true">×</span></button>
                         <h4 id="countdown-text" style="margin: 0px;">Your table has been reserved until <span
-                                id="countdown">10:00</span>.
+                                id="countdown">5:00</span>.
                         </h4>
                     </div>
 
@@ -262,14 +262,14 @@
                 </div>
                 <div class="col-md-3 text-right">
                     {% if user %}
-                    <button id="favourite" class="btn btn-default" style="margin-right: 5px;"><i class="fa fa-heart"
-                                                                                                 aria-hidden="true"></i>
-                        Favourite
-                    </button>
-                    <button id="report" class="btn btn-default" style="margin-right: 15px;"><i class="fa fa-flag"
-                                                                                               aria-hidden="true"></i>
-                        Report
-                    </button>
+                        <button id="favourite" class="btn btn-default" style="margin-right: 5px;"><i class="fa fa-heart"
+                                                                                                     aria-hidden="true"></i>
+                            Favourite
+                        </button>
+                        <button id="report" class="btn btn-default" style="margin-right: 15px;"><i class="fa fa-flag"
+                                                                                                   aria-hidden="true"></i>
+                            Report
+                        </button>
                     {% endif %}
                 </div>
                 <div style="text-align: left;" class="col-md-12">
@@ -562,6 +562,7 @@
     </script>
     <script>
         var final_order = null;
+        var ordering_enabled = true;
 
         // Search hit
         $('#location').keydown(function (e) {
@@ -590,7 +591,7 @@
                 $("#count-" + id).fadeIn("slow");
             }
 
-            if (menu_count > 0 ) {
+            if (menu_count > 0) {
                 document.getElementById('orderBtn').removeAttribute('disabled');
             }
         });
@@ -625,29 +626,38 @@
 
         //Submit
         $("#orderBtn").click(function (e) {
-            var order = {};
-            var total = 0;
-            for (var i in item) {
-                if (item[i] > 0) {
-                    order[$("#itemTitle-" + i).text()] = $("#count-" + i).text();
-                    var count = parseInt($("#count-" + i).text().substring(0, $("#count-" + i).text().length - 1));
-                    var price = parseInt($("#price-" + i).text().trim().substring(1));
-                    var item_total = count * price;
-                    total = total + item_total;
 
-                    $("#orderTable").find('tbody').append('<tr class="remove"><td>' + $("#itemTitle-" + i).text() + '</td>' + '<td>' + $("#count-" + i).text() + '</td>' + '<td class="eachPrice">' + $("#price-" + i).text() + '</td>' + '</tr>');
+            if (!ordering_enabled) {
+
+                e.preventDefault();
+                alert("Your reservation has expired, we cannot guarantee your place at your selected restaurant. Please re-book your reservation.")
+
+            } else {
+
+                var order = {};
+                var total = 0;
+                for (var i in item) {
+                    if (item[i] > 0) {
+                        order[$("#itemTitle-" + i).text()] = $("#count-" + i).text();
+                        var count = parseInt($("#count-" + i).text().substring(0, $("#count-" + i).text().length - 1));
+                        var price = parseInt($("#price-" + i).text().trim().substring(1));
+                        var item_total = count * price;
+                        total = total + item_total;
+
+                        $("#orderTable").find('tbody').append('<tr class="remove"><td>' + $("#itemTitle-" + i).text() + '</td>' + '<td>' + $("#count-" + i).text() + '</td>' + '<td class="eachPrice">' + $("#price-" + i).text() + '</td>' + '</tr>');
+                    }
                 }
-            }
-            $("#order_total").html('£' + total);
-            order['amount'] = total;
-            final_order = order;
-            //If the order is empty
-            // Alert
-            if (total == 0) {
-                alert("Your order is empty.")
-            }
-            else {
-                $('#checkoutModal').modal();
+                $("#order_total").html('£' + total);
+                order['amount'] = total;
+                final_order = order;
+                //If the order is empty
+                // Alert
+                if (total == 0) {
+                    alert("Your order is empty.")
+                }
+                else {
+                    $('#checkoutModal').modal();
+                }
             }
 
         });
@@ -714,9 +724,10 @@
         document.getElementById('place_rating').innerHTML = placeRatingText;
 
 
+
         {% if not user.is_anonymous and is_available == 'true' %}
             // Countdown
-            var upgradeTime = 600;
+            var upgradeTime = 300;
             var seconds = upgradeTime;
             function timer() {
                 var days = Math.floor(seconds / 24 / 60 / 60);
@@ -731,6 +742,10 @@
                 document.getElementById('countdown').innerHTML = minutes + ":" + remainingSeconds;
                 if (seconds == 0) {
                     clearInterval(countdownTimer);
+                    ordering_enabled = false;
+                    document.getElementById('orderBtn').removeAttribute('disabled');
+                    $('#orderBtn').html('<i class="fa fa-frown-o" aria-hidden="true"></i> Reservation Expired');
+                    document.getElementById('orderBtn').className = "btn btn-danger fade in";
                     document.getElementById('countdown-text').innerHTML = "Your table booking has <b>expired</b>. ";
                     document.getElementById('alert').className = "alert alert-danger alert-dismissible fade in";
                 } else {
