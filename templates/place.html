@@ -226,13 +226,12 @@
                                 id="countdown">10:00</span>.
                         </h4>
                     </div>
-                    <div id="alert_order" style="margin: 20px; display:none;"
-                         class="alert alert-danger alert-dismissible fade in"
+					<div id="alert_order" style="margin: 20px; display:none;" class="alert alert-danger alert-dismissible fade in"
                          role="alert">
-                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span
+						 <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span
                                 aria-hidden="true">×</span></button>
-                        <h4 id="order_empty_error" style="margin: 0px;">Your order is empty</h4>
-                    </div>
+						 <h4 id="order_empty_error" style="margin: 0px;">Your order is empty</h4>
+					</div>
                 {% elif user.is_anonymous %}
                     <div id="alert" style="margin: 20px;" class="alert alert-warning alert-dismissible fade in"
                          role="alert">
@@ -246,23 +245,21 @@
                          role="alert">
                         <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span
                                 aria-hidden="true">×</span></button>
-                        <h4 id="countdown-text" style="margin: 0px;">This restaurant is currently not accepting orders
-                            from
+                        <h4 id="countdown-text" style="margin: 0px;">Restaurant is currently not accepting orders from
                             EasyOrder.
                         </h4>
                     </div>
                 {% endif %}
 
                 <div class="col-md-3" style="padding: 0">
-                    <img width="240" height="230" id="place_photo"
-                         style="padding-top: 10px; margin-bottom: 20px; border-radius: 15px;"
+                    <img width="250" height="250" id="place_photo" style="padding-top: 10px; border-radius: 15px; margin-bottom: 20px;"
                          src=""/>
                 </div>
                 <div style="text-align: left; margin-left: 0" class="col-md-6">
                     <h1 id="place_name" style="margin: 0 5px 0 0; padding-top: 18px;"> Restaurant Name </h1>
                     <h3 id="place_type" style="margin: 0 5px 0 0;"> Restaurant </h3>
                     {% autoescape off %}
-                        <p style="margin: 0; margin-top: 95px; margin-bottom: 25px; font-size: 19px;"><span
+                        <p style="margin: 0; margin-top: 90px; margin-bottom: 20px"><span
                                 id="place_rating">Rating</span>
                             is currently {{ popularity }}.</p>
                     {% endautoescape %}
@@ -329,8 +326,7 @@
                                                                             {% endif %}</div>
                                                                     </div>
                                                                     <div id="price-{{ item.item_id }}"
-                                                                         class="menu-item-price">
-                                                                        £{{ item.item_price }}</div>
+                                                                         class="menu-item-price">£{{ item.item_price }}</div>
                                                                     {% if not user.is_anonymous and is_available == 'true' %}
                                                                         <span>
 																		<button class="itemBtn"
@@ -362,8 +358,7 @@
                             {% endif %}
                         </p>
                         {% if not user.is_anonymous and is_available == 'true' %}
-                            <button id="orderBtn" type="button" class="btn btn-primary btn-success"
-                                    style="margin-bottom:15px; float: right;"><i
+                            <button id="orderBtn" type="button" class="btn btn-primary btn-success" style="margin-bottom:15px; float: right;"><i
                                     class="fa fa-check"
                                     aria-hidden="true"></i>
                                 Complete Your
@@ -434,10 +429,9 @@
                             </table>
                         </div>
                         <div class="text-right" style="margin-right:20px;">
-                            <button id="modify_order" type="button" class="btn btn-warning" style="margin-bottom:15px">
-                                <i
-                                        class="fa fa-pencil"
-                                        aria-hidden="true"></i>
+                            <button id="modify_order" type="button" class="btn btn-warning" style="margin-bottom:15px"><i
+                                    class="fa fa-pencil"
+                                    aria-hidden="true"></i>
                                 Modify Order
                             </button>
                             <button id="cancel_order" type="button" class="btn btn-danger" style="margin-bottom:15px"><i
@@ -479,15 +473,14 @@
                                     {% csrf_token %}
                                     {{ order_form }}
                                 </form>
-                                <button id="confirm_order" type="button" class="btn btn-success"><i
-                                        class="fa fa-check-circle"
-                                        aria-hidden="true"></i> Confirm
+                                <button id="confirm_order" type="button" class="btn btn-success"><i class="fa fa-check-circle"
+                                                                                 aria-hidden="true"></i> Confirm
                                     Booking
                                 </button>
                             </div>
                         </div>
                         <div role="tabpanel" class="tab-pane" id="profile">
-                            <span id="payment_error" style="color:red"></span>
+						<span id="payment_error" style="color:red"></span>
                             <br/>
                             <form id="checkout-form">
                                 <p style="color: dimgray; text-align: left;">Credit / Debit Card Payment</p>
@@ -536,8 +529,7 @@
                                 <div class="text-right">
                                     <p style="color: dimgrey;">3D Secure checkout will be used to verify the
                                         payment.</p>
-                                    <button id="payment_order" type="button" class="btn btn-success"> Currently Not
-                                        Supported
+                                    <button id="payment_order" type="button" class="btn btn-success"> Currently Not Supported
                                     </button>
                                 </div>
                             </form>
@@ -555,8 +547,8 @@
 
 {% block footerscripts %}
     <script>
-
         var final_order = null;
+
 
         // Search hit
         $('#location').keydown(function (e) {
@@ -599,7 +591,7 @@
             }
         });
 
-        //Modal close function
+		//Modal close function
         $("#checkoutModal").on("hidden.bs.modal", function () {
             $("#orderTable").find('tbody').html("");
             final_order = null;
@@ -608,7 +600,7 @@
         //Submit
         $("#orderBtn").click(function (e) {
             var order = {};
-            var total = 0;
+            var  total = 0;
             for (var i in item) {
                 if (item[i] > 0) {
                     order[$("#itemTitle-" + i).text()] = $("#count-" + i).text();
@@ -623,19 +615,21 @@
             $("#order_total").html('£' + total);
             order['amount'] = total;
             final_order = order;
-            //If the order is empty
-            if (total == 0) {
-                $('#alert_order').toggle('slow');
-            }
-            else {
-                $('#alert_order').toggle('hide');
-                $('#checkoutModal').modal();
-            }
+			//If the order is empty
+			if(total == 0)
+			{
+				$('#alert_order').toggle('slow');
+			}
+			else
+			{
+				$('#alert_order').toggle('hide');
+				$('#checkoutModal').modal();
+			}
 
         });
 
-        //On Click sending data to backend
-        $('#confirm_order').click(function () {
+		//On Click sending data to backend
+        $('#confirm_order').click(function(){
 
             $('#order_content').val(JSON.stringify(final_order));
             $('#order_people').val({{ num_people }});
@@ -645,16 +639,16 @@
             $('#order_form').submit();
         });
 
-        //Modify Order
-        $("#modify_order").click(function () {
-            $("#checkoutModal").modal('hide');
-        });
+		//Modify Order
+		$("#modify_order").click(function(){
+			$("#checkoutModal").modal('hide');
+		});
 
-        //Cancel Order
-        $("#cancel_order").click(function () {
-            $("#checkoutModal").modal('hide');
-            location.reload();
-        });
+		//Cancel Order
+		$("#cancel_order").click(function(){
+			$("#checkoutModal").modal('hide');
+			location.reload();
+		});
 
 
         // About the place
@@ -756,6 +750,7 @@
                 $("#location_id").val(place.place_id);
             });
         }
+
     </script>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBCinQHLTxOHgFXAFHjsftWjucn2cI3yWg&libraries=places&callback=initSearch"
             async defer>
